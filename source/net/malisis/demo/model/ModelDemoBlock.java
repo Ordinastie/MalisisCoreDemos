@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 PaleoCrafter, Ordinastie
+ * Copyright (c) 2014 Ordinastie
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,69 +22,48 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.stargate;
-
-import java.util.Random;
+package net.malisis.demo.model;
 
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class StargateBlock extends BlockContainer
+/**
+ * @author Ordinastie
+ * 
+ */
+public class ModelDemoBlock extends Block implements ITileEntityProvider
 {
-	public static int deployTimer = 100;
 	public static int renderId = -1;
 
-	protected StargateBlock()
+	protected ModelDemoBlock()
 	{
-		super(Material.iron);
-		setBlockName("sgBlock");
+		super(Material.wood);
+		setBlockName("modelDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":sgplatformside");
+
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
-	{
-		world.scheduleBlockUpdate(x, y, z, this, deployTimer);
-		((StargateTileEntity) world.getTileEntity(x, y, z)).placedTimer = world.getTotalWorldTime();
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand)
-	{
-
-		world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-	}
+	public void registerBlockIcons(IIconRegister register)
+	{}
 
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		return blockIcon;
+		return Blocks.glowstone.getIcon(side, metadata);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
+	public TileEntity createNewTileEntity(World var1, int var2)
 	{
-		StargateTileEntity te = new StargateTileEntity();
-		return te;
-	}
-
-	@Override
-	public boolean isNormalCube()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
+		return new ModelDemoTileEntity();
 	}
 
 	@Override
@@ -92,4 +71,5 @@ public class StargateBlock extends BlockContainer
 	{
 		return renderId;
 	}
+
 }

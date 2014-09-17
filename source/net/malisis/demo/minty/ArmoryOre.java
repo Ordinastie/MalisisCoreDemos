@@ -2,7 +2,6 @@ package net.malisis.demo.minty;
 
 import java.util.List;
 
-import net.malisis.core.renderer.IBaseRendering;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -14,7 +13,7 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ArmoryOre extends Block implements IBaseRendering
+public class ArmoryOre extends Block
 {
 	public static final String ORE_BLOCK_NAME = "ArmoryOre";
 	public static final String OBSIDIUM_BLOCK_NAME = "obsidium_block";
@@ -23,7 +22,7 @@ public class ArmoryOre extends Block implements IBaseRendering
 	public static final String SMITHING_ANVIL_NAME = "smithing_anvil";
 	public static final String SMITHING_FURNACE_NAME = "smithing_furnace";
 
-	public int renderId = -1;
+	public static int renderId = -1;
 	public IIcon[] overlays = new IIcon[4];
 	public String[] iconNames = { "Lava_Overlay", "Azurite_Overlay", "Crimsonite_Overlay", "Titanium_Overlay" };
 	public int[] colors = { 0xFFFFFF, 0x123456, 0xFF0000, 0xFFFFFF };
@@ -80,12 +79,6 @@ public class ArmoryOre extends Block implements IBaseRendering
 	public int getRenderType()
 	{
 		return renderId;
-	}
-
-	@Override
-	public void setRenderId(int id)
-	{
-		renderId = id;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

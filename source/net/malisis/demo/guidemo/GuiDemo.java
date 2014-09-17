@@ -8,10 +8,10 @@ public class GuiDemo
 
 	public void preInit()
 	{
-		(guiBlock = new GuiBlock()).setBlockName("testBlock");
+		(guiBlock = new GuiBlock()).setBlockName("guiDemo");
 		GameRegistry.registerBlock(guiBlock, guiBlock.getUnlocalizedName().substring(5));
 
-		GameRegistry.registerTileEntity(GuiTileEntity.class, "testTileEntity");
+		GameRegistry.registerTileEntity(GuiTileEntity.class, "guiTileEntity");
 	}
 
 	public void init()

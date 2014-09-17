@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 PaleoCrafter, Ordinastie
+ * Copyright (c) 2014 Ordinastie
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,63 +22,73 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.stargate;
+package net.malisis.demo.test;
 
-import java.util.Random;
-
+import net.malisis.core.renderer.MalisisIcon;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class StargateBlock extends BlockContainer
+/**
+ * @author Ordinastie
+ * 
+ */
+public class TestBlock extends Block implements ITileEntityProvider
 {
-	public static int deployTimer = 100;
-	public static int renderId = -1;
+	//private int renderId = -1;
 
-	protected StargateBlock()
+	protected TestBlock()
 	{
-		super(Material.iron);
-		setBlockName("sgBlock");
+		super(Material.wood);
+		setBlockName("testblock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":sgplatformside");
+
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
+	public void registerBlockIcons(IIconRegister register)
 	{
-		world.scheduleBlockUpdate(x, y, z, this, deployTimer);
-		((StargateTileEntity) world.getTileEntity(x, y, z)).placedTimer = world.getTotalWorldTime();
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand)
-	{
-
-		world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+		blockIcon = new MalisisIcon(MalisisDemos.modid + ":test_glass").register((TextureMap) register);
 	}
 
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		return blockIcon;
+		MalisisIcon icon = ((MalisisIcon) blockIcon).clone();
+		float f = 1F / 3F;
+		icon.clip(f, f, 2 * f, 2 * f);
+		return icon;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY, float hitZ)
 	{
-		StargateTileEntity te = new StargateTileEntity();
-		return te;
+		TestTileEntity te = (TestTileEntity) world.getTileEntity(x, y, z);
+		if (p.isSneaking())
+		{
+			te.num = (te.num + 1) % 3;
+			return false;
+		}
+		else
+		{
+			te.rotate = !te.rotate;
+			te.startTime = world.getTotalWorldTime();
+		}
+
+		return true;
 	}
 
 	@Override
-	public boolean isNormalCube()
+	public TileEntity createNewTileEntity(World var1, int var2)
 	{
-		return false;
+		return new TestTileEntity();
 	}
 
 	@Override
@@ -90,6 +100,7 @@ public class StargateBlock extends BlockContainer
 	@Override
 	public int getRenderType()
 	{
-		return renderId;
+		return 0;
 	}
+
 }

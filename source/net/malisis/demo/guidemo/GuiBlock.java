@@ -1,11 +1,10 @@
 package net.malisis.demo.guidemo;
 
-import net.malisis.core.renderer.IBaseRendering;
+import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -13,14 +12,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class GuiBlock extends Block implements ITileEntityProvider, IBaseRendering
+public class GuiBlock extends Block implements ITileEntityProvider
 {
-	private int renderId;
+	public static int renderId;
 
 	public GuiBlock()
 	{
 		super(Material.ground);
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
 	}
 
@@ -70,12 +69,4 @@ public class GuiBlock extends Block implements ITileEntityProvider, IBaseRenderi
 	{
 		return new GuiTileEntity();
 	}
-
-	@Override
-	public void setRenderId(int id)
-	{
-		renderId = id;
-
-	}
-
 }

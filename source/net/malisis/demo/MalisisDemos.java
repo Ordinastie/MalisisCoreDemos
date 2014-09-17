@@ -26,9 +26,12 @@ package net.malisis.demo;
 
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.configuration.Settings;
+import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
+import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.stargate.Stargate;
+import net.malisis.demo.test.Test;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.Mod;
@@ -54,6 +57,9 @@ public class MalisisDemos implements IMalisisMod
 	public static GuiDemo guiDemo;
 	public static Minty minty;
 	public static Stargate stargate;
+	public static ModelDemo modelDemo;
+	public static Test test;
+	public static Connected connected;
 
 	public static CreativeTabs tabDemos = new CreativeTabs("MalisisCore Demos")
 	{
@@ -103,10 +109,16 @@ public class MalisisDemos implements IMalisisMod
 		guiDemo = new GuiDemo();
 		minty = new Minty();
 		stargate = new Stargate();
+		modelDemo = new ModelDemo();
+		test = new Test();
+		connected = new Connected();
 
 		guiDemo.preInit();
 		minty.preInit();
 		stargate.preInit();
+		modelDemo.preInit();
+		test.preInit();
+		connected.preInit();
 	}
 
 	@EventHandler
@@ -115,6 +127,9 @@ public class MalisisDemos implements IMalisisMod
 		guiDemo.init();
 		minty.init();
 		stargate.init();
+		modelDemo.init();
+		test.init();
+		connected.init();
 	}
 
 }

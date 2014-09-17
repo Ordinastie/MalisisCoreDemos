@@ -17,6 +17,7 @@ import net.malisis.core.renderer.preset.ShapePreset;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -120,22 +121,22 @@ public class StargateRenderer extends BaseRenderer
 			south = new ParallelTransformation();
 
 			// create the animations
-			north.addAnimations(new Rotation(-180, 1F, 0, 0, 0, y, -0.5F).forTicks(rt, 0));
-			south.addAnimations(new Rotation(180, 1F, 0, 0, 0, y, 0.5F).forTicks(rt, 0));
+			north.addTransformations(new Rotation(-180, 1F, 0, 0, 0, y, -0.5F).forTicks(rt, 0));
+			south.addTransformations(new Rotation(180, 1F, 0, 0, 0, y, 0.5F).forTicks(rt, 0));
 			if (row > 0)
 			{
-				north.addAnimations(new Rotation(-180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay));
-				south.addAnimations(new Rotation(180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay));
+				north.addTransformations(new Rotation(-180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay));
+				south.addTransformations(new Rotation(180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay));
 			}
 			if (row > 1)
 			{
-				north.addAnimations(new Rotation(-180, 1F, 0, 0, 0, y, -0.5F).forTicks(rt, delay * 2));
-				south.addAnimations(new Rotation(180, 1F, 0, 0, 0, y, 0.5F).forTicks(rt, delay * 2));
+				north.addTransformations(new Rotation(-180, 1F, 0, 0, 0, y, -0.5F).forTicks(rt, delay * 2));
+				south.addTransformations(new Rotation(180, 1F, 0, 0, 0, y, 0.5F).forTicks(rt, delay * 2));
 			}
 			if (row > 2)
 			{
-				north.addAnimations(new Rotation(-180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay * 3));
-				south.addAnimations(new Rotation(180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay * 3));
+				north.addTransformations(new Rotation(-180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay * 3));
+				south.addTransformations(new Rotation(180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay * 3));
 			}
 
 			// link the shapes the the animations
@@ -161,10 +162,10 @@ public class StargateRenderer extends BaseRenderer
 
 		// create the shape
 		Shape base = ShapePreset.Cube();
-		base.setParameters(FacePreset.Bottom(), rpFace, true);
+		base.setParameters("bottom", rpFace, true);
 		base.translate(0, 3, 0);
-		base.shrink(FacePreset.Bottom(), 0.69F);
-		base.shrink(FacePreset.Top(), 0.87F);
+		base.shrink(ForgeDirection.DOWN, 0.69F);
+		base.shrink(ForgeDirection.UP, 0.87F);
 
 		int totalArch = 13;
 		float angle = 10;
@@ -314,17 +315,17 @@ public class StargateRenderer extends BaseRenderer
 		platform.translate(0, -0.5F + sliceHeight / 2, 0);
 		platform.scale(5F, sliceHeight, 5F);
 		//set the paramaters for the top face
-		platform.setParameters(FacePreset.Top(), rpFace, true);
+		platform.setParameters("top", rpFace, true);
 		drawShape(platform);
 
 		//Create the base of each arch block
 		Shape base = ShapePreset.Cube();
 		//reuse the parameters for the top face platform, just change the icon
 		rpFace.icon.set(Blocks.diamond_block.getIcon(0, 0));
-		base.setParameters(FacePreset.Bottom(), rpFace, true);
+		base.setParameters("bottom", rpFace, true);
 		base.translate(0, 3, 0);
-		base.shrink(FacePreset.Bottom(), 0.69F);
-		base.shrink(FacePreset.Top(), 0.87F);
+		base.shrink(ForgeDirection.DOWN, 0.69F);
+		base.shrink(ForgeDirection.UP, 0.87F);
 
 		int totalArch = 13;
 		float angle = 10;

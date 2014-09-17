@@ -1,0 +1,16 @@
+# Blender v2.70 (sub 0) OBJ File: 'cube.blend'
+# www.blender.org
+mtllib face.mtl
+o Cube_Cube.001
+v 1.000589 0.000000 1.000000
+v 0.000589 0.000000 1.000000
+v 0.000000 1.000000 1.000000
+v 1.000000 1.000000 1.000000
+vt 1.000000 0.750000
+vt 0.250000 0.750000
+vt 0.250000 0.000000
+vt 1.000000 0.000000
+g Cube_Cube.001_None
+usemtl None
+s off
+f 2/1 1/2 4/3 3/4
