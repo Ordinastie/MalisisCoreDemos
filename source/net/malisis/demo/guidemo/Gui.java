@@ -19,10 +19,15 @@ import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
+import net.malisis.core.client.gui.event.ComponentEvent.ValueChanged;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.google.common.eventbus.Subscribe;
 
 public class Gui extends MalisisGui
 {
@@ -36,22 +41,29 @@ public class Gui extends MalisisGui
 		setInventoryContainer(inventoryContainer);
 
 		UIWindow window = new UIWindow(300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
-		panel = new UIPanel(290, 120).setPosition(0, 12).setVerticalScroll(true);
-		panel2 = new UIPanel(290, 120).setPosition(0, 12).setVerticalScroll(true);
+		panel = new UIPanel(290, 140)/*.setVerticalScroll(true)*/;
+		panel2 = new UIPanel(290, 140)/*.setVerticalScroll(true)*/;
+		panel.setBackgroundColor(0xFFDDEE);
+		panel2.setBackgroundColor(0xCCCCFF);
 
 		UITabGroup tabGroup = new UITabGroup();
-		UITab tab1 = new UITab("Panel1");
-		UITab tab2 = new UITab("Panel2");
+		//UIImage img = new UIImage(Blocks.bookshelf.getIcon(0, 0), UIImage.BLOCKS_TEXTURE);
+		UIImage img = new UIImage(new ItemStack(Items.nether_star));
+		UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
+		UITab tab1 = new UITab(img);
+		UITab tab2 = new UITab(img2);
 
 		tabGroup.addTab(tab1, panel);
 		tabGroup.addTab(tab2, panel2);
+
+		tabGroup.setActiveTab(tab1);
 
 		cb = new UICheckBox("CheckBox with label").setTooltip(EnumChatFormatting.AQUA + "with a tooltip!");
 
 		UIRadioButton rb1 = new UIRadioButton("newRb", "Radio value 1").setPosition(0, 14);
 		UIRadioButton rb2 = new UIRadioButton("newRb", "Radio value 2").setPosition(rb1.getWidth() + 10, 14);
 
-		UISlider slider = new UISlider(150, 0, 100, "Slider value : %.0f").setPosition(0, 26);
+		UISlider slider = new UISlider(150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
 
 		UITextField tf = new UITextField(200, "This textfield will only accept numbers.");
 		tf.setPosition(0, 52);
@@ -63,7 +75,7 @@ public class Gui extends MalisisGui
 				"Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
 		select.setPosition(0, 70);
 		select.maxExpandedWidth(120);
-		// select.maxDisplayedOptions(5);
+		//select.maxDisplayedOptions(5);
 		select.select(2);
 
 		btn1 = new UIButton("Horizontal", 80).setPosition(0, 90, Anchor.CENTER).register(this);
@@ -92,6 +104,7 @@ public class Gui extends MalisisGui
 		window.add(tabGroup);
 		window.add(panel);
 		window.add(panel2);
+
 		window.add(playerInv);
 
 		addToScreen(window);
@@ -109,5 +122,16 @@ public class Gui extends MalisisGui
 		}
 
 		return c;
+	}
+
+	@Subscribe
+	public void onSliderChanged(ValueChanged<UISlider, Float> event)
+	{
+		int v = (int) (event.getNewValue() / 100 * 255);
+		int g = Math.abs(-255 + 2 * v);
+		int r = v;
+		int b = 255 - g;
+		//MalisisCore.message(r + " > " + Integer.toHexString(r << 16 | 0x00FFFF));
+		panel.setBackgroundColor(r << 16 | g << 8 | b);
 	}
 }
