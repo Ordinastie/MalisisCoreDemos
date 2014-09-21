@@ -22,30 +22,33 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.connected;
+package net.malisis.demo.multiblock;
 
 import net.malisis.demo.IDemo;
-import net.minecraft.block.Block;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author Ordinastie
  * 
  */
-public class Connected implements IDemo
+public class MultiBlock implements IDemo
 {
-	Block connectedBlock;
+	MBBlock multiBlock;
 
 	@Override
 	public void preInit()
 	{
-		connectedBlock = new ConnectedBlock();
-		GameRegistry.registerBlock(connectedBlock, connectedBlock.getUnlocalizedName().substring(5));
+		multiBlock = new MBBlock();
+		GameRegistry.registerBlock(multiBlock, multiBlock.getUnlocalizedName().substring(5));
 	}
 
 	@Override
 	public void init()
 	{
-
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{}
 	}
+
 }

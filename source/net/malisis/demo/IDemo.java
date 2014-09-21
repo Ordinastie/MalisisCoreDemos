@@ -22,30 +22,16 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.connected;
-
-import net.malisis.demo.IDemo;
-import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
+package net.malisis.demo;
 
 /**
  * @author Ordinastie
  * 
  */
-public class Connected implements IDemo
+public interface IDemo
 {
-	Block connectedBlock;
+	public void preInit();
 
-	@Override
-	public void preInit()
-	{
-		connectedBlock = new ConnectedBlock();
-		GameRegistry.registerBlock(connectedBlock, connectedBlock.getUnlocalizedName().substring(5));
-	}
+	public void init();
 
-	@Override
-	public void init()
-	{
-
-	}
 }

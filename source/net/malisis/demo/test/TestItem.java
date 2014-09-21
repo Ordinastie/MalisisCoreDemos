@@ -22,30 +22,53 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.connected;
+package net.malisis.demo.test;
 
-import net.malisis.demo.IDemo;
 import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  * 
  */
-public class Connected implements IDemo
+public class TestItem extends ItemBlock
 {
-	Block connectedBlock;
 
-	@Override
-	public void preInit()
+	public TestItem(Block block)
 	{
-		connectedBlock = new ConnectedBlock();
-		GameRegistry.registerBlock(connectedBlock, connectedBlock.getUnlocalizedName().substring(5));
+		super(block);
+		setHasSubtypes(true);
+
 	}
 
 	@Override
-	public void init()
+	public IIcon getIcon(ItemStack stack, int pass)
 	{
-
+		TestBlock b = ((TestBlock) field_150939_a);
+		return pass == 0 ? b.getBaseBlock().getIcon(0, stack.getItemDamage()) : b.getIconOverlay();
 	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack itemStack)
+	{
+		return "Slippery " + field_150939_a.getUnlocalizedName().substring(5);
+	}
+
+	@Override
+	public int getMetadata(int meta)
+	{
+		return meta;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses()
+	{
+		return true;
+	}
+
 }

@@ -24,6 +24,7 @@
 
 package net.malisis.demo.model;
 
+import net.malisis.demo.IDemo;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -32,10 +33,11 @@ import cpw.mods.fml.relauncher.Side;
  * @author Ordinastie
  * 
  */
-public class ModelDemo
+public class ModelDemo implements IDemo
 {
 	ModelDemoBlock modelBlock;
 
+	@Override
 	public void preInit()
 	{
 		modelBlock = new ModelDemoBlock();
@@ -43,6 +45,7 @@ public class ModelDemo
 		GameRegistry.registerTileEntity(ModelDemoTileEntity.class, "modelDemoTileEntity");
 	}
 
+	@Override
 	public void init()
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

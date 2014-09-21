@@ -24,12 +24,15 @@
 
 package net.malisis.demo;
 
+import java.util.ArrayList;
+
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.configuration.Settings;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
+import net.malisis.demo.multiblock.MultiBlock;
 import net.malisis.demo.stargate.Stargate;
 import net.malisis.demo.test.Test;
 import net.minecraft.creativetab.CreativeTabs;
@@ -53,13 +56,7 @@ public class MalisisDemos implements IMalisisMod
 	public static final String version = "1.7.2-0.1";
 
 	public static MalisisDemos instance;
-
-	public static GuiDemo guiDemo;
-	public static Minty minty;
-	public static Stargate stargate;
-	public static ModelDemo modelDemo;
-	public static Test test;
-	public static Connected connected;
+	public static ArrayList<IDemo> demos = new ArrayList<>();
 
 	public static CreativeTabs tabDemos = new CreativeTabs("MalisisCore Demos")
 	{
@@ -67,13 +64,21 @@ public class MalisisDemos implements IMalisisMod
 		@SideOnly(Side.CLIENT)
 		public Item getTabIconItem()
 		{
-			return Item.getItemFromBlock(stargate.sgBlock);
+			return Item.getItemFromBlock(Stargate.sgBlock);
 		}
 	};
 
 	public MalisisDemos()
 	{
 		instance = this;
+		demos.add(new Stargate());
+		demos.add(new GuiDemo());
+		demos.add(new Minty());
+		demos.add(new ModelDemo());
+		demos.add(new Test());
+		demos.add(new Connected());
+		demos.add(new MultiBlock());
+
 	}
 
 	//#region IMalisisMod
@@ -106,30 +111,14 @@ public class MalisisDemos implements IMalisisMod
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event)
 	{
-		guiDemo = new GuiDemo();
-		minty = new Minty();
-		stargate = new Stargate();
-		modelDemo = new ModelDemo();
-		test = new Test();
-		connected = new Connected();
-
-		guiDemo.preInit();
-		minty.preInit();
-		stargate.preInit();
-		modelDemo.preInit();
-		test.preInit();
-		connected.preInit();
+		for (IDemo demo : demos)
+			demo.preInit();
 	}
 
 	@EventHandler
 	public static void init(FMLInitializationEvent event)
 	{
-		guiDemo.init();
-		minty.init();
-		stargate.init();
-		modelDemo.init();
-		test.init();
-		connected.init();
+		for (IDemo demo : demos)
+			demo.init();
 	}
-
 }

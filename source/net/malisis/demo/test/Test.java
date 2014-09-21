@@ -24,6 +24,8 @@
 
 package net.malisis.demo.test;
 
+import net.malisis.demo.IDemo;
+import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -32,17 +34,25 @@ import cpw.mods.fml.relauncher.Side;
  * @author Ordinastie
  * 
  */
-public class Test
+public class Test implements IDemo
 {
-	TestBlock testBlock;
+	TestBlock testBlockWood;
+	TestBlock testBlockStone;
+	TestBlock testBlockSand;
 
+	@Override
 	public void preInit()
 	{
-		testBlock = new TestBlock();
-		GameRegistry.registerBlock(testBlock, testBlock.getUnlocalizedName().substring(5));
-		GameRegistry.registerTileEntity(TestTileEntity.class, "testTileEntity");
+		testBlockWood = new TestBlock("wood", Blocks.planks);
+		testBlockStone = new TestBlock("stone", Blocks.stone);
+		testBlockSand = new TestBlock("sand", Blocks.sand);
+
+		GameRegistry.registerBlock(testBlockWood, TestItem.class, testBlockWood.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(testBlockStone, TestItem.class, testBlockStone.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(testBlockSand, TestItem.class, testBlockSand.getUnlocalizedName().substring(5));
 	}
 
+	@Override
 	public void init()
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

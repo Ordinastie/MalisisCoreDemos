@@ -22,85 +22,43 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.test;
+package net.malisis.demo.multiblock;
 
-import java.util.List;
-
-import net.malisis.core.MalisisCore;
+import net.malisis.core.renderer.icon.MegaTexture;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
  * 
  */
-public class TestBlock extends Block
+public class MBBlock extends Block
 {
-	public static int currentPass = 0;
-	private Block baseBlock;
-	private IIcon overlay;
-
-	protected TestBlock(String name, Block block)
+	public MBBlock()
 	{
-		super(block.getMaterial());
-		baseBlock = block;
-		setBlockName("testblock" + name);
+		super(Material.rock);
+		setHardness(2.0F);
+		setStepSound(soundTypeStone);
+		setBlockName("mb");
+		setBlockTextureName(MalisisDemos.modid + ":mb");
 		setCreativeTab(MalisisDemos.tabDemos);
 
-	}
-
-	public Block getBaseBlock()
-	{
-		return baseBlock;
-	}
-
-	public IIcon getIconOverlay()
-	{
-		return overlay;
 	}
 
 	@Override
 	public void registerBlockIcons(IIconRegister register)
 	{
-		overlay = register.registerIcon(MalisisDemos.modid + ":ice_overlay");
+		blockIcon = new MegaTexture(getTextureName(), 4).register((TextureMap) register);
 	}
 
 	@Override
-	public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int metadata)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		MalisisCore.message("> " + metadata);
-
-		return metadata;
+		return ((MegaTexture) blockIcon).getIcon(world, this, x, y, z, side);
 	}
-
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list)
-	{
-		baseBlock.getSubBlocks(item, tab, list);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return currentPass == 0 ? baseBlock.getIcon(side, metadata) : overlay;
-	}
-
-	@Override
-	public int getRenderBlockPass()
-	{
-		return 1;
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass)
-	{
-		currentPass = pass;
-		return true;
-	}
-
 }
