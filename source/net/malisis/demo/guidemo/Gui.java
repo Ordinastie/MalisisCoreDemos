@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.MalisisGui;
+import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIPanel;
@@ -41,8 +42,8 @@ public class Gui extends MalisisGui
 		setInventoryContainer(inventoryContainer);
 
 		UIWindow window = new UIWindow(300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
-		panel = new UIPanel(290, 140)/*.setVerticalScroll(true)*/;
-		panel2 = new UIPanel(290, 140)/*.setVerticalScroll(true)*/;
+		panel = new UIPanel(UIComponent.INHERITED, 140).setVerticalScroll(true);
+		panel2 = new UIPanel(UIComponent.INHERITED, 140)/*.setVerticalScroll(true)*/;
 		panel.setBackgroundColor(0xFFDDEE);
 		panel2.setBackgroundColor(0xCCCCFF);
 
@@ -78,7 +79,7 @@ public class Gui extends MalisisGui
 		//select.maxDisplayedOptions(5);
 		select.select(2);
 
-		btn1 = new UIButton("Horizontal", 80).setPosition(0, 90, Anchor.CENTER).register(this);
+		btn1 = new UIButton("Horizontal", 80).setPosition(0, 80, Anchor.CENTER).register(this);
 		btn2 = new UIButton("Vertical", 80).setPosition(0, 120, Anchor.CENTER).register(this);
 		btnOver = new UIButton("Over the top").setPosition(0, 170, Anchor.CENTER);
 

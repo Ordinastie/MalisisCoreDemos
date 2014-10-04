@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class GuiBlock extends Block implements ITileEntityProvider
 {
-	public static int renderId;
+	public static int renderId = 0;
 
 	public GuiBlock()
 	{

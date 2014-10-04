@@ -80,21 +80,25 @@ public class TestRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		TestTileEntity te = (TestTileEntity) tileEntity;
-		if (te.startTime != startTime)
-			setup(te.startTime);
-
-		ar.setStartTime(startTime);
-
-		base.resetState();
-		ar.animate(base, transform);
-
-		rp.icon.set(Blocks.brick_block.getIcon(2, 0));
-		base.setParameters("v", rp, true);
-		rp.icon.set(null);
-
-		set(blocks[te.num]);
-		drawShape(base, rp);
+		//		TestTileEntity te = (TestTileEntity) tileEntity;
+		//		if (te.startTime != startTime)
+		//			setup(te.startTime);
+		//
+		//		ar.setStartTime(startTime);
+		//
+		//		base.resetState();
+		//		ar.animate(base, transform);
+		//
+		//		rp.icon.set(Blocks.brick_block.getIcon(2, 0));
+		//		base.setParameters("v", rp, true);
+		//		rp.icon.set(null);
+		//
+		//		set(blocks[te.num]);
+		//		drawShape(base, rp);
+		t.addVertexWithUV(0, 0, 0, 0, 0);//bottom left texture
+		t.addVertexWithUV(0, 1, 0, 0, 1);//bottom left texture
+		t.addVertexWithUV(1, 1, 0, 1, 1);//bottom left texture
+		t.addVertexWithUV(1, 0, 0, 1, 0);//bottom left texture
 
 		//model.render(this);
 	}

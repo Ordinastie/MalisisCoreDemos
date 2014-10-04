@@ -48,8 +48,7 @@ public class TestItem extends ItemBlock
 	@Override
 	public IIcon getIcon(ItemStack stack, int pass)
 	{
-		TestBlock b = ((TestBlock) field_150939_a);
-		return pass == 0 ? b.getBaseBlock().getIcon(0, stack.getItemDamage()) : b.getIconOverlay();
+		return super.getIcon(stack, pass);
 	}
 
 	@Override

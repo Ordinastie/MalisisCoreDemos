@@ -24,7 +24,6 @@
 
 package net.malisis.demo.model;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.renderer.BaseRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -41,7 +40,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class ModelDemoRenderer extends BaseRenderer
 {
@@ -52,10 +51,13 @@ public class ModelDemoRenderer extends BaseRenderer
 	private RenderParameters rp;
 	private int start;
 
-	private void loadModel()
+	@Override
+	protected void initShapes()
 	{
 		rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
 		model = MalisisModel.load(rlModel);
+
+		loadAnimation();
 	}
 
 	private void loadAnimation()
@@ -73,20 +75,11 @@ public class ModelDemoRenderer extends BaseRenderer
 		ar.addAnimation(anim);
 	}
 
-	private void loadParameters()
-	{
-		rp = new RenderParameters();
-	}
-
 	@Override
 	public void render()
 	{
 		if (renderType == TYPE_ISBRH_WORLD)
 		{
-			loadParameters();
-			loadModel();
-			loadAnimation();
-			MalisisCore.message("model loaded");
 			start = (int) Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		}
 		else if (renderType == TYPE_TESR_WORLD)
@@ -104,5 +97,11 @@ public class ModelDemoRenderer extends BaseRenderer
 		}
 
 		//model.render(this);
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId)
+	{
+		return false;
 	}
 }

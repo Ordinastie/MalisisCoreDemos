@@ -24,15 +24,11 @@
 
 package net.malisis.demo.test;
 
-import java.util.List;
-
 import net.malisis.core.MalisisCore;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -42,32 +38,20 @@ import net.minecraft.world.World;
 public class TestBlock extends Block
 {
 	public static int currentPass = 0;
-	private Block baseBlock;
-	private IIcon overlay;
+	public static int renderId = -1;
 
-	protected TestBlock(String name, Block block)
+	protected TestBlock()
 	{
-		super(block.getMaterial());
-		baseBlock = block;
-		setBlockName("testblock" + name);
+		super(Material.wood);
+		setBlockName("testblock");
 		setCreativeTab(MalisisDemos.tabDemos);
 
-	}
-
-	public Block getBaseBlock()
-	{
-		return baseBlock;
-	}
-
-	public IIcon getIconOverlay()
-	{
-		return overlay;
 	}
 
 	@Override
 	public void registerBlockIcons(IIconRegister register)
 	{
-		overlay = register.registerIcon(MalisisDemos.modid + ":ice_overlay");
+		//overlay = register.registerIcon(MalisisDemos.modid + ":ice_overlay");
 	}
 
 	@Override
@@ -76,18 +60,6 @@ public class TestBlock extends Block
 		MalisisCore.message("> " + metadata);
 
 		return metadata;
-	}
-
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list)
-	{
-		baseBlock.getSubBlocks(item, tab, list);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return currentPass == 0 ? baseBlock.getIcon(side, metadata) : overlay;
 	}
 
 	@Override
@@ -101,6 +73,12 @@ public class TestBlock extends Block
 	{
 		currentPass = pass;
 		return true;
+	}
+
+	@Override
+	public int getRenderType()
+	{
+		return renderId;
 	}
 
 }
