@@ -33,6 +33,7 @@ import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlock;
+import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.stargate.Stargate;
 import net.malisis.demo.test.Test;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +47,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 @Mod(modid = MalisisDemos.modid, name = MalisisDemos.modname, version = MalisisDemos.version)
 public class MalisisDemos implements IMalisisMod
@@ -78,7 +79,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new Test());
 		demos.add(new Connected());
 		demos.add(new MultiBlock());
-
+		demos.add(new MultipleInv());
 	}
 
 	//#region IMalisisMod
