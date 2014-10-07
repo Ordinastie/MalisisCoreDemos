@@ -70,7 +70,7 @@ public class Gui extends MalisisGui
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
 
-		UIContainer inv = setInventoryContainer(inventoryContainer.getContainerInventory());
+		UIContainer inv = setInventoryContainer(inventoryContainer.getInventory(1));
 
 		UISelect select = new UISelect(100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2", "Very ultra longer option 3",
 				"Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));

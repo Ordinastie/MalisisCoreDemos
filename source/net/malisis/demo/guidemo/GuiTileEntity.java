@@ -23,7 +23,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory()
+	public MalisisInventory getInventory(Object... data)
 	{
 		return inventory;
 	}
