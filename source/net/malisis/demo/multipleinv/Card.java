@@ -38,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -87,16 +88,16 @@ public class Card extends Item implements IInventoryProvider
 		if (!(data[0] instanceof ItemStack))
 			return null;
 
-		MalisisInventory inventory = new MalisisInventory(this, 27)
-		{
-			@Override
-			public int getInventoryStackLimit()
-			{
-				return 2;
-			}
-		};
+		MalisisInventory inventory = new MalisisInventory(this, 27);
+		inventory.setInventoryStackLimit(2);
 		inventory.setItemStackProvider((ItemStack) data[0]);
 		return inventory;
+	}
+
+	@Override
+	public MalisisInventory getInventory(ForgeDirection side, Object... data)
+	{
+		return getInventory(data);
 	}
 
 	@Override

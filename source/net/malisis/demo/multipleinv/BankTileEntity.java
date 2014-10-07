@@ -32,6 +32,7 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
@@ -49,6 +50,12 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 
 	@Override
 	public MalisisInventory getInventory(Object... data)
+	{
+		return inventory;
+	}
+
+	@Override
+	public MalisisInventory getInventory(ForgeDirection side, Object... data)
 	{
 		return inventory;
 	}
