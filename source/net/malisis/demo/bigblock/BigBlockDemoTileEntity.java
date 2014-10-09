@@ -22,33 +22,54 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.multiblock;
+package net.malisis.demo.bigblock;
 
-import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.malisis.core.util.MultiBlock;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class MultiBlock implements IDemo
+public class BigBlockDemoTileEntity extends TileEntity implements MultiBlock.IProvider
 {
-	MBBlock multiBlock;
+	private MultiBlock multiBlock;
 
 	@Override
-	public void preInit()
+	public void setMultiBlock(MultiBlock multiBlock)
 	{
-		multiBlock = new MBBlock();
-		GameRegistry.registerBlock(multiBlock, multiBlock.getUnlocalizedName().substring(5));
+		this.multiBlock = multiBlock;
 	}
 
 	@Override
-	public void init()
+	public MultiBlock getMultiBlock()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{}
+		return multiBlock;
+	}
+
+	@Override
+	public void setWorldObj(World world)
+	{
+		super.setWorldObj(world);
+		if (multiBlock != null)
+			multiBlock.setWorld(world);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+		multiBlock = MultiBlock.create(tag);
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag)
+	{
+		super.writeToNBT(tag);
+		if (multiBlock != null)
+			multiBlock.writeToNBT(tag);
 	}
 
 }

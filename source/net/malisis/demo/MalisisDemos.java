@@ -28,11 +28,12 @@ import java.util.ArrayList;
 
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.configuration.Settings;
+import net.malisis.demo.bigblock.BigDemo;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
-import net.malisis.demo.multiblock.MultiBlock;
+import net.malisis.demo.mtblock.MTBlockDemo;
 import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
 import net.malisis.demo.stargate.Stargate;
@@ -79,9 +80,10 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new ModelDemo());
 		demos.add(new Test());
 		demos.add(new Connected());
-		demos.add(new MultiBlock());
+		demos.add(new MTBlockDemo());
 		demos.add(new MultipleInv());
 		demos.add(new SidedInvDemo());
+		demos.add(new BigDemo());
 	}
 
 	//#region IMalisisMod

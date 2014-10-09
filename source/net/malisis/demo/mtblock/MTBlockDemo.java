@@ -22,43 +22,33 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.multiblock;
+package net.malisis.demo.mtblock;
 
-import net.malisis.core.renderer.icon.MegaTexture;
-import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import net.malisis.demo.IDemo;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author Ordinastie
  * 
  */
-public class MBBlock extends Block
+public class MTBlockDemo implements IDemo
 {
-	public MBBlock()
-	{
-		super(Material.rock);
-		setHardness(2.0F);
-		setStepSound(soundTypeStone);
-		setBlockName("mb");
-		setBlockTextureName(MalisisDemos.modid + ":mb");
-		setCreativeTab(MalisisDemos.tabDemos);
+	MTBlock mtBlock;
 
+	@Override
+	public void preInit()
+	{
+		mtBlock = new MTBlock();
+		GameRegistry.registerBlock(mtBlock, mtBlock.getUnlocalizedName().substring(5));
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void init()
 	{
-		blockIcon = new MegaTexture(getTextureName(), 4).register((TextureMap) register);
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{}
 	}
 
-	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-	{
-		return ((MegaTexture) blockIcon).getIcon(world, this, x, y, z, side);
-	}
 }
