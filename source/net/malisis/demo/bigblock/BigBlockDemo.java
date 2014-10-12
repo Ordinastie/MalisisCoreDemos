@@ -36,6 +36,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -77,14 +78,18 @@ public class BigBlockDemo extends Block implements ITileEntityProvider
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
 	{
 		ForgeDirection dir = EntityUtils.getEntityFacing(player);
-		MultiBlock.create(world, x, y, z, 2, 2, 2, dir);
+		MultiBlock mb = new MultiBlock(world, x, y, z);
+		mb.setBounds(AxisAlignedBB.getBoundingBox(-2, 0, 0, 3, 2, 1));
+		mb.setDirection(dir);
+		mb.placeBlocks();
 	}
 
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest)
 	{
-		if (!MultiBlock.destroy(world, x, y, z))
-			world.setBlockToAir(x, y, z);
+		MultiBlock.destroy(world, x, y, z);
+		world.setBlockToAir(x, y, z);
+
 		return true;
 	}
 

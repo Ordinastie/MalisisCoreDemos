@@ -24,52 +24,13 @@
 
 package net.malisis.demo.bigblock;
 
-import net.malisis.core.util.MultiBlock;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.malisis.core.tileentity.MultiBlockTileEntity;
 
 /**
  * @author Ordinastie
  *
  */
-public class BigBlockDemoTileEntity extends TileEntity implements MultiBlock.IProvider
+public class BigBlockDemoTileEntity extends MultiBlockTileEntity
 {
-	private MultiBlock multiBlock;
-
-	@Override
-	public void setMultiBlock(MultiBlock multiBlock)
-	{
-		this.multiBlock = multiBlock;
-	}
-
-	@Override
-	public MultiBlock getMultiBlock()
-	{
-		return multiBlock;
-	}
-
-	@Override
-	public void setWorldObj(World world)
-	{
-		super.setWorldObj(world);
-		if (multiBlock != null)
-			multiBlock.setWorld(world);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
-		super.readFromNBT(tag);
-		multiBlock = MultiBlock.create(tag);
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag)
-	{
-		super.writeToNBT(tag);
-		if (multiBlock != null)
-			multiBlock.writeToNBT(tag);
-	}
 
 }
