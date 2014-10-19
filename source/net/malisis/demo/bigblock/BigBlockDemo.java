@@ -79,7 +79,7 @@ public class BigBlockDemo extends Block implements ITileEntityProvider
 	{
 		ForgeDirection dir = EntityUtils.getEntityFacing(player);
 		MultiBlock mb = new MultiBlock(world, x, y, z);
-		mb.setBounds(AxisAlignedBB.getBoundingBox(-2, 0, 0, 3, 2, 1));
+		mb.setBounds(AxisAlignedBB.getBoundingBox(0, 0, 0, 2, 3, 2));
 		mb.setDirection(dir);
 		mb.placeBlocks();
 	}

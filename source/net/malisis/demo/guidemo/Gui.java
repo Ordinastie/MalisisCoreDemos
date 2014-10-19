@@ -11,6 +11,9 @@ import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
 import net.malisis.core.client.gui.component.container.UIWindow;
+import net.malisis.core.client.gui.component.control.UICloseHandle;
+import net.malisis.core.client.gui.component.control.UIMoveHandle;
+import net.malisis.core.client.gui.component.control.UIResizeHandle;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UILabel;
 import net.malisis.core.client.gui.component.interaction.UIButton;
@@ -83,6 +86,17 @@ public class Gui extends MalisisGui
 		btn2 = new UIButton("Vertical", 80).setPosition(0, 120, Anchor.CENTER).register(this);
 		btnOver = new UIButton("Over the top").setPosition(0, 170, Anchor.CENTER);
 
+		new UIResizeHandle(window);
+		new UIMoveHandle(window);
+		new UICloseHandle(window)
+		{
+			@Override
+			public void onClose()
+			{
+				MalisisGui.currentGui().close();
+			}
+		};
+
 		panel.add(cb);
 		panel.add(rb1);
 		panel.add(rb2);
@@ -100,7 +114,17 @@ public class Gui extends MalisisGui
 		panel2.add(new UILabel("This is LABEL!").setPosition(20, 15));
 
 		UIPlayerInventory playerInv = new UIPlayerInventory(inventoryContainer.getPlayerInventory());
-		playerInv.setPosition(0, 0, Anchor.BOTTOM | Anchor.CENTER);
+
+		new UIResizeHandle(playerInv);
+		new UIMoveHandle(playerInv);
+		new UICloseHandle(playerInv)
+		{
+			@Override
+			public void onClose()
+			{
+				getParent().setVisible(false);
+			}
+		};
 
 		window.add(tabGroup);
 		window.add(panel);
