@@ -10,6 +10,7 @@ import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
+import net.malisis.core.client.gui.component.container.UITabGroup.Position;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.control.UICloseHandle;
 import net.malisis.core.client.gui.component.control.UIMoveHandle;
@@ -35,7 +36,8 @@ import com.google.common.eventbus.Subscribe;
 
 public class Gui extends MalisisGui
 {
-	private UIPanel panel, panel2;
+	private UIPanel panel;
+	private UITab tab1;
 	private UIButton btn1, btn2, btnOver;
 	private UICheckBox cb;
 
@@ -44,23 +46,61 @@ public class Gui extends MalisisGui
 		super();
 		setInventoryContainer(inventoryContainer);
 
-		UIWindow window = new UIWindow(300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
-		panel = new UIPanel(UIComponent.INHERITED, 140).setVerticalScroll(true);
-		panel2 = new UIPanel(UIComponent.INHERITED, 140)/*.setVerticalScroll(true)*/;
-		panel.setBackgroundColor(0xFFDDEE);
-		panel2.setBackgroundColor(0xCCCCFF);
+		UIWindow window = new UIWindow(300, 200).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
+		window.clipContent = false;
+		panel = new UIPanel(UIComponent.INHERITED, 140);
+		UIContainer tabCont1 = new UIContainer()/*.setVerticalScroll(true)*/;
+		UIContainer tabCont2 = new UIContainer()/*.setVerticalScroll(true)*/;
+		//		panel.setBackgroundColor(0xFFDDEE);
+		//		panel2.setBackgroundColor(0xCCCCFF);
 
-		UITabGroup tabGroup = new UITabGroup();
-		//UIImage img = new UIImage(Blocks.bookshelf.getIcon(0, 0), UIImage.BLOCKS_TEXTURE);
-		UIImage img = new UIImage(new ItemStack(Items.nether_star));
-		UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
-		UITab tab1 = new UITab(img);
-		UITab tab2 = new UITab(img2);
+		/**
+		 * PANEL TAB EXAMPLE
+		 */
+		{
+			//			UITabGroup tabGroup = new UITabGroup(Position.TOP);
+			//			tabGroup.setPosition(0, 0, Anchor.RIGHT);
+			//			//UIImage img = new UIImage(Blocks.bookshelf.getIcon(0, 0), UIImage.BLOCKS_TEXTURE);
+			//			UIImage img = new UIImage(new ItemStack(Items.nether_star));
+			//			UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
+			//
+			//			tab1 = new UITab(img);
+			//			UITab tab2 = new UITab(img2);
+			//			tab1.setColor(0xFFDDEE);
+			//			tab2.setColor(0xCCCCFF);
+			//
+			//			tabGroup.addTab(tab1, tabCont1);
+			//			tabGroup.addTab(tab2, tabCont2);
+			//
+			//			tabGroup.setActiveTab(tab1);
+			//
+			//			tabGroup.attachTo(panel, true);
+			//
+			//			window.add(tabGroup);
+		}
 
-		tabGroup.addTab(tab1, panel);
-		tabGroup.addTab(tab2, panel2);
+		/**
+		 * WIDOW TAB EXAMPLE
+		 */
+		{
+			UITabGroup tabGroup = new UITabGroup(Position.RIGHT);
+			UIImage img = new UIImage(new ItemStack(Items.nether_star));
+			UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
 
-		tabGroup.setActiveTab(tab1);
+			tab1 = new UITab(img);
+			UITab tab2 = new UITab(img2);
+			tab1.setColor(0xFFDDEE);
+			tab2.setColor(0xCCCCFF);;
+
+			tabGroup.addTab(tab1, tabCont1);
+			tabGroup.addTab(tab2, tabCont2);
+
+			tabGroup.setActiveTab(tab1);
+
+			tabGroup.attachTo(window, false);
+
+			addToScreen(tabGroup);
+		}
 
 		cb = new UICheckBox("CheckBox with label").setTooltip(EnumChatFormatting.AQUA + "with a tooltip!");
 
@@ -97,21 +137,24 @@ public class Gui extends MalisisGui
 			}
 		};
 
-		panel.add(cb);
-		panel.add(rb1);
-		panel.add(rb2);
-		panel.add(slider);
+		tabCont1.add(cb);
+		tabCont1.add(rb1);
+		tabCont1.add(rb2);
+		tabCont1.add(slider);
 
-		panel.add(tf);
-		panel.add(select);
+		tabCont1.add(tf);
+		tabCont1.add(select);
 
-		panel.add(btn1);
-		panel.add(btn2);
-		panel.add(btnOver);
+		tabCont1.add(btn1);
+		tabCont1.add(btn2);
+		tabCont1.add(btnOver);
 
-		panel2.add(inv);
-		panel2.add(new UIImage(Items.diamond_axe.getIconFromDamage(0), UIImage.ITEMS_TEXTURE).setPosition(0, 10));
-		panel2.add(new UILabel("This is LABEL!").setPosition(20, 15));
+		tabCont2.add(inv);
+		tabCont2.add(new UIImage(Items.diamond_axe.getIconFromDamage(0), UIImage.ITEMS_TEXTURE).setPosition(0, 10));
+		tabCont2.add(new UILabel("This is LABEL!").setPosition(20, 15));
+
+		panel.add(tabCont1);
+		panel.add(tabCont2);
 
 		UIPlayerInventory playerInv = new UIPlayerInventory(inventoryContainer.getPlayerInventory());
 
@@ -126,9 +169,7 @@ public class Gui extends MalisisGui
 			}
 		};
 
-		window.add(tabGroup);
 		window.add(panel);
-		window.add(panel2);
 
 		window.add(playerInv);
 
@@ -157,6 +198,6 @@ public class Gui extends MalisisGui
 		int r = v;
 		int b = 255 - g;
 		//MalisisCore.message(r + " > " + Integer.toHexString(r << 16 | 0x00FFFF));
-		panel.setBackgroundColor(r << 16 | g << 8 | b);
+		tab1.setColor(r << 16 | g << 8 | b);
 	}
 }

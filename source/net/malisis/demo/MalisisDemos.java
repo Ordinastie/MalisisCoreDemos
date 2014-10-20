@@ -37,6 +37,7 @@ import net.malisis.demo.mtblock.MTBlockDemo;
 import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
 import net.malisis.demo.stargate.Stargate;
+import net.malisis.demo.tabinv.TabInv;
 import net.malisis.demo.test.Test;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -84,6 +85,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new MultipleInv());
 		demos.add(new SidedInvDemo());
 		demos.add(new BigDemo());
+		demos.add(new TabInv());
 	}
 
 	//#region IMalisisMod
