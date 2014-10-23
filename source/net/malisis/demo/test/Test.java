@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class Test implements IDemo
 {
@@ -50,7 +50,7 @@ public class Test implements IDemo
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			new TestRenderer().registerFor(TestBlock.class);
+			new TestRenderer().registerFor(TestBlock.class, TestTileEntity.class);
 		}
 	}
 }

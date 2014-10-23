@@ -49,15 +49,15 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory[] getInventories(Object... data)
 	{
-		return inventory;
+		return new MalisisInventory[] { inventory };
 	}
 
 	@Override
-	public MalisisInventory getInventory(ForgeDirection side, Object... data)
+	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
 	{
-		return inventory;
+		return getInventories(data);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 					return;
 
 				Card item = (Card) getItemStack().getItem();
-				cardIventory = item.getInventory(getItemStack());
+				cardIventory = item.getInventories(getItemStack())[0];
 
 				for (MalisisInventoryContainer container : BankTileEntity.this.inventory.getOpenedContainers())
 					container.addInventory(cardIventory);

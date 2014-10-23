@@ -31,7 +31,6 @@ import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.tileentity.TileEntitySidedInventory;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -120,17 +119,6 @@ public class SidedTileEntity extends TileEntitySidedInventory
 
 	}
 
-	public void getOpenInventory(EntityPlayerMP player)
-	{
-
-	}
-
-	@Override
-	public MalisisInventory getInventory(Object... data)
-	{
-		return triageInventory;
-	}
-
 	@Override
 	public MalisisGui getGui(MalisisInventoryContainer container)
 	{
@@ -143,4 +131,5 @@ public class SidedTileEntity extends TileEntitySidedInventory
 		event.getContainer().addInventory(ingotsInventory);
 		event.getContainer().addInventory(stoneInventory);
 	}
+
 }

@@ -32,11 +32,14 @@ import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.preset.ShapePreset;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.Vec3;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class TestRenderer extends BaseRenderer
 {
@@ -80,26 +83,28 @@ public class TestRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		//		TestTileEntity te = (TestTileEntity) tileEntity;
-		//		if (te.startTime != startTime)
-		//			setup(te.startTime);
-		//
-		//		ar.setStartTime(startTime);
-		//
-		//		base.resetState();
-		//		ar.animate(base, transform);
-		//
-		//		rp.icon.set(Blocks.brick_block.getIcon(2, 0));
-		//		base.setParameters("v", rp, true);
-		//		rp.icon.set(null);
-		//
-		//		set(blocks[te.num]);
-		//		drawShape(base, rp);
-		t.addVertexWithUV(0, 0, 0, 0, 0);//bottom left texture
-		t.addVertexWithUV(0, 1, 0, 0, 1);//bottom left texture
-		t.addVertexWithUV(1, 1, 0, 1, 1);//bottom left texture
-		t.addVertexWithUV(1, 0, 0, 1, 0);//bottom left texture
+		if (renderType == TYPE_TESR_WORLD)
+		{
+			enableBlending();
+			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+			double dist = Vec3.createVectorHelper(x, y, z).squareDistanceTo(player.posX, player.posY, player.posZ) - 10;
+			if (dist > 30)
+				dist = 30;
+			if (dist < 0)
+				dist = 0;
+			dist /= 30;
+			int alpha = (int) (dist * 255);
 
-		//model.render(this);
+			Shape s = ShapePreset.Cube();
+			rp.icon.set(block.getIcon(0, 0));
+			rp.alpha.set(255);
+			drawShape(s, rp);
+
+			s.resetState();
+			rp.icon.set(block.getIcon(0, 1));
+			rp.alpha.set(255 - alpha);
+			drawShape(s, rp);
+		}
+
 	}
 }

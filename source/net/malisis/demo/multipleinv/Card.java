@@ -70,7 +70,7 @@ public class Card extends Item implements IInventoryProvider
 		if (world.isRemote)
 			return itemStack;
 
-		getInventory(itemStack).open((EntityPlayerMP) player);
+		MalisisInventory.open((EntityPlayerMP) player, this, itemStack);
 
 		return itemStack;
 	}
@@ -83,7 +83,7 @@ public class Card extends Item implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory[] getInventories(Object... data)
 	{
 		if (!(data[0] instanceof ItemStack))
 			return null;
@@ -91,13 +91,13 @@ public class Card extends Item implements IInventoryProvider
 		MalisisInventory inventory = new MalisisInventory(this, 27);
 		inventory.setInventoryStackLimit(2);
 		inventory.setItemStackProvider((ItemStack) data[0]);
-		return inventory;
+		return new MalisisInventory[] { inventory };
 	}
 
 	@Override
-	public MalisisInventory getInventory(ForgeDirection side, Object... data)
+	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
 	{
-		return getInventory(data);
+		return getInventories(data);
 	}
 
 	@Override

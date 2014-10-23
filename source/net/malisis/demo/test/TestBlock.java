@@ -27,15 +27,19 @@ package net.malisis.demo.test;
 import net.malisis.core.MalisisCore;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class TestBlock extends Block
+public class TestBlock extends Block implements ITileEntityProvider
 {
 	public static int currentPass = 0;
 	public static int renderId = -1;
@@ -55,6 +59,14 @@ public class TestBlock extends Block
 	}
 
 	@Override
+	public IIcon getIcon(int side, int metadata)
+	{
+		if (metadata == 1)
+			return Blocks.planks.getIcon(side, metadata);
+		return Blocks.brick_block.getIcon(side, metadata);
+	}
+
+	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int metadata)
 	{
 		MalisisCore.message("> " + metadata);
@@ -65,20 +77,25 @@ public class TestBlock extends Block
 	@Override
 	public int getRenderBlockPass()
 	{
-		return 1;
+		return super.getRenderBlockPass();
 	}
 
 	@Override
 	public boolean canRenderInPass(int pass)
 	{
-		currentPass = pass;
-		return true;
+		return super.canRenderInPass(pass);
 	}
 
 	@Override
 	public int getRenderType()
 	{
-		return renderId;
+		return -1;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return new TestTileEntity();
 	}
 
 }

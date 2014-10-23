@@ -49,15 +49,15 @@ public class SidedGui extends MalisisGui
 		this.tileEntity = te;
 		setInventoryContainer(container);
 
-		UIWindow window = new UIWindow(190, 230);
+		UIWindow window = new UIWindow(this, 190, 230);
 
-		UIInventory contTriage = new UIInventory(te.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);
-		UIInventory contIngots = new UIInventory(te.ingotsInventory, 4).setPosition(0, 40, Anchor.LEFT);
-		UIInventory contStone = new UIInventory(te.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
+		UIInventory contTriage = new UIInventory(this, te.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);
+		UIInventory contIngots = new UIInventory(this, te.ingotsInventory, 4).setPosition(0, 40, Anchor.LEFT);
+		UIInventory contStone = new UIInventory(this, te.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
 
-		progressBar = new ProgressBar().setPosition(0, 30, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
+		progressBar = new ProgressBar(this).setPosition(0, 30, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
 
-		UIPlayerInventory playerInv = new UIPlayerInventory(container.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
 
 		window.add(contTriage);
 		window.add(contIngots);
@@ -77,6 +77,11 @@ public class SidedGui extends MalisisGui
 
 	public static class ProgressBar extends UIComponent<ProgressBar>
 	{
+		public ProgressBar(MalisisGui gui)
+		{
+			super(gui);
+		}
+
 		private float progress = 0;
 
 		public void setProgress(float progress)

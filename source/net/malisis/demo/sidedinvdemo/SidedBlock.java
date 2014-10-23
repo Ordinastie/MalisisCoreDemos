@@ -24,6 +24,9 @@
 
 package net.malisis.demo.sidedinvdemo;
 
+import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.inventory.MalisisInventory;
+import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -67,9 +70,8 @@ public class SidedBlock extends Block implements ITileEntityProvider
 		if (world.isRemote)
 			return true;
 
-		SidedTileEntity te = (SidedTileEntity) world.getTileEntity(x, y, z);
-		if (te != null)
-			te.getInventory().open((EntityPlayerMP) player);
+		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;
 	}

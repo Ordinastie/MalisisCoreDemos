@@ -24,7 +24,7 @@
 
 package net.malisis.demo.mtblock;
 
-import net.malisis.core.renderer.icon.MegaTexture;
+import net.malisis.core.renderer.icon.MegaTextureIcon;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -52,12 +52,12 @@ public class MTBlock extends Block
 	@Override
 	public void registerBlockIcons(IIconRegister register)
 	{
-		blockIcon = new MegaTexture(getTextureName(), 4).register((TextureMap) register);
+		blockIcon = new MegaTextureIcon(getTextureName(), 4).register((TextureMap) register);
 	}
 
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
 	{
-		return ((MegaTexture) blockIcon).getIcon(world, this, x, y, z, side);
+		return ((MegaTextureIcon) blockIcon).getIcon(world, this, x, y, z, side);
 	}
 }

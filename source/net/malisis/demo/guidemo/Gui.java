@@ -17,6 +17,7 @@ import net.malisis.core.client.gui.component.control.UIMoveHandle;
 import net.malisis.core.client.gui.component.control.UIResizeHandle;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UILabel;
+import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.component.interaction.UIButton;
 import net.malisis.core.client.gui.component.interaction.UICheckBox;
 import net.malisis.core.client.gui.component.interaction.UIRadioButton;
@@ -46,89 +47,68 @@ public class Gui extends MalisisGui
 		super();
 		setInventoryContainer(inventoryContainer);
 
-		UIWindow window = new UIWindow(300, 200).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
+		UIWindow window = new UIWindow(this, 300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
 		window.clipContent = false;
-		panel = new UIPanel(UIComponent.INHERITED, 140);
-		UIContainer tabCont1 = new UIContainer()/*.setVerticalScroll(true)*/;
-		UIContainer tabCont2 = new UIContainer()/*.setVerticalScroll(true)*/;
+		panel = new UIPanel(this, UIComponent.INHERITED, 140);
+		UIContainer tabCont1 = new UIContainer(this)/*.setVerticalScroll(true)*/;
+		UIContainer tabCont2 = new UIContainer(this)/*.setVerticalScroll(true)*/;
 		//		panel.setBackgroundColor(0xFFDDEE);
 		//		panel2.setBackgroundColor(0xCCCCFF);
 
-		/**
-		 * PANEL TAB EXAMPLE
-		 */
-		{
-			//			UITabGroup tabGroup = new UITabGroup(Position.TOP);
-			//			tabGroup.setPosition(0, 0, Anchor.RIGHT);
-			//			//UIImage img = new UIImage(Blocks.bookshelf.getIcon(0, 0), UIImage.BLOCKS_TEXTURE);
-			//			UIImage img = new UIImage(new ItemStack(Items.nether_star));
-			//			UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
-			//
-			//			tab1 = new UITab(img);
-			//			UITab tab2 = new UITab(img2);
-			//			tab1.setColor(0xFFDDEE);
-			//			tab2.setColor(0xCCCCFF);
-			//
-			//			tabGroup.addTab(tab1, tabCont1);
-			//			tabGroup.addTab(tab2, tabCont2);
-			//
-			//			tabGroup.setActiveTab(tab1);
-			//
-			//			tabGroup.attachTo(panel, true);
-			//
-			//			window.add(tabGroup);
-		}
+		UITabGroup tabGroup = new UITabGroup(this, Position.TOP);
+		UIImage img = new UIImage(this, new ItemStack(Items.nether_star));
+		UIImage img2 = new UIImage(this, new ItemStack(Blocks.gold_ore));
+
+		tab1 = new UITab(this, "Tab 1");
+		UITab tab2 = new UITab(this, "Tab 2");
+
+		tab1.setColor(0xFFDDEE);
+		tab2.setColor(0xCCCCFF);;
+
+		tabGroup.addTab(tab1, tabCont1);
+		tabGroup.addTab(tab2, tabCont2);
+
+		tabGroup.setActiveTab(tab1);
 
 		/**
 		 * WIDOW TAB EXAMPLE
 		 */
-		{
-			UITabGroup tabGroup = new UITabGroup(Position.RIGHT);
-			UIImage img = new UIImage(new ItemStack(Items.nether_star));
-			UIImage img2 = new UIImage(new ItemStack(Blocks.gold_ore));
+		//			tabGroup.attachTo(window, false);
+		//			addToScreen(tabGroup);
 
-			tab1 = new UITab(img);
-			UITab tab2 = new UITab(img2);
-			tab1.setColor(0xFFDDEE);
-			tab2.setColor(0xCCCCFF);;
+		/**
+		 * PANEL TAB EXAMPLE
+		 */
+		tabGroup.attachTo(panel, true);
+		window.add(tabGroup);
 
-			tabGroup.addTab(tab1, tabCont1);
-			tabGroup.addTab(tab2, tabCont2);
+		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, EnumChatFormatting.AQUA + "with a tooltip!"));
 
-			tabGroup.setActiveTab(tab1);
+		UIRadioButton rb1 = new UIRadioButton(this, "newRb", "Radio value 1").setPosition(0, 14);
+		UIRadioButton rb2 = new UIRadioButton(this, "newRb", "Radio value 2").setPosition(rb1.getWidth() + 10, 14);
 
-			tabGroup.attachTo(window, false);
+		UISlider slider = new UISlider(this, 150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
 
-			addToScreen(tabGroup);
-		}
-
-		cb = new UICheckBox("CheckBox with label").setTooltip(EnumChatFormatting.AQUA + "with a tooltip!");
-
-		UIRadioButton rb1 = new UIRadioButton("newRb", "Radio value 1").setPosition(0, 14);
-		UIRadioButton rb2 = new UIRadioButton("newRb", "Radio value 2").setPosition(rb1.getWidth() + 10, 14);
-
-		UISlider slider = new UISlider(150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
-
-		UITextField tf = new UITextField(200, "This textfield will only accept numbers.");
+		UITextField tf = new UITextField(this, 200, "This textfield will only accept numbers.");
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
 
 		UIContainer inv = setInventoryContainer(inventoryContainer.getInventory(1));
 
-		UISelect select = new UISelect(100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2", "Very ultra longer option 3",
-				"Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
+		UISelect select = new UISelect(this, 100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2",
+				"Very ultra longer option 3", "Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
 		select.setPosition(0, 70);
 		select.maxExpandedWidth(120);
 		//select.maxDisplayedOptions(5);
 		select.select(2);
 
-		btn1 = new UIButton("Horizontal", 80).setPosition(0, 80, Anchor.CENTER).register(this);
-		btn2 = new UIButton("Vertical", 80).setPosition(0, 120, Anchor.CENTER).register(this);
-		btnOver = new UIButton("Over the top").setPosition(0, 170, Anchor.CENTER);
+		btn1 = new UIButton(this, "Horizontal", 80).setPosition(0, 80, Anchor.CENTER).register(this);
+		btn2 = new UIButton(this, "Vertical", 80).setPosition(0, 120, Anchor.CENTER).register(this);
+		btnOver = new UIButton(this, "Over the top").setPosition(0, 170, Anchor.CENTER);
 
-		new UIResizeHandle(window);
-		new UIMoveHandle(window);
-		new UICloseHandle(window)
+		new UIResizeHandle(this, window);
+		new UIMoveHandle(this, window);
+		new UICloseHandle(this, window)
 		{
 			@Override
 			public void onClose()
@@ -150,17 +130,17 @@ public class Gui extends MalisisGui
 		tabCont1.add(btnOver);
 
 		tabCont2.add(inv);
-		tabCont2.add(new UIImage(Items.diamond_axe.getIconFromDamage(0), UIImage.ITEMS_TEXTURE).setPosition(0, 10));
-		tabCont2.add(new UILabel("This is LABEL!").setPosition(20, 15));
+		//tabCont2.add(new UIImage(this, Items.diamond_axe.getIconFromDamage(0), UIUIImage.ITEMS_TEXTURE).setPosition(0, 10));
+		tabCont2.add(new UILabel(this, "This is LABEL!").setPosition(20, 15));
 
 		panel.add(tabCont1);
 		panel.add(tabCont2);
 
-		UIPlayerInventory playerInv = new UIPlayerInventory(inventoryContainer.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
 
-		new UIResizeHandle(playerInv);
-		new UIMoveHandle(playerInv);
-		new UICloseHandle(playerInv)
+		new UIResizeHandle(this, playerInv);
+		new UIMoveHandle(this, playerInv);
+		new UICloseHandle(this, playerInv)
 		{
 			@Override
 			public void onClose()
@@ -178,12 +158,12 @@ public class Gui extends MalisisGui
 
 	private UIContainer setInventoryContainer(MalisisInventory inventory)
 	{
-		UIContainer c = new UIContainer(100, 30);
+		UIContainer c = new UIContainer(this, 100, 30);
 		c.setPosition(0, 50);
 
 		for (int i = 0; i < inventory.getSizeInventory(); i++)
 		{
-			UISlot slot = new UISlot(inventory.getSlot(i)).setPosition(i * 18, 0);
+			UISlot slot = new UISlot(this, inventory.getSlot(i)).setPosition(i * 18, 0);
 			c.add(slot);
 		}
 

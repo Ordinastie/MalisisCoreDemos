@@ -44,20 +44,20 @@ public class CardGui extends MalisisGui
 		setInventoryContainer(container);
 
 		//add padding to width
-		UIWindow window = new UIWindow(UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT * 2);
+		UIWindow window = new UIWindow(this, UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT * 2);
 
-		UIContainer invCont = new UIContainer<>("Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
+		UIContainer invCont = new UIContainer<>(this, "Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
 		invCont.setPosition(0, 0, Anchor.CENTER);
 		MalisisInventory inv = container.getInventory(1);
 		for (int i = 0; i < inv.getSizeInventory(); i++)
 		{
-			UISlot uislot = new UISlot(inv.getSlot(i));
+			UISlot uislot = new UISlot(this, inv.getSlot(i));
 			uislot.setPosition((i % 9) * 18, (i / 9) * 18 + 11);
 			invCont.add(uislot);
 		}
 
 		//by default, player inventory is anchored to bottom center of its container
-		UIPlayerInventory playerInv = new UIPlayerInventory(container.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
 
 		window.add(playerInv);
 		window.add(invCont);
