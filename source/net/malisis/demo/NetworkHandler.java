@@ -34,13 +34,16 @@ public class NetworkHandler
 	public static SimpleNetworkWrapper network = new SimpleNetworkWrapper(MalisisDemos.modid);
 	private static int nextId = 1;
 
-	public static int nextAvailableId()
+	/**
+	 * Shortcut to NetworkHandler.network.registerMessage(). Automatically assign the discriminator
+	 *
+	 * @param messageHandler
+	 * @param requestMessageType
+	 * @param discriminator
+	 * @param side
+	 */
+	public static <REQ extends IMessage, REPLY extends IMessage> void register(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side)
 	{
-		return nextId++;
-	}
-
-	public static <REQ extends IMessage, REPLY extends IMessage> void register(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, int discriminator, Side side)
-	{
-		network.registerMessage(messageHandler, requestMessageType, discriminator, side);
+		network.registerMessage(messageHandler, requestMessageType, nextId++, side);
 	}
 }

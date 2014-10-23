@@ -15,23 +15,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ArmoryOre extends Block
 {
-	public static final String ORE_BLOCK_NAME = "ArmoryOre";
-	public static final String OBSIDIUM_BLOCK_NAME = "obsidium_block";
-	public static final String AZURITE_BLOCK_NAME = "azurite_block";
-	public static final String CRIMSONITE_BLOCK_NAME = "crimsonite_block";
-	public static final String SMITHING_ANVIL_NAME = "smithing_anvil";
-	public static final String SMITHING_FURNACE_NAME = "smithing_furnace";
-
+	//this static int will be set to the right value when regsiter the class for the renderer
 	public static int renderId = -1;
+	//the different overlays available
 	public IIcon[] overlays = new IIcon[4];
+	//icon names for the overlays
 	public String[] iconNames = { "Lava_Overlay", "Azurite_Overlay", "Crimsonite_Overlay", "Titanium_Overlay" };
+	//colors to be used in rendering based on metadata
 	public int[] colors = { 0xFFFFFF, 0x123456, 0xFF0000, 0xFFFFFF };
+	//brightness to be used in rendering based on metadata
 	public int[] brightness = { 200, 225, 150, 0 };
 
 	public ArmoryOre()
 	{
+		//set the usual properties
 		super(Material.rock);
-		this.setBlockName(ORE_BLOCK_NAME);
+		this.setBlockName("ArmoryOre");
 		this.setHardness(1f);
 		this.setResistance(3f);
 		this.setCreativeTab(MalisisDemos.tabDemos);
@@ -43,23 +42,28 @@ public class ArmoryOre extends Block
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		blockIcon = iconRegister.registerIcon(MalisisDemos.modid + ":" + getUnlocalizedName().substring(5) + "_Ore_Glitter");
+		//register a base icon for the block. It will be used under the overlay and will be used with the right color and brightness
+		blockIcon = iconRegister.registerIcon(MalisisDemos.modid + ":ArmoryOre_Ore_Glitter");
+		//register the overlays
 		for (int i = 0; i < iconNames.length; i++)
-			overlays[i] = iconRegister.registerIcon(MalisisDemos.modid + ":" + getUnlocalizedName().substring(5) + "_" + iconNames[i]);
+			overlays[i] = iconRegister.registerIcon(MalisisDemos.modid + ":ArmoryOre_" + iconNames[i]);
 	}
 
 	public IIcon getOverlayIcon(int side, int meta)
 	{
+		//get the overlay based on metadata
 		return overlays[meta];
 	}
 
 	public int colorMultiplier(int meta)
 	{
+		//get the color based on metadata
 		return colors[meta];
 	}
 
 	public int getOreBrightness(int meta)
 	{
+		//get the brightness based on metadata
 		return brightness[meta];
 	}
 

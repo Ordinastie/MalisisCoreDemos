@@ -25,13 +25,21 @@
 package net.malisis.demo;
 
 /**
+ * Interface to easily load/register new demos and having everything related to a demo grouped inside the demo package
+ *
  * @author Ordinastie
- * 
+ *
  */
 public interface IDemo
 {
+	/**
+	 * Called from FMLPreInitializationEvent
+	 */
 	public void preInit();
 
+	/**
+	 * Called from FMLInitializationEvent
+	 */
 	public void init();
 
 }
