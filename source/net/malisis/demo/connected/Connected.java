@@ -29,8 +29,10 @@ import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
+ * This demo show how to use connected texture for a block.
+ *
  * @author Ordinastie
- * 
+ *
  */
 public class Connected implements IDemo
 {
@@ -39,7 +41,9 @@ public class Connected implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create the block
 		connectedBlock = new ConnectedBlock();
+		//register the block
 		GameRegistry.registerBlock(connectedBlock, connectedBlock.getUnlocalizedName().substring(5));
 	}
 
