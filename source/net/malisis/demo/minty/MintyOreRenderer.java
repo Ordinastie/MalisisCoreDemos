@@ -16,7 +16,8 @@ public class MintyOreRenderer extends BaseRenderer
 		ArmoryOre block = (ArmoryOre) this.block;
 
 		//Note : rp is RenderParameters and hold all the parameters available to tweak the rendering
-
+		//reset the parameters so you don't use unwanted bleeding data
+		rp.reset();
 		//special case, if metadata == 0, use the lava texture
 		if (blockMetadata == 0)
 			rp.icon.set(Blocks.lava.getIcon(0, 0));
@@ -26,6 +27,7 @@ public class MintyOreRenderer extends BaseRenderer
 		{
 			//do not automatically calculate brightness for the block
 			rp.calculateBrightness.set(false);
+			rp.useBlockBrightness.set(false);
 			//use this brightness instead
 			rp.brightness.set(block.getOreBrightness(blockMetadata));
 		}
