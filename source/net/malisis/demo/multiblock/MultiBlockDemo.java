@@ -22,15 +22,34 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.bigblock;
+package net.malisis.demo.multiblock;
 
-import net.malisis.core.tileentity.MultiBlockTileEntity;
+import net.malisis.demo.IDemo;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
+ * This demo shows how to use multiblock structure to handle large size blocks with a Megatexture.<br>
+ * Multiblock can also used in conjunction with a renderer displaying a single model for the structure (usually checking
+ * multiblock.isOrigin())
+ *
  * @author Ordinastie
  *
  */
-public class BigBlockDemoTileEntity extends MultiBlockTileEntity
+public class MultiBlockDemo implements IDemo
 {
+	MultiBlockBlock multiBlock;
+
+	@Override
+	public void preInit()
+	{
+		//create the block
+		multiBlock = new MultiBlockBlock();
+		//register the block
+		GameRegistry.registerBlock(multiBlock, multiBlock.getUnlocalizedName().substring(5));
+	}
+
+	@Override
+	public void init()
+	{}
 
 }
