@@ -7,7 +7,6 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -24,11 +23,9 @@ public class GuiBlock extends Block implements ITileEntityProvider
 		super(Material.ground);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
+		setBlockName("guiDemo");
+		setBlockTextureName(MalisisDemos.modid + ":guiDemo");
 	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{}
 
 	@Override
 	public IIcon getIcon(int side, int metadata)

@@ -25,11 +25,11 @@
 package net.malisis.demo.model;
 
 import net.malisis.core.renderer.BaseRenderer;
-import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
+import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
@@ -48,16 +48,30 @@ public class ModelDemoRenderer extends BaseRenderer
 	private ResourceLocation rlModel = new ResourceLocation(MalisisDemos.modid, "models/hopper.obj");
 	private MalisisModel model;
 	private AnimationRenderer ar;
-	private RenderParameters rp;
+	private Shape socle;
+	private Shape antenna;
 	private int start;
 
 	@Override
 	protected void initShapes()
 	{
-		rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
-		model = MalisisModel.load(rlModel);
+		boolean b = false;
+		if (b)
+		{
+			rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
+			model = MalisisModel.load(rlModel);
+			socle = model.getShape("Socle");
+			socle.storeState();
+			antenna = model.getShape("Antenna");
+			antenna.storeState();
 
-		loadAnimation();
+			loadAnimation();
+		}
+		else
+		{
+			rlModel = new ResourceLocation(MalisisDemos.modid, "models/slab.obj");
+			model = MalisisModel.load(rlModel);
+		}
 	}
 
 	private void loadAnimation()
@@ -71,32 +85,49 @@ public class ModelDemoRenderer extends BaseRenderer
 
 		//ParallelTransformation p = new ParallelTransformation(r, c).loop(-1, 0, 0);
 
-		Animation anim = new Animation(model.getShape("Antenna"), c, rp, 0);
+		Animation anim = new Animation(antenna, c, rp, 0);
 		ar.addAnimation(anim);
 	}
 
 	@Override
 	public void render()
 	{
+		boolean b = false;
+
 		if (renderType == TYPE_ISBRH_WORLD)
 		{
+			initShapes();
 			start = (int) Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		}
 		else if (renderType == TYPE_TESR_WORLD)
 		{
-			ar.setStartTime(start);
-			next(GL11.GL_POLYGON);
+			if (b)
+			{
 
-			rp.icon.set(Blocks.anvil.getIcon(0, 0));
-			model.render(this, "Socle", rp);
+				ar.setStartTime(start);
+				next(GL11.GL_POLYGON);
 
-			rp.icon.set(Blocks.diamond_block.getIcon(0, 0));
-			ar.animate();
-			ar.render(this);
+				rp.icon.set(Blocks.anvil.getIcon(0, 0));
+				drawShape(socle, rp);
+
+				rp.icon.set(Blocks.diamond_block.getIcon(0, 0));
+				ar.animate();
+				drawShape(antenna, rp);
+
+			}
+			else
+			{
+				rp.icon.set(Blocks.planks.getIcon(0, 0));
+				shape = model.getShape("Default");
+				if (shape != null)
+				{
+					shape.resetState();
+					drawShape(shape, rp);
+				}
+			}
 
 		}
 
-		//model.render(this);
 	}
 
 	@Override

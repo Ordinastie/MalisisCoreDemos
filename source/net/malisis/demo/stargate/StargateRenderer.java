@@ -9,11 +9,10 @@ import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Scale;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
-import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
-import net.malisis.core.renderer.preset.FacePreset;
-import net.malisis.core.renderer.preset.ShapePreset;
+import net.malisis.core.renderer.element.face.TopFace;
+import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -57,7 +56,7 @@ public class StargateRenderer extends BaseRenderer
 		{
 			int t = ot * i;
 			// opening towards west
-			shape = ShapePreset.Cube().setBounds(0, 0, 0, 0.5F, sliceHeight, 1F);
+			shape = new Cube().setBounds(0, 0, 0, 0.5F, sliceHeight, 1F);
 			shape.translate(0, sliceHeight * i, 0F);
 			//@formatter:off
 			trans = new ParallelTransformation(
@@ -99,7 +98,7 @@ public class StargateRenderer extends BaseRenderer
 		Shape[] shapesSouth = new Shape[slices];
 		for (int i = 0; i < slices; i++)
 		{
-			Shape sN = ShapePreset.Cube().setBounds(0, 0, 0, 1, sliceHeight, 0.5F);
+			Shape sN = new Cube().setBounds(0, 0, 0, 1, sliceHeight, 0.5F);
 			sN.translate(-2 + i, 0, 0);
 			shapesNorth[i] = sN;
 
@@ -161,7 +160,7 @@ public class StargateRenderer extends BaseRenderer
 		rpFace.icon.set(Blocks.diamond_block.getIcon(0, 0));
 
 		// create the shape
-		Shape base = ShapePreset.Cube();
+		Shape base = new Cube();
 		base.setParameters("bottom", rpFace, true);
 		base.translate(0, 3, 0);
 		base.shrink(ForgeDirection.DOWN, 0.69F);
@@ -218,7 +217,7 @@ public class StargateRenderer extends BaseRenderer
 		rp.brightness.set(Vertex.BRIGHTNESS_MAX);
 		rp.alpha.set(175);
 
-		Shape s = ShapePreset.Cube();
+		Shape s = new Cube();
 		s.scale(0.2F);
 		s.applyMatrix();
 		s.translate(-1.0F, 1.5F, 0);
@@ -241,7 +240,7 @@ public class StargateRenderer extends BaseRenderer
 		{
 			RenderParameters rp = new RenderParameters();
 			rp.colorMultiplier.set(0x6666AA);
-			drawShape(ShapePreset.Cube());
+			drawShape(new Cube());
 		}
 	}
 
@@ -260,7 +259,7 @@ public class StargateRenderer extends BaseRenderer
 		if (blockMetadata == 0)
 		{
 			// 1st non moving cube at the bottom
-			drawShape(ShapePreset.Cube().setBounds(0, 0, 0, 1F, sliceHeight, 1F));
+			drawShape(new Cube().setBounds(0, 0, 0, 1F, sliceHeight, 1F));
 			// render animations
 			ar.animate();
 			ar.render(this);
@@ -280,7 +279,7 @@ public class StargateRenderer extends BaseRenderer
 			// otherwise, all the blocks would use that new texture
 			next();
 
-			Shape topFace = new Shape(new Face[] { FacePreset.Top() });
+			Shape topFace = new Shape(new TopFace());
 			// move the platform a bit higher than the block to avoid z-fighting
 			topFace.translate(0, -0.499F + sliceHeight / 2, 0);
 			topFace.scale(5F, sliceHeight, 5F);
@@ -311,7 +310,7 @@ public class StargateRenderer extends BaseRenderer
 		rpFace.interpolateUV.set(false);
 
 		//Draw the platform
-		Shape platform = ShapePreset.Cube();
+		Shape platform = new Cube();
 		platform.translate(0, -0.5F + sliceHeight / 2, 0);
 		platform.scale(5F, sliceHeight, 5F);
 		//set the paramaters for the top face
@@ -319,7 +318,7 @@ public class StargateRenderer extends BaseRenderer
 		drawShape(platform);
 
 		//Create the base of each arch block
-		Shape base = ShapePreset.Cube();
+		Shape base = new Cube();
 		//reuse the parameters for the top face platform, just change the icon
 		rpFace.icon.set(Blocks.diamond_block.getIcon(0, 0));
 		base.setParameters("bottom", rpFace, true);

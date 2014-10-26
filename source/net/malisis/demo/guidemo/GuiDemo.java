@@ -10,7 +10,7 @@ public class GuiDemo implements IDemo
 	@Override
 	public void preInit()
 	{
-		(guiBlock = new GuiBlock()).setBlockName("guiDemo");
+		guiBlock = new GuiBlock();
 		GameRegistry.registerBlock(guiBlock, guiBlock.getUnlocalizedName().substring(5));
 
 		GameRegistry.registerTileEntity(GuiTileEntity.class, "guiTileEntity");

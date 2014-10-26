@@ -30,7 +30,7 @@ import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.preset.ShapePreset;
+import net.malisis.core.renderer.element.shape.Cube;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -65,8 +65,8 @@ public class TestRenderer extends BaseRenderer
 		startTime = start;
 
 		float f = 0.1875F;
-		Shape v = ShapePreset.Cube().setSize(f, 1, f);
-		Shape h = ShapePreset.Cube().setSize(1, f, f);
+		Shape v = new Cube().setSize(f, 1, f);
+		Shape h = new Cube().setSize(1, f, f);
 
 		base = new Shape().addFaces(v.getFaces(), "v").addFaces(h.getFaces(), "h");
 		base.interpolateUV();
@@ -95,7 +95,7 @@ public class TestRenderer extends BaseRenderer
 			dist /= 30;
 			int alpha = (int) (dist * 255);
 
-			Shape s = ShapePreset.Cube();
+			Shape s = new Cube();
 			rp.icon.set(block.getIcon(0, 0));
 			rp.alpha.set(255);
 			drawShape(s, rp);

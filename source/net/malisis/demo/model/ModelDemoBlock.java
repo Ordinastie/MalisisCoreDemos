@@ -36,7 +36,7 @@ import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class ModelDemoBlock extends Block implements ITileEntityProvider
 {
@@ -64,6 +64,12 @@ public class ModelDemoBlock extends Block implements ITileEntityProvider
 	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return new ModelDemoTileEntity();
+	}
+
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
 	}
 
 	@Override

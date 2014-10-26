@@ -5,8 +5,8 @@ import java.util.Arrays;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
-import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIContainer;
+import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
@@ -25,12 +25,9 @@ import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
-import net.malisis.core.client.gui.event.ComponentEvent.ValueChanged;
-import net.malisis.core.inventory.MalisisInventory;
+import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.eventbus.Subscribe;
@@ -44,44 +41,11 @@ public class Gui extends MalisisGui
 
 	public Gui(MalisisInventoryContainer inventoryContainer)
 	{
-		super();
 		setInventoryContainer(inventoryContainer);
 
-		UIWindow window = new UIWindow(this, 300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
-		window.clipContent = false;
-		panel = new UIPanel(this, UIComponent.INHERITED, 140);
-		UIContainer tabCont1 = new UIContainer(this)/*.setVerticalScroll(true)*/;
-		UIContainer tabCont2 = new UIContainer(this)/*.setVerticalScroll(true)*/;
-		//		panel.setBackgroundColor(0xFFDDEE);
-		//		panel2.setBackgroundColor(0xCCCCFF);
-
-		UITabGroup tabGroup = new UITabGroup(this, Position.TOP);
-		UIImage img = new UIImage(this, new ItemStack(Items.nether_star));
-		UIImage img2 = new UIImage(this, new ItemStack(Blocks.gold_ore));
-
-		tab1 = new UITab(this, "Tab 1");
-		UITab tab2 = new UITab(this, "Tab 2");
-
-		tab1.setColor(0xFFDDEE);
-		tab2.setColor(0xCCCCFF);;
-
-		tabGroup.addTab(tab1, tabCont1);
-		tabGroup.addTab(tab2, tabCont2);
-
-		tabGroup.setActiveTab(tab1);
-
 		/**
-		 * WIDOW TAB EXAMPLE
+		 * CONTAINER 1
 		 */
-		//			tabGroup.attachTo(window, false);
-		//			addToScreen(tabGroup);
-
-		/**
-		 * PANEL TAB EXAMPLE
-		 */
-		tabGroup.attachTo(panel, true);
-		window.add(tabGroup);
-
 		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, EnumChatFormatting.AQUA + "with a tooltip!"));
 
 		UIRadioButton rb1 = new UIRadioButton(this, "newRb", "Radio value 1").setPosition(0, 14);
@@ -93,8 +57,6 @@ public class Gui extends MalisisGui
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
 
-		UIContainer inv = setInventoryContainer(inventoryContainer.getInventory(1));
-
 		UISelect select = new UISelect(this, 100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2",
 				"Very ultra longer option 3", "Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
 		select.setPosition(0, 70);
@@ -102,21 +64,11 @@ public class Gui extends MalisisGui
 		//select.maxDisplayedOptions(5);
 		select.select(2);
 
-		btn1 = new UIButton(this, "Horizontal", 80).setPosition(0, 80, Anchor.CENTER).register(this);
-		btn2 = new UIButton(this, "Vertical", 80).setPosition(0, 120, Anchor.CENTER).register(this);
-		btnOver = new UIButton(this, "Over the top").setPosition(0, 170, Anchor.CENTER);
+		btn1 = new UIButton(this, "Horizontal", 90).setPosition(0, 85, Anchor.CENTER);
+		btn2 = new UIButton(this, "<").setPosition(-50, 85, Anchor.CENTER).setSize(10, 10);
+		btnOver = new UIButton(this, ">").setPosition(50, 85, Anchor.CENTER).setSize(10, 10);
 
-		new UIResizeHandle(this, window);
-		new UIMoveHandle(this, window);
-		new UICloseHandle(this, window)
-		{
-			@Override
-			public void onClose()
-			{
-				MalisisGui.currentGui().close();
-			}
-		};
-
+		UIContainer tabCont1 = new UIContainer(this);
 		tabCont1.add(cb);
 		tabCont1.add(rb1);
 		tabCont1.add(rb2);
@@ -129,49 +81,63 @@ public class Gui extends MalisisGui
 		tabCont1.add(btn2);
 		tabCont1.add(btnOver);
 
-		tabCont2.add(inv);
-		//tabCont2.add(new UIImage(this, Items.diamond_axe.getIconFromDamage(0), UIUIImage.ITEMS_TEXTURE).setPosition(0, 10));
-		tabCont2.add(new UILabel(this, "This is LABEL!").setPosition(20, 15));
+		/**
+		 * CONTAINER 2
+		 */
+		UIContainer inv = new UIInventory(this, inventoryContainer.getInventory(1));
 
+		UIContainer tabCont2 = new UIContainer(this);
+
+		tabCont2.add(inv);
+		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
+		tabCont2.add(new UILabel(this, "This is LABEL!" + EnumChatFormatting.DARK_RED + " Colored!").setPosition(20, 30));
+
+		/**
+		 * PANEL
+		 */
+		panel = new UIPanel(this, UIComponent.INHERITED, 140);
 		panel.add(tabCont1);
 		panel.add(tabCont2);
 
+		/**
+		 * TAB GROUP
+		 */
+		UITabGroup tabGroup = new UITabGroup(this, Position.TOP);
+		//		UIImage img = new UIImage(this, new ItemStack(Items.nether_star));
+		//		UIImage img2 = new UIImage(this, new ItemStack(Blocks.gold_ore));
+
+		tab1 = new UITab(this, "Tab 1");
+		UITab tab2 = new UITab(this, "Tab 2");
+
+		tab1.setColor(0xFFDDEE);
+		tab2.setColor(0xCCCCFF);;
+
+		tabGroup.addTab(tab1, tabCont1);
+		tabGroup.addTab(tab2, tabCont2);
+
+		tabGroup.setActiveTab(tab1);
+		tabGroup.attachTo(panel, true);
+
+		/**
+		 * WINDOW
+		 */
 		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
+		new UICloseHandle(this, playerInv);
 
-		new UIResizeHandle(this, playerInv);
-		new UIMoveHandle(this, playerInv);
-		new UICloseHandle(this, playerInv)
-		{
-			@Override
-			public void onClose()
-			{
-				getParent().setVisible(false);
-			}
-		};
-
+		UIWindow window = new UIWindow(this, 300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
+		window.add(tabGroup);
 		window.add(panel);
-
 		window.add(playerInv);
+
+		new UIMoveHandle(this, window);
+		new UIResizeHandle(this, window);
+		new UICloseHandle(this, window);
 
 		addToScreen(window);
 	}
 
-	private UIContainer setInventoryContainer(MalisisInventory inventory)
-	{
-		UIContainer c = new UIContainer(this, 100, 30);
-		c.setPosition(0, 50);
-
-		for (int i = 0; i < inventory.getSizeInventory(); i++)
-		{
-			UISlot slot = new UISlot(this, inventory.getSlot(i)).setPosition(i * 18, 0);
-			c.add(slot);
-		}
-
-		return c;
-	}
-
 	@Subscribe
-	public void onSliderChanged(ValueChanged<UISlider, Float> event)
+	public void onSliderChanged(ValueChange<UISlider, Float> event)
 	{
 		int v = (int) (event.getNewValue() / 100 * 255);
 		int g = Math.abs(-255 + 2 * v);

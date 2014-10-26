@@ -67,11 +67,11 @@ public class TabInvGui extends MalisisGui
 		//create the second window (needs to be same size and position as first
 		UIWindow converterWindow = new UIWindow(this, "Converter", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);;
 		//this time, we add the slots manually to the window because we want them to have custom position
-		UISlot uislot = new UISlot(this, te.slotIron).setPosition(-16, 30, Anchor.CENTER);
+		UISlot uislot = new UISlot(this, te.slotIron).setPosition(-30, 20, Anchor.CENTER);
 		converterWindow.add(uislot);
-		uislot = new UISlot(this, te.slotGold).setPosition(16, 30, Anchor.CENTER);
+		uislot = new UISlot(this, te.slotGold).setPosition(30, 20, Anchor.CENTER);
 		converterWindow.add(uislot);
-		uislot = new UISlot(this, te.slotDiamond).setPosition(0, 50, Anchor.CENTER);
+		uislot = new UISlot(this, te.slotDiamond).setPosition(0, 60, Anchor.CENTER);
 		converterWindow.add(uislot);
 
 		//create the tabGroup that will hold the tabs
