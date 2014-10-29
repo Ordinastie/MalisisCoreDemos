@@ -42,6 +42,7 @@ public class Test implements IDemo
 	{
 		test = new TestBlock();
 		GameRegistry.registerBlock(test, test.getUnlocalizedName().substring(5));
+		GameRegistry.registerTileEntity(TestTileEntity.class, "testTE");
 
 	}
 

@@ -24,12 +24,12 @@
 
 package net.malisis.demo.test;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -67,10 +67,19 @@ public class TestBlock extends Block implements ITileEntityProvider
 	}
 
 	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	{
+		if (!world.isRemote)
+			return true;
+
+		new TestGui().display();
+
+		return true;
+	}
+
+	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int metadata)
 	{
-		MalisisCore.message("> " + metadata);
-
 		return metadata;
 	}
 
@@ -89,7 +98,7 @@ public class TestBlock extends Block implements ITileEntityProvider
 	@Override
 	public int getRenderType()
 	{
-		return -1;
+		return renderId;
 	}
 
 	@Override

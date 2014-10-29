@@ -24,18 +24,20 @@
 
 package net.malisis.demo.test;
 
+import java.util.List;
+
 import net.malisis.core.renderer.BaseRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.AnimationRenderer;
+import net.malisis.core.renderer.animation.transformation.AlphaTransform;
+import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
+import net.malisis.core.renderer.animation.transformation.ColorTransform;
+import net.malisis.core.renderer.animation.transformation.ParallelTransformation;
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
-import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.element.shape.Cube;
-import net.minecraft.block.Block;
+import net.malisis.core.renderer.animation.transformation.Translation;
+import net.malisis.core.renderer.element.MergedVertex;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.Vec3;
 
 /**
  * @author Ordinastie
@@ -43,67 +45,71 @@ import net.minecraft.util.Vec3;
  */
 public class TestRenderer extends BaseRenderer
 {
-	public static int renderId;
 	private AnimationRenderer ar;
 	private RenderParameters rp = new RenderParameters();
-	private Shape base;
 	private long startTime;
 
-	private Block[] blocks;
-
-	private Transformation transform;
-
-	public TestRenderer()
-	{
-		setup(0);
-
-	}
+	private Transformation mvt;
+	private Transformation color;
+	private Transformation alpha;
 
 	private void setup(long start)
 	{
-		blocks = new Block[] { Blocks.dirt, Blocks.stone, Blocks.crafting_table };
 		startTime = start;
-
-		float f = 0.1875F;
-		Shape v = new Cube().setSize(f, 1, f);
-		Shape h = new Cube().setSize(1, f, f);
-
-		base = new Shape().addFaces(v.getFaces(), "v").addFaces(h.getFaces(), "h");
-		base.interpolateUV();
-		base.storeState();
-
-		rp.interpolateUV.set(false);
-		rp.icon.set(null);
+		shape.enableMergedVertexes();
 
 		ar = new AnimationRenderer(this);
 
-		transform = new Rotation(360).aroundAxis(0, 1, 0).forTicks(120).loop(-1);
+		//@formatter:off
+		mvt = new ParallelTransformation(
+				new ChainedTransformation(
+					new Translation(0, -0.5F, 0, 0, 0, 0).forTicks(20).movement(Transformation.SINUSOIDAL),
+					new Translation(0, 0, 0, 0, -0.5F, 0).forTicks(20).movement(Transformation.SINUSOIDAL)
+					).loop(-1),
+				new ChainedTransformation(
+					new Rotation(-90, 90).aroundAxis(0, 1, 0).forTicks(60).movement(Transformation.SINUSOIDAL),
+					new Rotation(0, -180).aroundAxis(0, 1, 0).forTicks(60).movement(Transformation.SINUSOIDAL)
+					).loop(-1)
+				);
+
+		color = new ChainedTransformation(
+					new ColorTransform(0xFF0000, 0x0000FF).forTicks(30),
+					new ColorTransform(0x00FF00).forTicks(30),
+					new ColorTransform(0xFF0000).forTicks(30)
+				).loop(-1);
+		alpha = new ChainedTransformation(
+					new AlphaTransform(100, 255).forTicks(30),
+					new AlphaTransform(255, 100).forTicks(30)
+				).loop(-1);
+		//@formatter:on
 	}
 
 	@Override
 	public void render()
 	{
+
+		if (renderType == TYPE_ISBRH_WORLD)
+		{
+			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
+		}
+
 		if (renderType == TYPE_TESR_WORLD)
 		{
+			ar.setStartTime(startTime);
 			enableBlending();
-			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-			double dist = Vec3.createVectorHelper(x, y, z).squareDistanceTo(player.posX, player.posY, player.posZ) - 10;
-			if (dist > 30)
-				dist = 30;
-			if (dist < 0)
-				dist = 0;
-			dist /= 30;
-			int alpha = (int) (dist * 255);
 
-			Shape s = new Cube();
+			shape.resetState();
+			applyTexture(shape);
+			rp.reset();
+			rp.interpolateUV.set(true);
+			rp.applyTexture.set(false);
+			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
+			mvt.transform(mvs, ar.getElapsedTime());
+			//color.transform(rp, ar.getElapsedTime());
+			//alpha.transform(rp, ar.getElapsedTime());
 			rp.icon.set(block.getIcon(0, 0));
-			rp.alpha.set(255);
-			drawShape(s, rp);
 
-			s.resetState();
-			rp.icon.set(block.getIcon(0, 1));
-			rp.alpha.set(255 - alpha);
-			drawShape(s, rp);
+			drawShape(shape, rp);
 		}
 
 	}
