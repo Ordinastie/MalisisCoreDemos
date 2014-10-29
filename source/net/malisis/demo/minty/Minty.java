@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * Demo based on Minty's Armory mod (https://github.com/MintyMint/Armory).<br>
- * This demo details how to render blocks with overlays and custom lighting.
+ * This demo details how to render blocks with overlays and custom brightness.
  *
  * @author Ordinastie
  *
@@ -20,9 +20,9 @@ public class Minty implements IDemo
 	@Override
 	public void preInit()
 	{
-		//instanciate new block
+		//instantiate new block
 		ore = new ArmoryOre();
-		//register the block with an item with subtypes
+		//register the block with an item with sub types
 		GameRegistry.registerBlock(ore, ItemBlockArmoryOre.class, ore.getUnlocalizedName().substring(5));
 	}
 
