@@ -60,7 +60,7 @@ public class TabInvGui extends MalisisGui
 		//create the first window, with a title, size and position
 		UIWindow inventoryWindow = new UIWindow(this, "TE Inventory", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);
 		//create the inventory container and with the first inventory
-		UIInventory inv = new UIInventory(this, container.getInventory(1), 4).setPosition(0, 0, Anchor.CENTER);
+		UIInventory inv = new UIInventory(this, container.getInventory(1), 4).setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
 		//add the inventory to the window
 		inventoryWindow.add(inv);
 
