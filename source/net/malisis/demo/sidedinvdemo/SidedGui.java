@@ -105,7 +105,8 @@ public class SidedGui extends MalisisGui
 		public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick)
 		{
 			shape.resetState();
-			shape.setSize((int) (width * progress), height - 2).translate(0, 1);
+			shape.setSize((int) (width * progress), height - 2);
+			shape.translate(0, 1);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			rp.colorMultiplier.set(0x008800);
 			renderer.drawShape(shape, rp);

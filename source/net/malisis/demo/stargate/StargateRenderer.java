@@ -69,7 +69,8 @@ public class StargateRenderer extends BaseRenderer
 			ar.addAnimation(anim);
 
 			// opening toward east
-			shape = new Shape(shape).translate(0.5F, 0, 0);
+			shape = new Shape(shape);
+			shape.translate(0.5F, 0, 0);
 			// move east first, then down
 			//@formatter:off
 			trans = new ParallelTransformation(
@@ -182,7 +183,8 @@ public class StargateRenderer extends BaseRenderer
 			float archAngle = 130 - (angle * i + angle / 2);
 			int delay = (totalArch - i) * at;
 
-			shape = new Shape(base).rotate(130, 0, 0, 1, 0, -2.2F, 0);
+			shape = new Shape(base);
+			shape.rotate(130, 0, 0, 1, 0, -2.2F, 0);
 			// rotation then scaling of the western blocks of the arch
 			//@formatter:off
 			trans = new ParallelTransformation(
@@ -195,7 +197,8 @@ public class StargateRenderer extends BaseRenderer
 			ar.addAnimation(anim);
 
 			// rotation then scaling of the eastern blocks of the arch
-			shape = new Shape(base).rotate(-130, 0, 0, 1, 0, -2.2F, 0);
+			shape = new Shape(base);
+			shape.rotate(-130, 0, 0, 1, 0, -2.2F, 0);
 			//@formatter:off
 			trans = new ParallelTransformation(
 					new Rotation(archAngle).aroundAxis(0, 0, 1).offset(0, -2.2F, 0).forTicks(at, delay),
