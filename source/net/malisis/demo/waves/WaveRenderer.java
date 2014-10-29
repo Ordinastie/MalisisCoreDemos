@@ -71,8 +71,8 @@ public class WaveRenderer extends BaseRenderer
 
 		//@formatter:off
 		mvt = new ChainedTransformation(
-					new Translation(0, -0.3F, 0, 0, 0, 0).forTicks(20).movement(Transformation.SINUSOIDAL),
-					new Translation(0, 0, 0, 0, -0.3F, 0).forTicks(20).movement(Transformation.SINUSOIDAL)
+					new Translation(0, -0.2F, 0, 0, 0, 0).forTicks(50).movement(Transformation.SINUSOIDAL),
+					new Translation(0, 0, 0, 0, -0.2F, 0).forTicks(50).movement(Transformation.SINUSOIDAL)
 				).loop(-1);
 		//@formatter:on
 	}
@@ -97,10 +97,11 @@ public class WaveRenderer extends BaseRenderer
 			for (MergedVertex mv : mvs)
 			{
 				int delay = 0;
-				if ((x + mv.getX()) % 2 == 0)
-					delay += 10;
-				if ((z + mv.getZ()) % 2 != 0)
-					delay += 10;
+				int x = (int) ((this.x + mv.getX()) % 10);
+				delay += 10 * Math.abs(x - 5);
+				int z = (int) ((this.z + mv.getZ()) % 10);
+				delay += 10 * Math.abs(z - 5);;
+				//MalisisCore.message(delay);
 				mvt.delay(delay);
 				mvt.transform(mv, ar.getElapsedTime());
 			}
