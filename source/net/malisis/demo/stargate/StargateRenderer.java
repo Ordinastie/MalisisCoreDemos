@@ -1,9 +1,15 @@
 package net.malisis.demo.stargate;
 
+import java.util.List;
+
 import net.malisis.core.renderer.BaseRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
+import net.malisis.core.renderer.animation.transformation.AlphaTransform;
+import net.malisis.core.renderer.animation.transformation.BrightnessTransform;
+import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
+import net.malisis.core.renderer.animation.transformation.ITransformable;
 import net.malisis.core.renderer.animation.transformation.ParallelTransformation;
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Scale;
@@ -13,41 +19,76 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
-import net.malisis.demo.MalisisDemos;
+import net.malisis.core.renderer.model.MalisisModel;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
 
 public class StargateRenderer extends BaseRenderer
 {
-	public static int renderId;
-	public static ResourceLocation rlPlatform = new ResourceLocation(MalisisDemos.modid, "textures/blocks/sgplatform.png");
-	int slices = 5;
-	float sliceHeight = 1F / slices;
+	//the animation renderer handle the timer and elapsed time for animations
+	//it's also a container for animations
+	private AnimationRenderer ar = new AnimationRenderer(this);
+	//basic cube for inventory rendering
+	private Shape cube;
+	//shape for top face
+	private Shape topFace;
+	//model that will hold all the shapes
+	private MalisisModel model;
 
-	int deployTimer = StargateBlock.deployTimer;
-	int openTimer = (int) (deployTimer * 0.30F);
-	int rotationTimer = (int) (deployTimer * 0.30F);
-	int archTimer = (int) (deployTimer * 0.50F);
-	int fadeTimer = (int) (deployTimer * 0.20F);
+	//number of slices the opening animation will use
+	private int slices = 5;
+	//height for each slice
+	private float sliceHeight = 1F / slices;
 
-	AnimationRenderer ar = new AnimationRenderer(this);
+	//total deployment time
+	private int deployTimer = 100;
+	//animations timers
+	private int openTimer = (int) (deployTimer * 0.30F);
+	private int rotationTimer = (int) (deployTimer * 0.30F);
+	private int archTimer = (int) (deployTimer * 0.50F);
+	private int fadeTimer = (int) (deployTimer * 0.20F);
+	//wee need to keep a ref for those parameters because they're not store in animation renderer nor the models
+	//we define an animation for them in a create*Animation() method and actually use them in render()
+	private RenderParameters rpFaceArch;
+	private RenderParameters rpTopFace;
+	private RenderParameters rpLavaFace;
 
-	public StargateRenderer()
+	@Override
+	protected void initialize()
 	{
-		// make sure the renderer is registered after pre init, otherwise you may
-		// not be able to retrieve block icons yet
-		createOpeningAnimation();
-		createUnrollingAnimation();
-		createArchAnimation();
-		//	createFloatingAnimation();
+		//build the basic cube for inventory rendering
+		cube = new Cube();
+		//build the topFace shape and place it accordingly
+		topFace = new Shape(new TopFace());
+		//move the face a bit higher than the platform to avoid z-fighting
+		topFace.translate(0, -0.999F + sliceHeight, 0);
+		topFace.scale(5F, 1F, 5F);
+
+		//create the model that will hold all the shapes
+		model = new MalisisModel();
+		//make sure the remove all the animations (necessary only if you allow initialize() to be call multiple times)
+		ar.clearAnimations();
+		//load all the animations
+		loadAnimations();
+		//store the model current state
+		model.storeState();
 	}
 
 	// #region Animations
+	private void loadAnimations()
+	{
+		createOpeningAnimation();
+		createUnrollingAnimation();
+		createArchAnimation();
+		createFadeAnimation();
+		//createFloatingAnimation();
+	}
+
 	private void createOpeningAnimation()
 	{
+		RenderParameters rp = new RenderParameters();
+		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+
 		int ot = openTimer / slices;
 		Shape shape;
 		Transformation trans;
@@ -58,6 +99,7 @@ public class StargateRenderer extends BaseRenderer
 			// opening towards west
 			shape = new Cube().setBounds(0, 0, 0, 0.5F, sliceHeight, 1F);
 			shape.translate(0, sliceHeight * i, 0F);
+			model.addShape(shape.setParameters(rp, true));
 			//@formatter:off
 			trans = new ParallelTransformation(
 					new Translation(-0.5F * i, 0, 0).forTicks(t),
@@ -71,6 +113,7 @@ public class StargateRenderer extends BaseRenderer
 			// opening toward east
 			shape = new Shape(shape);
 			shape.translate(0.5F, 0, 0);
+			model.addShape(shape.setParameters(rp, true));
 			// move east first, then down
 			//@formatter:off
 			trans = new ParallelTransformation(
@@ -87,11 +130,15 @@ public class StargateRenderer extends BaseRenderer
 	private void createUnrollingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
+		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+		rp.interpolateUV.set(false);
 		rp.useBlockBrightness.set(false);
+		rp.calculateBrightness.set(false);
 		rp.calculateAOColor.set(false);
+		rp.colorFactor.set(1F);
 
-		int rt = rotationTimer * 2 / 5;
-		int delay = rt / 2;
+		int rt = rotationTimer * 2 / 5 * 2;
+		int delay = rt / 4;
 		float y = -0.5F + sliceHeight / 2;
 
 		// create the shapes
@@ -108,8 +155,9 @@ public class StargateRenderer extends BaseRenderer
 			shapesSouth[i] = sS;
 		}
 
-		Shape shapeNorth = Shape.fromShapes(shapesNorth);
-		Shape shapeSouth = Shape.fromShapes(shapesSouth);
+		Shape shapeNorth = Shape.fromShapes(shapesNorth).setParameters(rp, true);
+		Shape shapeSouth = Shape.fromShapes(shapesSouth).setParameters(rp, true);
+		//model.addShapes(shapeNorth, shapeSouth);
 
 		//make the animations
 		Animation anim;
@@ -117,8 +165,8 @@ public class StargateRenderer extends BaseRenderer
 		ParallelTransformation south;
 		for (int row = 0; row < 4; row++)
 		{
-			north = new ParallelTransformation();
-			south = new ParallelTransformation();
+			north = new ParallelTransformation().delay(openTimer);
+			south = new ParallelTransformation().delay(openTimer);
 
 			// create the animations
 			north.addTransformations(new Rotation(-180, 1F, 0, 0, 0, y, -0.5F).forTicks(rt, 0));
@@ -139,12 +187,15 @@ public class StargateRenderer extends BaseRenderer
 				south.addTransformations(new Rotation(180, 1F, 0, 0, 0, y, 0).forTicks(rt, delay * 3));
 			}
 
-			// link the shapes the the animations
-			anim = new Animation(shapeNorth, north, rp, openTimer);
+			Shape sn = new Shape(shapeNorth);
+			Shape ss = new Shape(shapeSouth);
+			model.addShapes(sn, ss);
+
+			anim = new Animation(sn, north);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 
-			anim = new Animation(shapeSouth, south, rp, openTimer);
+			anim = new Animation(ss, south);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 		}
@@ -152,63 +203,116 @@ public class StargateRenderer extends BaseRenderer
 
 	private void createArchAnimation()
 	{
+		RenderParameters rp = new RenderParameters();
+		rp.renderAllFaces.set(true);
+		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+		rp.interpolateUV.set(false);
+
 		// override rendering parameters for bottom face
-		RenderParameters rpFace = new RenderParameters();
-		rpFace.calculateAOColor.set(false);
-		rpFace.calculateBrightness.set(false);
-		rpFace.useBlockBrightness.set(false);
-		rpFace.brightness.set(32);
-		rpFace.icon.set(Blocks.diamond_block.getIcon(0, 0));
+		rpFaceArch = new RenderParameters();
+		rpFaceArch.calculateAOColor.set(false);
+		rpFaceArch.calculateBrightness.set(false);
+		rpFaceArch.useBlockBrightness.set(false);
+		rpFaceArch.brightness.set(32);
+		rpFaceArch.icon.set(Blocks.diamond_block.getIcon(0, 0));
 
 		// create the shape
 		Shape base = new Cube();
-		base.setParameters("bottom", rpFace, true);
-		base.translate(0, 3, 0);
-		base.shrink(ForgeDirection.DOWN, 0.69F);
-		base.shrink(ForgeDirection.UP, 0.87F);
+		base.setParameters(rp, true);
+		base.shrink(ForgeDirection.UP, 0.62F);
+		base.shrink(ForgeDirection.DOWN, 0.79F);
+		base.storeState();
 
-		int totalArch = 13;
+		int totalAngle = 140;
 		float angle = 10;
+		int totalArch = (int) (totalAngle / angle);
 		int at = archTimer / totalArch;
-		// at = 10;
-
-		RenderParameters rp = new RenderParameters();
-		rp.renderAllFaces.set(true);
+		//at = 20;
 
 		Shape shape;
 		Transformation trans;
 		Animation anim;
 		for (int i = 0; i < totalArch; i++)
 		{
-			float archAngle = 130 - (angle * i + angle / 2);
-			int delay = (totalArch - i) * at;
+			float archAngle = angle * (totalArch - i) - angle / 2;
+			int rt = i * at + 1;
+			int rd = i * at / 2;
+			int st = at / 2;
+			int sd = rt + rd;
 
 			shape = new Shape(base);
-			shape.rotate(130, 0, 0, 1, 0, -2.2F, 0);
+			shape.setParameters("top", rpFaceArch, true);
+			model.addShape(shape);
 			// rotation then scaling of the western blocks of the arch
 			//@formatter:off
 			trans = new ParallelTransformation(
-					new Rotation(-archAngle).aroundAxis(0, 0, 1).offset(0, -2.2F, 0).forTicks(at, delay),
-					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(at / 2, delay + at)
-					);
+					new Translation(0, -1, 0).forTicks(1),
+					new Rotation(180 - totalAngle, 180 - archAngle).aroundAxis(0, 0, 1).offset(0, 2, 0).forTicks(rt, rd),
+					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(st, sd)
+					).delay(openTimer + rotationTimer / 2);
 			//@formatter:on
-			anim = new Animation(shape, trans, rp, openTimer);
+			anim = new Animation(shape, trans);
 			anim.setRender(false, true);
+			ar.addAnimation(anim);
+
+			//@formatter:off
+			ChainedTransformation ct = new ChainedTransformation(
+					new BrightnessTransform(32, 240).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL).delay(fadeTimer),
+					new BrightnessTransform(240, 32).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL)
+					).delay(deployTimer  + rt).loop(-1);
+			//@formatter:on
+			anim = new Animation(shape.getFace("top").getParameters(), ct);
 			ar.addAnimation(anim);
 
 			// rotation then scaling of the eastern blocks of the arch
 			shape = new Shape(base);
-			shape.rotate(-130, 0, 0, 1, 0, -2.2F, 0);
+			shape.setParameters("top", rpFaceArch, true);
+			//shape.rotate(-130, 0, 0, 1, 0, -2.2F, 0);
+			model.addShape(shape.storeState());
 			//@formatter:off
 			trans = new ParallelTransformation(
-					new Rotation(archAngle).aroundAxis(0, 0, 1).offset(0, -2.2F, 0).forTicks(at, delay),
-					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(at / 2, delay + at)
-					);
+					new Translation(0, -1, 0).forTicks(1),
+					new Rotation(180 + totalAngle, 180 + archAngle).aroundAxis(0, 0, 1).offset(0, 2, 0).forTicks(rt, rd),
+					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(st, sd)
+					).delay(openTimer + rotationTimer / 2);
 			//@formatter:on
-			anim = new Animation(shape, trans, rp, openTimer);
+			anim = new Animation(shape, trans);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
+
+			//@formatter:off
+			ct = new ChainedTransformation(
+					new BrightnessTransform(32, 240).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL).delay(fadeTimer),
+					new BrightnessTransform(240, 32).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL)
+					).delay(deployTimer + fadeTimer- rt).loop(-1);
+			//@formatter:on
+			anim = new Animation(shape.getFace("top").getParameters(), ct);
+			ar.addAnimation(anim);
 		}
+	}
+
+	private void createFadeAnimation()
+	{
+		AlphaTransform at = new AlphaTransform(0, 255).forTicks(fadeTimer, deployTimer);
+		rpTopFace = new RenderParameters();
+		rpTopFace.alpha.set(0);
+		rpTopFace.icon.set(Stargate.sgBlock.getPlateformIcon());
+		Animation anim = new Animation(rpTopFace, at);
+		ar.addAnimation(anim);
+
+		//@formatter:off
+		ParallelTransformation pt = new ParallelTransformation(
+										new BrightnessTransform(0, 240).forTicks(fadeTimer),
+										new AlphaTransform(0, 255).forTicks(fadeTimer)
+									).delay(deployTimer + fadeTimer);
+		//@formatter:on
+		rpLavaFace = new RenderParameters();
+		rpLavaFace.calculateBrightness.set(false);
+		rpLavaFace.useBlockBrightness.set(false);
+		rpLavaFace.alpha.set(0);
+		rpLavaFace.icon.set(Blocks.lava.getIcon(1, 0));
+		anim = new Animation(rpLavaFace, pt);
+		ar.addAnimation(anim);
 	}
 
 	@SuppressWarnings("unused")
@@ -238,124 +342,57 @@ public class StargateRenderer extends BaseRenderer
 		if (renderType == TYPE_TESR_WORLD)
 			renderStargateTileEntity();
 		else if (renderType == TYPE_ISBRH_WORLD)
-			renderStargateBlock();
+		{
+			//recall initialize() (for debug purpose)
+			initialize();
+		}
 		else if (renderType == TYPE_ISBRH_INVENTORY)
 		{
-			RenderParameters rp = new RenderParameters();
-			rp.colorMultiplier.set(0x6666AA);
+			//draw standard cube with default renderparameters
+			cube.resetState();
 			drawShape(new Cube());
 		}
 	}
 
 	private void renderStargateTileEntity()
 	{
-		StargateTileEntity te = (StargateTileEntity) tileEntity;
+		//set the timer for the animimation renderer. It calculates the elpasedTime
+		ar.setStartTime(((StargateTileEntity) tileEntity).placedTimer);
 
-		int alpha = 255;
-		boolean drawTopFace = false;
-		ar.setStartTime(te.placedTimer);
+		//enable blending because we have fading for the TopFace
+		enableBlending();
+		//reset the model to its orinigal state. That means reset the vertex positions that have been moved around in the previous render loop
+		model.resetState();
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
+		// 1st non moving cube at the bottom
+		cube.resetState();
+		cube.setBounds(0, 0, 0, 1F, sliceHeight, 1F);
+		drawShape(cube);
 
-		if (blockMetadata == 0)
+		//animate all the animations, this will return the transformable for the animations
+		//if an animation is set to not render before or after its transform, then it won't be in the list
+		List<ITransformable> shapes = ar.animate();
+		for (ITransformable s : shapes)
 		{
-			// 1st non moving cube at the bottom
-			drawShape(new Cube().setBounds(0, 0, 0, 1F, sliceHeight, 1F));
-			// render animations
-			ar.animate();
-			ar.render(this);
-
-			// manually calculate the alpha of the top texture
-			float comp = Math.min((ar.getElapsedTime() - deployTimer + fadeTimer) / fadeTimer, 1);
-			if (comp > 0)
-			{
-				alpha = (int) (255 * comp);
-				drawTopFace = true;
-			}
+			//make sure we draw shapes only because we added animations for RenderParameters too
+			if (s instanceof Shape)
+				drawShape((Shape) s, rp);
 		}
 
-		if (blockMetadata == 1 || drawTopFace)
-		{
-			// next() needs to be called to trigger a draw before we bind another texture
-			// otherwise, all the blocks would use that new texture
-			next();
+		//first draw the lava face
+		topFace.resetState();
+		drawShape(topFace, rpLavaFace);
 
-			Shape topFace = new Shape(new TopFace());
-			// move the platform a bit higher than the block to avoid z-fighting
-			topFace.translate(0, -0.499F + sliceHeight / 2, 0);
-			topFace.scale(5F, sliceHeight, 5F);
-
-			bindTexture(rlPlatform);
-			RenderParameters rp = new RenderParameters();
-			rp.useCustomTexture.set(true);
-			rp.alpha.set(alpha);
-			drawShape(topFace, rp);
-		}
-
-	}
-
-	private void renderStargateBlock()
-	{
-		if (blockMetadata != 1)
-			return;
-
-		// override rendering parameters for top face of the platform
-		// change the texture to lava and set the brightness to max
-		RenderParameters rpFace = new RenderParameters();
-		rpFace.calculateAOColor.set(false);
-		rpFace.calculateBrightness.set(false);
-		rpFace.brightness.set(Vertex.BRIGHTNESS_MAX);
-		rpFace.useBlockBrightness.set(false);
-		rpFace.icon.set(Blocks.lava.getIcon(0, 0));
-		rpFace.colorFactor.set(1F);
-		rpFace.interpolateUV.set(false);
-
-		//Draw the platform
-		Shape platform = new Cube();
-		platform.translate(0, -0.5F + sliceHeight / 2, 0);
-		platform.scale(5F, sliceHeight, 5F);
-		//set the paramaters for the top face
-		platform.setParameters("top", rpFace, true);
-		drawShape(platform);
-
-		//Create the base of each arch block
-		Shape base = new Cube();
-		//reuse the parameters for the top face platform, just change the icon
-		rpFace.icon.set(Blocks.diamond_block.getIcon(0, 0));
-		base.setParameters("bottom", rpFace, true);
-		base.translate(0, 3, 0);
-		base.shrink(ForgeDirection.DOWN, 0.69F);
-		base.shrink(ForgeDirection.UP, 0.87F);
-
-		int totalArch = 13;
-		float angle = 10;
-
-		RenderParameters rp = new RenderParameters();
-		rp.renderAllFaces.set(true);
-
-		for (int i = 0; i < totalArch; i++)
-		{
-			float archAngle = angle * i + angle / 2;
-
-			Shape s1 = new Shape(base);
-			s1.rotate(-archAngle, 0, 0, 1, 0, -2.2F, 0);
-			s1.scale(0.5F, 0.5F, 0.3F);
-
-			Shape s2 = new Shape(base);
-			s2.rotate(archAngle, 0, 0, 1, 0, -2.2F, 0);
-			s2.scale(0.5F, 0.5F, 0.3F);
-
-			drawShape(s1, rp);
-			drawShape(s2, rp);
-		}
+		//draw the platform face, a bit higher to prevent z-fighting
+		topFace.translate(0, 0.001F, 0);
+		drawShape(topFace, rpTopFace);
 
 	}
 
 	@Override
 	public boolean shouldRender3DInInventory(int modelId)
 	{
+		//we want to render a basic 3D cube
 		return true;
 	}
 

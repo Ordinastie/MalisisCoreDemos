@@ -51,9 +51,6 @@ public class MultipleInv implements IDemo
 
 	@Override
 	public void init()
-	{
-		// TODO Auto-generated method stub
-
-	}
+	{}
 
 }

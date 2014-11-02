@@ -28,10 +28,7 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -46,18 +43,8 @@ public class ModelDemoBlock extends Block implements ITileEntityProvider
 	{
 		super(Material.wood);
 		setBlockName("modelDemo");
+		setBlockTextureName(MalisisDemos.modid + ":modeldemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-
-	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister register)
-	{}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return Blocks.glowstone.getIcon(side, metadata);
 	}
 
 	@Override
@@ -68,6 +55,12 @@ public class ModelDemoBlock extends Block implements ITileEntityProvider
 
 	@Override
 	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube()
 	{
 		return false;
 	}

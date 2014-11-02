@@ -31,6 +31,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
+ * This demo is designed to detail how to handle different inventories in different GUI tabs.
+ *
  * @author Ordinastie
  *
  */
@@ -41,6 +43,7 @@ public class TabInv implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create the block
 		tabInvBlock = new TabInvBlock();
 
 		//register block

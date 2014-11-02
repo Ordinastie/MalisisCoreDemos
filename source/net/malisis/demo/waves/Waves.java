@@ -30,6 +30,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 /**
+ * This demo is an example for animations.
+ *
  * @author Ordinastie
  *
  */
@@ -40,9 +42,12 @@ public class Waves implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create the block
 		waveBlock = new WaveBlock();
 
+		//register the block
 		GameRegistry.registerBlock(waveBlock, waveBlock.getUnlocalizedName().substring(5));
+		//register the TileEntity
 		GameRegistry.registerTileEntity(WaveTileEntity.class, "waveTE");
 	}
 
@@ -51,6 +56,7 @@ public class Waves implements IDemo
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
+			//use the renderer for both the block and the TE
 			new WaveRenderer().registerFor(WaveBlock.class, WaveTileEntity.class);
 		}
 	}

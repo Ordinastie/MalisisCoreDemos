@@ -27,15 +27,17 @@ package net.malisis.demo.waves;
 import java.util.List;
 
 import net.malisis.core.renderer.BaseRenderer;
-import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.AnimationRenderer;
+import net.malisis.core.renderer.animation.transformation.BrightnessTransform;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
+import net.malisis.core.renderer.element.shape.Cube;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 
 /**
  * @author Ordinastie
@@ -43,55 +45,71 @@ import net.minecraft.client.Minecraft;
  */
 public class WaveRenderer extends BaseRenderer
 {
-	private AnimationRenderer ar;
+	//Create the animation renderer
+	private AnimationRenderer ar = new AnimationRenderer(this);
+	//start time (reset each time the block is redrawn (for debug purpose)
 	private long startTime;
 
+	//the transform that handles the movement of the vertexes
 	private Transformation mvt;
+	//the transform that handle the brightness of the vertexes
+	private Transformation br;
+
+	//shape used for the TESR
+	private Shape wave;
+	//shape used for inventory
+	private Shape cube;
 
 	@Override
-	protected void initShapes()
+	protected void initialize()
 	{
-		shape = new Shape(new TopFace());
+		//creates the shapes
+		wave = new Shape(new TopFace());
+		cube = new Cube();
+		//enable the mergedVertexes so we can easily manipulate them with the animations
+		wave.enableMergedVertexes();
 	}
 
-	@Override
-	protected void initParameters()
-	{
-		rp = new RenderParameters();
-		rp.interpolateUV.set(true);
-		rp.applyTexture.set(false);
-	}
-
+	//should be called only once from initialize(). For debug purpose, we recall it every time the block asks to be
+	//redrawn so we can change the transforms on the fly
 	private void setup(long start)
 	{
 		startTime = start;
-		shape.enableMergedVertexes();
-
-		ar = new AnimationRenderer(this);
 
 		//@formatter:off
 		mvt = new ChainedTransformation(
 					new Translation(0, -0.2F, 0, 0, 0, 0).forTicks(50).movement(Transformation.SINUSOIDAL),
 					new Translation(0, 0, 0, 0, -0.2F, 0).forTicks(50).movement(Transformation.SINUSOIDAL)
 				).loop(-1);
+		br = new ChainedTransformation(
+					new BrightnessTransform(0, 240).forTicks(100).movement(Transformation.SINUSOIDAL),
+					new BrightnessTransform(240, 0).forTicks(100).movement(Transformation.SINUSOIDAL)
+			).loop(-1);
+
 		//@formatter:on
 	}
 
 	@Override
 	public void render()
 	{
+		if (renderType == TYPE_ISBRH_INVENTORY)
+		{
+			drawShape(cube);
+			return;
+		}
+
 		if (renderType == TYPE_ISBRH_WORLD)
 		{
 			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
+			return;
 		}
 
 		if (renderType == TYPE_TESR_WORLD)
 		{
 			ar.setStartTime(startTime);
 			enableBlending();
-
 			shape.resetState();
-			applyTexture(shape);
+			rp.usePerVertexBrightness.set(true);
 
 			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
 			for (MergedVertex mv : mvs)
@@ -101,12 +119,13 @@ public class WaveRenderer extends BaseRenderer
 				delay += 10 * Math.abs(x - 5);
 				int z = (int) ((this.z + mv.getZ()) % 10);
 				delay += 10 * Math.abs(z - 5);;
-				//MalisisCore.message(delay);
 				mvt.delay(delay);
 				mvt.transform(mv, ar.getElapsedTime());
+				br.delay(delay * 2);
+				br.transform(mv, ar.getElapsedTime());
 			}
-
-			drawShape(shape, rp);
+			rp.icon.set(Blocks.water.getIcon(1, 0));
+			drawShape(wave, rp);
 		}
 	}
 }

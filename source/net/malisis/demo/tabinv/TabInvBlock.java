@@ -30,12 +30,9 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -47,23 +44,14 @@ public class TabInvBlock extends Block implements ITileEntityProvider
 
 	protected TabInvBlock()
 	{
+		//set the usual stuff
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
 		setBlockName("tabInv");
+		setBlockTextureName(MalisisDemos.modid + ":tabinv");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{
-		//nothing to register, we use bookshelf icons
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return Blocks.bookshelf.getIcon(side, metadata);
 	}
 
 	@Override
@@ -83,6 +71,7 @@ public class TabInvBlock extends Block implements ITileEntityProvider
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
+		//creates the TileEntity
 		return new TabInvTileEntity();
 	}
 

@@ -9,28 +9,18 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class GuiBlock extends Block implements ITileEntityProvider
 {
-	public static int renderId = 0;
-
 	public GuiBlock()
 	{
 		super(Material.ground);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
 		setBlockName("guiDemo");
-		setBlockTextureName(MalisisDemos.modid + ":guiDemo");
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return Blocks.lit_pumpkin.getIcon(side, metadata);
+		setBlockTextureName(MalisisDemos.modid + ":guidemo");
 	}
 
 	@Override
@@ -43,24 +33,6 @@ public class GuiBlock extends Block implements ITileEntityProvider
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;
-	}
-
-	@Override
-	public boolean isNormalCube()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-
-	@Override
-	public int getRenderType()
-	{
-		return renderId;
 	}
 
 	@Override

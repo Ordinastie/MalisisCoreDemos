@@ -28,6 +28,8 @@ import net.malisis.demo.IDemo;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
+ * This demo is designd to show how to handle sided inventories
+ *
  * @author Ordinastie
  *
  */
@@ -38,8 +40,11 @@ public class SidedInvDemo implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create the block
 		sidedBlock = new SidedBlock();
+		//register the block
 		GameRegistry.registerBlock(sidedBlock, sidedBlock.getUnlocalizedName().substring(5));
+		//register the TileEntity
 		GameRegistry.registerTileEntity(SidedTileEntity.class, "sidedTe");
 
 	}

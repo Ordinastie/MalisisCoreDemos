@@ -25,7 +25,6 @@
 package net.malisis.demo.sidedinvdemo;
 
 import net.malisis.core.client.gui.MalisisGui;
-import net.malisis.core.inventory.InventoryEvent;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
@@ -36,31 +35,43 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.eventbus.Subscribe;
-
 /**
+ * This tile entity will handle 3 different inventories :<br>
+ * - triage : can accept everything<br>
+ * - ingots : can only accept gold or iron ingots<br>
+ * - stone : can only accept stone or stone bricks<br>
+ * Every second the inventory will move a stack from the triage to either ingots or stone inventory. The top face of the block can insert
+ * into triage inventory, the east face can insert into ingots inventory and west face can insert into stone inventory
+ *
  * @author Ordinastie
  *
  */
 public class SidedTileEntity extends TileEntitySidedInventory
 {
+	//the 3 different inventories
 	public MalisisInventory triageInventory;
 	public MalisisInventory ingotsInventory;
 	public MalisisInventory stoneInventory;
+	//current processing timer
 	public int timer;
+	//total time before processing again
 	public int totalTime = 20;
 
 	public SidedTileEntity()
 	{
+		//create the inventories : 10 slots for triage
 		triageInventory = new MalisisInventory(this, 10);
+		//16 slots for ingots
 		ingotsInventory = new MalisisInventory(this, 16)
 		{
 			@Override
 			public boolean isItemValidForSlot(int slotNumber, ItemStack itemStack)
 			{
+				//accept only gold or iron ingots
 				return itemStack != null && (itemStack.getItem() == Items.gold_ingot || itemStack.getItem() == Items.iron_ingot);
 			};
 		};
+		//16 slots for stone
 		stoneInventory = new MalisisInventory(this, 16)
 		{
 			@Override
@@ -69,16 +80,18 @@ public class SidedTileEntity extends TileEntitySidedInventory
 				if (itemStack == null)
 					return false;
 
+				//accept only stone or stone bricks
 				Block block = Block.getBlockFromItem(itemStack.getItem());
 				return block != null && (block == Blocks.stone || block == Blocks.stonebrick);
 			}
 		};
 
+		//give inventories a name (for display in gui)
 		triageInventory.setName("Triage");
 		ingotsInventory.setName("Ingots");
 		stoneInventory.setName("Stones");
-		triageInventory.register(this);
 
+		//add the inventories with their respective sides
 		addSidedInventory(triageInventory, ForgeDirection.UP);
 		addSidedInventory(ingotsInventory, ForgeDirection.EAST);
 		addSidedInventory(stoneInventory, ForgeDirection.WEST);
@@ -86,6 +99,7 @@ public class SidedTileEntity extends TileEntitySidedInventory
 
 	public float getTimer(float partialTick)
 	{
+		//gets the timer for display in GUI
 		if (!triageInventory.isEmpty())
 			return (timer + partialTick) / totalTime;
 		else
@@ -96,16 +110,21 @@ public class SidedTileEntity extends TileEntitySidedInventory
 	public void updateEntity()
 	{
 		timer++;
+		//time to process
 		if (timer >= totalTime)
 		{
 			timer = 0;
+			//only process on server
 			if (worldObj.isRemote)
 				return;
 
 			MalisisSlot slot = triageInventory.getFirstOccupiedSlot();
+			//if inventory is empty, no process to do
 			if (slot == null)
 				return;
+
 			ItemStack itemStack = slot.getItemStack();
+			//transfer into triage if gold or iron ingot
 			if (itemStack != null && (itemStack.getItem() == Items.gold_ingot || itemStack.getItem() == Items.iron_ingot))
 				itemStack = ingotsInventory.transferInto(itemStack);
 			else
@@ -114,6 +133,8 @@ public class SidedTileEntity extends TileEntitySidedInventory
 				if (block != null && (block == Blocks.stone || block == Blocks.stonebrick))
 					itemStack = stoneInventory.transferInto(itemStack);
 			}
+			//itemStack hold the result of the transfer : if the target inventory was full and could not
+			//accept all of the itemStack, itemStack hold what's left, so put it back in the slot
 			slot.setItemStack(itemStack);
 		}
 
@@ -122,14 +143,8 @@ public class SidedTileEntity extends TileEntitySidedInventory
 	@Override
 	public MalisisGui getGui(MalisisInventoryContainer container)
 	{
+		//get the GUI for this TE
 		return new SidedGui(this, container);
-	}
-
-	@Subscribe
-	public void onOpenInventory(InventoryEvent.Open event)
-	{
-		event.getContainer().addInventory(ingotsInventory);
-		event.getContainer().addInventory(stoneInventory);
 	}
 
 }

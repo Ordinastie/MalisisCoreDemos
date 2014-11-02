@@ -62,7 +62,7 @@ public class MalisisDemos implements IMalisisMod
 	public static MalisisDemos instance;
 	public static ArrayList<IDemo> demos = new ArrayList<>();
 
-	public static CreativeTabs tabDemos = new CreativeTabs("MalisisCore Demos")
+	public static CreativeTabs tabDemos = new CreativeTabs(modid)
 	{
 		@Override
 		@SideOnly(Side.CLIENT)

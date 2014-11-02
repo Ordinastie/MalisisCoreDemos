@@ -41,40 +41,55 @@ import org.lwjgl.opengl.GL11;
  */
 public class SidedGui extends MalisisGui
 {
+	//a custom progress bar
 	private ProgressBar progressBar;
+	// reference to the TileEntity
 	private SidedTileEntity tileEntity;
 
 	public SidedGui(SidedTileEntity te, MalisisInventoryContainer container)
 	{
 		this.tileEntity = te;
+		//set the InventoryContainer for the GUI
 		setInventoryContainer(container);
 
+		//create the window
 		UIWindow window = new UIWindow(this, 190, 230);
 
+		//create the inventory containers (UIContainer)
 		UIInventory contTriage = new UIInventory(this, te.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);
 		UIInventory contIngots = new UIInventory(this, te.ingotsInventory, 4).setPosition(0, 40, Anchor.LEFT);
 		UIInventory contStone = new UIInventory(this, te.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
 
+		//create the progress bar
 		progressBar = new ProgressBar(this).setPosition(0, 30, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
 
+		//create the player inventory container
 		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
 
+		//add everything to the window
 		window.add(contTriage);
 		window.add(contIngots);
 		window.add(contStone);
 		window.add(playerInv);
-
 		window.add(progressBar);
 
+		//add the window to the screen
 		addToScreen(window);
 	}
 
 	@Override
 	public void update(int mouseX, int mouseY, float partialTick)
 	{
+		//update the progressbar component based on the TileEntity timer
 		progressBar.setProgress(tileEntity.getTimer(partialTick));
 	}
 
+	/**
+	 * Custom progress bar to draw
+	 *
+	 * @author Ordinastie
+	 *
+	 */
 	public static class ProgressBar extends UIComponent<ProgressBar>
 	{
 		public ProgressBar(MalisisGui gui)
@@ -92,6 +107,7 @@ public class SidedGui extends MalisisGui
 		@Override
 		public void drawBackground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick)
 		{
+			//draw a wire frame square that will be the contour for the component
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			renderer.next(GL11.GL_LINE_STRIP);
 			rp.colorMultiplier.set(0x444444);
@@ -104,6 +120,7 @@ public class SidedGui extends MalisisGui
 		@Override
 		public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick)
 		{
+			//draw a filled squared that'll represent the progress
 			shape.resetState();
 			shape.setSize((int) (width * progress), height - 2);
 			shape.translate(0, 1);

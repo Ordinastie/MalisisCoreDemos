@@ -28,14 +28,8 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -43,23 +37,16 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class WaveBlock extends Block implements ITileEntityProvider
 {
+	//will be set by BaseRenderer.registerFor()
 	public static int renderId = -1;
 
 	protected WaveBlock()
 	{
+		//set the usual stuff
 		super(Material.water);
 		setBlockName("waveblock");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{}
-
-	@Override
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-	{
-		return Blocks.water.getIcon(1, 0);
+		setBlockTextureName(MalisisDemos.modid + ":waves");
 	}
 
 	@Override
@@ -69,15 +56,9 @@ public class WaveBlock extends Block implements ITileEntityProvider
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
-	{
-		return true;
-	}
-
-	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
+		//create the TE
 		return new WaveTileEntity();
 	}
 

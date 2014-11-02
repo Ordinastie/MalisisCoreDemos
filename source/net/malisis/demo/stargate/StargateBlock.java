@@ -24,11 +24,10 @@
 
 package net.malisis.demo.stargate;
 
-import java.util.Random;
-
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,42 +36,56 @@ import net.minecraft.world.World;
 
 public class StargateBlock extends BlockContainer
 {
-	public static int deployTimer = 100;
+	//renderId of the renderer (set by BaseRenderer.registerFor())
 	public static int renderId = -1;
+	//large icon for top face
+	private IIcon sgPlatform;
+	//icon for the side
+	private IIcon sgPlatformSide;
 
 	protected StargateBlock()
 	{
 		super(Material.iron);
 		setBlockName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":sgplatformside");
+		setBlockTextureName(MalisisDemos.modid + ":stargate");
+	}
+
+	@Override
+	public void registerBlockIcons(IIconRegister register)
+	{
+		//register default icon that will be used for the cube in the inventory
+		super.registerBlockIcons(register);
+		//register the large icon for top face
+		sgPlatform = register.registerIcon(MalisisDemos.modid + ":sgplatform");
+		//register icon for side
+		sgPlatformSide = register.registerIcon(MalisisDemos.modid + ":sgplatformside");
+	}
+
+	public IIcon getPlateformIcon()
+	{
+		//get the large top face icon
+		return sgPlatform;
+	}
+
+	public IIcon getPlateformSideIcon()
+	{
+		//get the side icon
+		return sgPlatformSide;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
 	{
-		world.scheduleBlockUpdate(x, y, z, this, deployTimer);
+		//sets teh starting time for the animations
 		((StargateTileEntity) world.getTileEntity(x, y, z)).placedTimer = world.getTotalWorldTime();
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand)
-	{
-
-		world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return blockIcon;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata)
 	{
-		StargateTileEntity te = new StargateTileEntity();
-		return te;
+		//return the TE
+		return new StargateTileEntity();
 	}
 
 	@Override

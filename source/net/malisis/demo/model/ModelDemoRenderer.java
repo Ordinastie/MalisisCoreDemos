@@ -28,8 +28,12 @@ import net.malisis.core.renderer.BaseRenderer;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
+import net.malisis.core.renderer.animation.transformation.ParallelTransformation;
+import net.malisis.core.renderer.animation.transformation.Rotation;
+import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Shape;
+import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
@@ -48,84 +52,65 @@ public class ModelDemoRenderer extends BaseRenderer
 	private ResourceLocation rlModel = new ResourceLocation(MalisisDemos.modid, "models/hopper.obj");
 	private MalisisModel model;
 	private AnimationRenderer ar;
+	private Shape cube;
 	private Shape socle;
 	private Shape antenna;
 	private int start;
 
 	@Override
-	protected void initShapes()
+	protected void initialize()
 	{
-		boolean b = false;
-		if (b)
-		{
-			rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
-			model = MalisisModel.load(rlModel);
-			socle = model.getShape("Socle");
-			socle.storeState();
-			antenna = model.getShape("Antenna");
-			antenna.storeState();
+		rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
+		model = MalisisModel.load(rlModel);
+		socle = model.getShape("Socle");
+		antenna = model.getShape("Antenna");
+		cube = new Cube();
 
-			loadAnimation();
-		}
-		else
-		{
-			rlModel = new ResourceLocation(MalisisDemos.modid, "models/slab.obj");
-			model = MalisisModel.load(rlModel);
-		}
+		loadAnimation();
 	}
 
 	private void loadAnimation()
 	{
 		ar = new AnimationRenderer(this);
 
-		//Rotation r = new Rotation(360).aroundAxis(0, 1, 0).forTicks(40).loop(-1, 0, 0);
-		Translation t = new Translation(0, -0.3F, 0, 0, 0.3F, 0).forTicks(20);
-		//Translation t2 = new Translation(0, 0.1F, 0, 0, -0.1F, 0).forTicks(20).movement(Transformation.SINUSOIDAL);
-		ChainedTransformation c = new ChainedTransformation(t, t);
+		Rotation r = new Rotation(360).aroundAxis(0, 1, 0).forTicks(40);
+		Translation t = new Translation(0, 0.0F, 0, 0, 0.3F, 0).movement(Transformation.SINUSOIDAL).forTicks(20);
+		Translation t2 = new Translation(0, 0.0F, 0, 0, -0.3F, 0).movement(Transformation.SINUSOIDAL).forTicks(20);
+		ChainedTransformation c = new ChainedTransformation(t, t2);
 
-		//ParallelTransformation p = new ParallelTransformation(r, c).loop(-1, 0, 0);
+		ParallelTransformation p = new ParallelTransformation(r, c).loop(-1);
 
-		Animation anim = new Animation(antenna, c, rp, 0);
+		Animation anim = new Animation(antenna, p);
 		ar.addAnimation(anim);
 	}
 
 	@Override
 	public void render()
 	{
-		boolean b = false;
-
-		if (renderType == TYPE_ISBRH_WORLD)
+		if (renderType == TYPE_ISBRH_INVENTORY)
 		{
-			initShapes();
+			rp.reset();
+			cube.resetState();
+			drawShape(cube, rp);
+			return;
+		}
+		else if (renderType == TYPE_ISBRH_WORLD)
+		{
+			initialize();
 			start = (int) Minecraft.getMinecraft().theWorld.getTotalWorldTime();
 		}
 		else if (renderType == TYPE_TESR_WORLD)
 		{
-			if (b)
-			{
+			model.resetState();
+			ar.setStartTime(start);
+			next(GL11.GL_POLYGON);
 
-				ar.setStartTime(start);
-				next(GL11.GL_POLYGON);
+			rp.icon.set(Blocks.coal_block.getIcon(0, 0));
+			drawShape(socle, rp);
 
-				rp.icon.set(Blocks.anvil.getIcon(0, 0));
-				drawShape(socle, rp);
-
-				rp.icon.set(Blocks.diamond_block.getIcon(0, 0));
-				ar.animate();
-				drawShape(antenna, rp);
-
-			}
-			else
-			{
-				rp.icon.set(Blocks.planks.getIcon(0, 0));
-				shape = model.getShape("Default");
-				if (shape != null)
-				{
-					shape.resetState();
-					drawShape(shape, rp);
-				}
-			}
-
+			rp.icon.set(Blocks.diamond_block.getIcon(0, 0));
+			ar.animate();
+			drawShape(antenna, rp);
 		}
 
 	}
@@ -133,6 +118,6 @@ public class ModelDemoRenderer extends BaseRenderer
 	@Override
 	public boolean shouldRender3DInInventory(int modelId)
 	{
-		return false;
+		return true;
 	}
 }

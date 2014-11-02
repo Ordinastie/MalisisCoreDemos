@@ -31,12 +31,9 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
@@ -50,18 +47,9 @@ public class Bank extends Block implements ITileEntityProvider
 		super(Material.iron);
 		setHardness(1);
 		setStepSound(soundTypeAnvil);
-		setBlockName("demoBank");
+		setBlockName("bankdemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
-
-	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return Blocks.anvil.getIcon(side, metadata);
+		setBlockTextureName(MalisisDemos.modid + ":bankdemo");
 	}
 
 	@Override
@@ -80,12 +68,6 @@ public class Bank extends Block implements ITileEntityProvider
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
 		return new BankTileEntity();
-	}
-
-	@Override
-	public int getRenderType()
-	{
-		return 0;
 	}
 
 }

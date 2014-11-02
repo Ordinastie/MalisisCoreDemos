@@ -37,7 +37,10 @@ import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.MergedVertex;
+import net.malisis.core.renderer.model.MalisisModel;
+import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ordinastie
@@ -53,8 +56,12 @@ public class TestRenderer extends BaseRenderer
 	private Transformation color;
 	private Transformation alpha;
 
+	private MalisisModel model;
+
 	private void setup(long start)
 	{
+		model = MalisisModel.load(new ResourceLocation(MalisisDemos.modid, "models/frame.obj"));
+
 		startTime = start;
 		shape.enableMergedVertexes();
 
@@ -87,10 +94,21 @@ public class TestRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
+		if (renderType == TYPE_ISBRH_INVENTORY)
+		{
+			shape.resetState();
+			drawShape(shape);
+			return;
+		}
 
 		if (renderType == TYPE_ISBRH_WORLD)
 		{
 			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
+			rp.reset();
+
+			rp.useBlockBrightness.set(false);
+			model.render(this, rp);
+			return;
 		}
 
 		if (renderType == TYPE_TESR_WORLD)
@@ -105,12 +123,11 @@ public class TestRenderer extends BaseRenderer
 			rp.applyTexture.set(false);
 			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
 			mvt.transform(mvs, ar.getElapsedTime());
-			//color.transform(rp, ar.getElapsedTime());
-			//alpha.transform(rp, ar.getElapsedTime());
+			color.transform(rp, ar.getElapsedTime());
+			alpha.transform(rp, ar.getElapsedTime());
 			rp.icon.set(block.getIcon(0, 0));
 
 			drawShape(shape, rp);
 		}
-
 	}
 }

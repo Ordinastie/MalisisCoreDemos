@@ -47,7 +47,7 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	public MalisisInventory inventory;
 	//inventory in second tab
 	public MalisisInventory converter;
-	//manually instanciate converter slots because they have specificities
+	//manually instantiate converter slots because they have specificities
 	public MalisisSlot slotIron;
 	public MalisisSlot slotGold;
 	public MalisisSlot slotDiamond;
@@ -55,7 +55,7 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	//tab currently active
 	public int currentTab = 1;
 
-	//make one convertion every second
+	//make one conversion every second
 	private int maxTimeConvert = 20; //1s
 	//extract 2 items every 3 seconds
 	private int maxTimeExtract = 60; //3s

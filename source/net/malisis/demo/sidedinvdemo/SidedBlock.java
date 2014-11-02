@@ -34,10 +34,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
@@ -45,23 +45,44 @@ import net.minecraft.world.World;
  */
 public class SidedBlock extends Block implements ITileEntityProvider
 {
+	//Use different icons for sides
+	protected IIcon triageIcon;
+	protected IIcon stonesIcon;
+	protected IIcon ingotsIcon;
+
 	public SidedBlock()
 	{
+		//set usual properties
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundTypeWood);
 		setBlockName("sidedBlockDemo");
+		setBlockTextureName(MalisisDemos.modid + ":sidedinv");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{}
+	public void registerBlockIcons(IIconRegister register)
+	{
+		//register the icons
+		blockIcon = register.registerIcon(getTextureName());
+		triageIcon = register.registerIcon(MalisisDemos.modid + ":sidedtriage");
+		stonesIcon = register.registerIcon(MalisisDemos.modid + ":sidedstones");
+		ingotsIcon = register.registerIcon(MalisisDemos.modid + ":sidedingots");
+	}
 
 	@Override
 	public IIcon getIcon(int side, int metadata)
 	{
-		return Blocks.crafting_table.getIcon(side, metadata);
+		//get the right icon for the right side
+		if (side == ForgeDirection.UP.ordinal())
+			return triageIcon;
+		else if (side == ForgeDirection.EAST.ordinal())
+			return stonesIcon;
+		else if (side == ForgeDirection.WEST.ordinal())
+			return ingotsIcon;
+		else
+			return blockIcon;
 	}
 
 	@Override
@@ -70,7 +91,9 @@ public class SidedBlock extends Block implements ITileEntityProvider
 		if (world.isRemote)
 			return true;
 
+		//get the InventoryProvider.
 		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+		//open the inventory
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;
@@ -79,6 +102,7 @@ public class SidedBlock extends Block implements ITileEntityProvider
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata)
 	{
+		//Create the TileEntity
 		return new SidedTileEntity();
 	}
 }
