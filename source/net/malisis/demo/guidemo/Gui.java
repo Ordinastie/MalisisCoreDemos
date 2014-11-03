@@ -10,13 +10,16 @@ import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UITabGroup.Position;
+import net.malisis.core.client.gui.component.container.UITabGroup.TabPosition;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.control.UICloseHandle;
 import net.malisis.core.client.gui.component.control.UIMoveHandle;
 import net.malisis.core.client.gui.component.control.UIResizeHandle;
+import net.malisis.core.client.gui.component.control.UIScrollBar;
+import net.malisis.core.client.gui.component.control.UISlimScrollbar;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UILabel;
+import net.malisis.core.client.gui.component.decoration.UIMultiLineLabel;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.component.interaction.UIButton;
 import net.malisis.core.client.gui.component.interaction.UICheckBox;
@@ -92,6 +95,15 @@ public class Gui extends MalisisGui
 		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
 		tabCont2.add(new UILabel(this, "This is LABEL!" + EnumChatFormatting.DARK_RED + " Colored!").setPosition(20, 30));
 
+		UIMultiLineLabel ipsum = new UIMultiLineLabel(this);
+		ipsum.setPosition(0, 0, Anchor.RIGHT);
+		ipsum.setSize(150, 0);
+		ipsum.setText("Contrairement à une opinion répandue, le Lorem Ipsum n'est pas simplement du texte aléatoire. Il trouve ses racines dans une oeuvre de la littérature latine classique datant de 45 av. J.-C., le rendant vieux de 2000 ans. Un professeur du Hampden-Sydney College, en Virginie, s'est intéressé à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+
+		tabCont2.add(ipsum);
+
+		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
+
 		/**
 		 * PANEL
 		 */
@@ -102,7 +114,7 @@ public class Gui extends MalisisGui
 		/**
 		 * TAB GROUP
 		 */
-		UITabGroup tabGroup = new UITabGroup(this, Position.TOP);
+		UITabGroup tabGroup = new UITabGroup(this, TabPosition.TOP);
 		//		UIImage img = new UIImage(this, new ItemStack(Items.nether_star));
 		//		UIImage img2 = new UIImage(this, new ItemStack(Blocks.gold_ore));
 

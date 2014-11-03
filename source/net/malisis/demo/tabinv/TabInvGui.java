@@ -30,7 +30,7 @@ import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UITabGroup.Position;
+import net.malisis.core.client.gui.component.container.UITabGroup.TabPosition;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -76,7 +76,7 @@ public class TabInvGui extends MalisisGui
 
 		//create the tabGroup that will hold the tabs
 		//the position is relative to the container it will be attached to
-		UITabGroup tabGroup = new UITabGroup(this, Position.BOTTOM).setPosition(10, 0);
+		UITabGroup tabGroup = new UITabGroup(this, TabPosition.BOTTOM).setPosition(10, 0);
 		//create the tabs with a title. Can accept UIImage too (and UIImage can be Icon+Texture or directly ItemStack)
 		//register this tells that this gui will receive events fired by the tab (TabChangeEvent and input events but we don't catch them)
 		tabInventory = new UITab(this, "TE Inventory").register(this);

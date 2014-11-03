@@ -38,9 +38,7 @@ import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.model.MalisisModel;
-import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ordinastie
@@ -60,7 +58,7 @@ public class TestRenderer extends BaseRenderer
 
 	private void setup(long start)
 	{
-		model = MalisisModel.load(new ResourceLocation(MalisisDemos.modid, "models/frame.obj"));
+		//model = MalisisModel.load(new ResourceLocation(MalisisDemos.modid, "models/frame.obj"));
 
 		startTime = start;
 		shape.enableMergedVertexes();
@@ -81,8 +79,8 @@ public class TestRenderer extends BaseRenderer
 
 		color = new ChainedTransformation(
 					new ColorTransform(0xFF0000, 0x0000FF).forTicks(30),
-					new ColorTransform(0x00FF00).forTicks(30),
-					new ColorTransform(0xFF0000).forTicks(30)
+					new ColorTransform(0x0000FF, 0x00FF00).forTicks(30),
+					new ColorTransform(0x00FF00, 0xFF0000).forTicks(30)
 				).loop(-1);
 		alpha = new ChainedTransformation(
 					new AlphaTransform(100, 255).forTicks(30),
@@ -107,7 +105,7 @@ public class TestRenderer extends BaseRenderer
 			rp.reset();
 
 			rp.useBlockBrightness.set(false);
-			model.render(this, rp);
+			//model.render(this, rp);
 			return;
 		}
 
@@ -122,9 +120,9 @@ public class TestRenderer extends BaseRenderer
 			rp.interpolateUV.set(true);
 			rp.applyTexture.set(false);
 			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
-			mvt.transform(mvs, ar.getElapsedTime());
-			color.transform(rp, ar.getElapsedTime());
-			alpha.transform(rp, ar.getElapsedTime());
+			//mvt.transform(mvs, ar.getElapsedTime());
+			//color.transform(rp, ar.getElapsedTime());
+			//alpha.transform(rp, ar.getElapsedTime());
 			rp.icon.set(block.getIcon(0, 0));
 
 			drawShape(shape, rp);

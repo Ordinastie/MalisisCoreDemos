@@ -28,11 +28,12 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class TestTileEntity extends TileEntity
 {
 	public boolean rotate;
 	public long startTime;
 	public int num;
+
 }
