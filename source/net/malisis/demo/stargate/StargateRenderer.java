@@ -27,7 +27,7 @@ public class StargateRenderer extends BaseRenderer
 {
 	//the animation renderer handle the timer and elapsed time for animations
 	//it's also a container for animations
-	private AnimationRenderer ar = new AnimationRenderer(this);
+	private AnimationRenderer ar = new AnimationRenderer();
 	//basic cube for inventory rendering
 	private Shape cube;
 	//shape for top face

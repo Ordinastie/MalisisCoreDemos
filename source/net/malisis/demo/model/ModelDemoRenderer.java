@@ -36,7 +36,6 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
@@ -55,7 +54,6 @@ public class ModelDemoRenderer extends BaseRenderer
 	private Shape cube;
 	private Shape socle;
 	private Shape antenna;
-	private int start;
 
 	@Override
 	protected void initialize()
@@ -71,7 +69,7 @@ public class ModelDemoRenderer extends BaseRenderer
 
 	private void loadAnimation()
 	{
-		ar = new AnimationRenderer(this);
+		ar = new AnimationRenderer();
 
 		Rotation r = new Rotation(360).aroundAxis(0, 1, 0).forTicks(40);
 		Translation t = new Translation(0, 0.0F, 0, 0, 0.3F, 0).movement(Transformation.SINUSOIDAL).forTicks(20);
@@ -97,12 +95,11 @@ public class ModelDemoRenderer extends BaseRenderer
 		else if (renderType == TYPE_ISBRH_WORLD)
 		{
 			initialize();
-			start = (int) Minecraft.getMinecraft().theWorld.getTotalWorldTime();
+			ar.setStartTime();
 		}
 		else if (renderType == TYPE_TESR_WORLD)
 		{
 			model.resetState();
-			ar.setStartTime(start);
 			next(GL11.GL_POLYGON);
 
 			rp.icon.set(Blocks.coal_block.getIcon(0, 0));

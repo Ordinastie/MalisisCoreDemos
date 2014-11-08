@@ -63,7 +63,7 @@ public class TestRenderer extends BaseRenderer
 		startTime = start;
 		shape.enableMergedVertexes();
 
-		ar = new AnimationRenderer(this);
+		ar = new AnimationRenderer();
 
 		//@formatter:off
 		mvt = new ParallelTransformation(

@@ -46,7 +46,7 @@ import net.minecraft.init.Blocks;
 public class WaveRenderer extends BaseRenderer
 {
 	//Create the animation renderer
-	private AnimationRenderer ar = new AnimationRenderer(this);
+	private AnimationRenderer ar = new AnimationRenderer();
 	//start time (reset each time the block is redrawn (for debug purpose)
 	private long startTime;
 
