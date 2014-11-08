@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
+import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPanel;
@@ -15,8 +16,6 @@ import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.control.UICloseHandle;
 import net.malisis.core.client.gui.component.control.UIMoveHandle;
 import net.malisis.core.client.gui.component.control.UIResizeHandle;
-import net.malisis.core.client.gui.component.control.UIScrollBar;
-import net.malisis.core.client.gui.component.control.UISlimScrollbar;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UILabel;
 import net.malisis.core.client.gui.component.decoration.UIMultiLineLabel;
@@ -45,6 +44,7 @@ public class Gui extends MalisisGui
 	public Gui(MalisisInventoryContainer inventoryContainer)
 	{
 		setInventoryContainer(inventoryContainer);
+		guiscreenBackground = false;
 
 		/**
 		 * CONTAINER 1
@@ -56,7 +56,8 @@ public class Gui extends MalisisGui
 
 		UISlider slider = new UISlider(this, 150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
 
-		UITextField tf = new UITextField(this, 200, "This textfield will only accept numbers.");
+		UITextField tf = new UITextField(this, "This textfield will only accept numbers.");
+		tf.setSize(200, 0);
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
 
@@ -87,22 +88,42 @@ public class Gui extends MalisisGui
 		/**
 		 * CONTAINER 2
 		 */
-		UIContainer inv = new UIInventory(this, inventoryContainer.getInventory(1));
+		UILabel label1 = new UILabel(this, "This is LABEL!" + EnumChatFormatting.DARK_RED + " Colored!").setPosition(20, 30);
+		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 40);
+		label2.setFontScale(0.8F);
 
+		UIContainer inv = new UIInventory(this, inventoryContainer.getInventory(1));
 		UIContainer tabCont2 = new UIContainer(this);
 
-		tabCont2.add(inv);
-		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
-		tabCont2.add(new UILabel(this, "This is LABEL!" + EnumChatFormatting.DARK_RED + " Colored!").setPosition(20, 30));
+		UITextField mltf = new UITextField(this, true);
+		mltf.setSize(125, 50);
+		mltf.setPosition(0, 55);
+		mltf.setFontScale(2 / 3F);
+		mltf.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis semper mi. Pellentesque dapibus diam egestas orci vulputate, a tempor ex hendrerit. Nullam tristique lacinia quam, a dapibus leo gravida eu. Donec placerat, turpis ut egestas dignissim, sem nibh tincidunt neque, eu facilisis massa felis eu nisl. Aenean pellentesque sed nunc et ultrices. Aenean facilisis convallis mauris in mollis. In porta hendrerit tellus id vehicula. Sed non interdum eros, vel condimentum diam. Sed vestibulum tincidunt velit, ac laoreet metus blandit quis. Aliquam sit amet ullamcorper velit. In tristique viverra imperdiet. Mauris facilisis ac leo non molestie.\r\n"
+				+ "\r\n"
+				+ "Phasellus orci metus, bibendum in molestie eu, interdum lacinia nulla. Nulla facilisi. Duis sagittis suscipit est vitae eleifend. Morbi bibendum tortor nec tincidunt pharetra. Vivamus tortor tortor, egestas sed condimentum ac, tristique non risus. Curabitur magna metus, porta sit amet dictum in, vulputate a dolor. Phasellus viverra euismod tortor, porta ultrices metus imperdiet a. Nulla pellentesque ipsum quis eleifend blandit. Aenean neque nulla, rhoncus et vestibulum eu, feugiat quis erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse lacus justo, porttitor aliquam tellus eu, commodo tristique leo. Suspendisse scelerisque blandit nisl at malesuada. Proin ut tincidunt augue. Phasellus vel nisl sapien.\r\n"
+				+ "\r"
+				+ "Sed ut lacinia tellus. Nam arcu ligula, accumsan id lorem id, dapibus bibendum tortor. Cras eleifend varius est, eget eleifend est commodo at. Vivamus sapien purus, faucibus ac urna id, scelerisque sagittis elit. Curabitur commodo elit nec diam vulputate finibus vitae porttitor magna. Nullam nec feugiat dolor. Pellentesque malesuada dolor arcu, ut sagittis mi mattis eu. Vivamus et tortor non nulla venenatis hendrerit nec faucibus quam. Aliquam laoreet leo in risus tempus placerat. In lobortis nulla id enim semper posuere a et libero. Nullam sit amet sapien commodo, egestas nisi eu, viverra nulla. Cras ac vulputate tellus, nec auctor elit.\r\n"
+				+ "\r"
+				+ "In commodo finibus urna, eu consectetur quam commodo dapibus. Pellentesque metus ligula, ullamcorper non lorem a, dapibus elementum quam. Praesent iaculis pellentesque dui eget pellentesque. Nunc vel varius dui. Aliquam sit amet ex feugiat, aliquet ipsum nec, sollicitudin dolor. Ut ac rhoncus enim. Quisque maximus diam nec neque placerat, euismod blandit purus congue. Integer finibus tellus ligula, eget pretium magna luctus vel. Pellentesque gravida pretium nisl sit amet fermentum. Quisque odio nunc, tristique vitae pretium ut, imperdiet a nunc. Sed eu purus ultricies, tincidunt sapien et, condimentum nunc. Duis luctus augue ac congue luctus. Integer ut commodo turpis, vitae hendrerit quam. Vivamus vulputate efficitur est nec dignissim. Praesent convallis posuere lacus ut suscipit. Aliquam at odio viverra, cursus nulla eget, maximus purus.\r\n"
+				+ "\r\n"
+				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
+		//	mltf.setText("Some text");
 
 		UIMultiLineLabel ipsum = new UIMultiLineLabel(this);
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
 		ipsum.setSize(150, 0);
 		ipsum.setText("Contrairement à une opinion répandue, le Lorem Ipsum n'est pas simplement du texte aléatoire. Il trouve ses racines dans une oeuvre de la littérature latine classique datant de 45 av. J.-C., le rendant vieux de 2000 ans. Un professeur du Hampden-Sydney College, en Virginie, s'est intéressé à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 
+		tabCont2.add(inv);
+		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
+		tabCont2.add(label1);
+		tabCont2.add(label2);
+		tabCont2.add(mltf);
+
 		tabCont2.add(ipsum);
 
-		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
+		//		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
 		/**
 		 * PANEL
@@ -127,7 +148,7 @@ public class Gui extends MalisisGui
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
 
-		tabGroup.setActiveTab(tab1);
+		tabGroup.setActiveTab(tab2);
 		tabGroup.attachTo(panel, true);
 
 		/**
@@ -136,7 +157,7 @@ public class Gui extends MalisisGui
 		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
 		new UICloseHandle(this, playerInv);
 
-		UIWindow window = new UIWindow(this, 300, 240).setPosition(0, -40, Anchor.CENTER | Anchor.MIDDLE);
+		UIWindow window = new UIWindow(this, 300, 240).setPosition(0, -20, Anchor.CENTER | Anchor.MIDDLE).setZIndex(0);
 		window.add(tabGroup);
 		window.add(panel);
 		window.add(playerInv);
@@ -145,7 +166,20 @@ public class Gui extends MalisisGui
 		new UIResizeHandle(this, window);
 		new UICloseHandle(this, window);
 
+		/**
+		 * UIBackgroundContainer
+		 */
+		UIBackgroundContainer bgc = new UIBackgroundContainer(this, "Container Background", 0, 60);
+
+		bgc.setTopLeftColor(0x993333);
+		bgc.setTopRightColor(0x3333FF);
+		bgc.setBottomRightColor(0x993333);
+		bgc.setBottomLeftColor(0x3333FF);
+		bgc.setBottomAlpha(0);
+
+		addToScreen(bgc);
 		addToScreen(window);
+
 	}
 
 	@Subscribe
