@@ -24,8 +24,6 @@
 
 package net.malisis.demo.test;
 
-import java.util.List;
-
 import net.malisis.core.renderer.BaseRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.AnimationRenderer;
@@ -36,9 +34,10 @@ import net.malisis.core.renderer.animation.transformation.ParallelTransformation
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
-import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.model.MalisisModel;
-import net.minecraft.client.Minecraft;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ordinastie
@@ -58,7 +57,7 @@ public class TestRenderer extends BaseRenderer
 
 	private void setup(long start)
 	{
-		//model = MalisisModel.load(new ResourceLocation(MalisisDemos.modid, "models/frame.obj"));
+		model = new MalisisModel(new ResourceLocation(MalisisDemos.modid, "models/cube.obj"));
 
 		startTime = start;
 		shape.enableMergedVertexes();
@@ -101,31 +100,31 @@ public class TestRenderer extends BaseRenderer
 
 		if (renderType == TYPE_ISBRH_WORLD)
 		{
-			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
+			setup(0);
 			rp.reset();
 
-			rp.useBlockBrightness.set(false);
-			//model.render(this, rp);
+			set(Blocks.quartz_block);
+			model.render(this, rp);
 			return;
 		}
 
 		if (renderType == TYPE_TESR_WORLD)
 		{
-			ar.setStartTime(startTime);
-			enableBlending();
-
-			shape.resetState();
-			applyTexture(shape);
-			rp.reset();
-			rp.interpolateUV.set(true);
-			rp.applyTexture.set(false);
-			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
-			//mvt.transform(mvs, ar.getElapsedTime());
-			//color.transform(rp, ar.getElapsedTime());
-			//alpha.transform(rp, ar.getElapsedTime());
-			rp.icon.set(block.getIcon(0, 0));
-
-			drawShape(shape, rp);
+			//			ar.setStartTime(startTime);
+			//			enableBlending();
+			//
+			//			shape.resetState();
+			//			applyTexture(shape);
+			//			rp.reset();
+			//			rp.interpolateUV.set(true);
+			//			rp.applyTexture.set(false);
+			//			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
+			//			//mvt.transform(mvs, ar.getElapsedTime());
+			//			//color.transform(rp, ar.getElapsedTime());
+			//			//alpha.transform(rp, ar.getElapsedTime());
+			//			rp.icon.set(block.getIcon(0, 0));
+			//
+			//			drawShape(shape, rp);
 		}
 	}
 }

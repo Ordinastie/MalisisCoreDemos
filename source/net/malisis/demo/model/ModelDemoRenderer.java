@@ -59,7 +59,7 @@ public class ModelDemoRenderer extends BaseRenderer
 	protected void initialize()
 	{
 		rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
-		model = MalisisModel.load(rlModel);
+		model = new MalisisModel(rlModel);
 		socle = model.getShape("Socle");
 		antenna = model.getShape("Antenna");
 		cube = new Cube();

@@ -49,7 +49,7 @@ public class Gui extends MalisisGui
 		/**
 		 * CONTAINER 1
 		 */
-		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, EnumChatFormatting.AQUA + "with a tooltip!"));
+		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, EnumChatFormatting.AQUA + "with a tooltip!", 5));
 
 		UIRadioButton rb1 = new UIRadioButton(this, "newRb", "Radio value 1").setPosition(0, 14);
 		UIRadioButton rb2 = new UIRadioButton(this, "newRb", "Radio value 2").setPosition(rb1.getWidth() + 10, 14);
@@ -148,7 +148,7 @@ public class Gui extends MalisisGui
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
 
-		tabGroup.setActiveTab(tab2);
+		tabGroup.setActiveTab(tab1);
 		tabGroup.attachTo(panel, true);
 
 		/**
