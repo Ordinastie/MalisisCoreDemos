@@ -1,0 +1,6 @@
+out/
+*.stickyStorage
+*.bat
+*.iws
+*.ipr
+*.iml
