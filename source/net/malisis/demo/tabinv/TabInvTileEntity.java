@@ -32,6 +32,7 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -175,6 +176,18 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	{
 		//get the gui to open (do not forget @SideOnly
 		return new TabInvGui(this, container);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag)
+	{
+		super.writeToNBT(tag);
 	}
 
 	//special slot just to store what kind of filter we need for the slot

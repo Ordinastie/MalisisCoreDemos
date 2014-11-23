@@ -64,7 +64,7 @@ public class Gui extends MalisisGui
 		UISelect select = new UISelect(this, 100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2",
 				"Very ultra longer option 3", "Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
 		select.setPosition(0, 70);
-		select.maxExpandedWidth(120);
+		select.setMaxExpandedWidth(120);
 		//select.maxDisplayedOptions(5);
 		select.select(2);
 

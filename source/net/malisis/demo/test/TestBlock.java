@@ -41,7 +41,7 @@ import net.minecraft.world.World;
 public class TestBlock extends Block implements ITileEntityProvider
 {
 	public static int currentPass = 0;
-	public static int renderId = -1;
+	public static int renderId = 0;
 
 	protected TestBlock()
 	{

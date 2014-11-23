@@ -121,8 +121,9 @@ public class MultiBlockBlock extends Block implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest)
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
 	{
+
 		//we need to destroy the multiBlock if one of its block gets destroy
 		MultiBlock.destroy(world, x, y, z);
 		//As safety, set block to air in case the MultiBlock couldn't be found.
