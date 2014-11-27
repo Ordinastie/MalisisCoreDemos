@@ -24,8 +24,9 @@
 
 package net.malisis.demo.test;
 
-import net.malisis.core.renderer.BaseRenderer;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
+import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.AlphaTransform;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
@@ -43,7 +44,7 @@ import net.minecraft.util.ResourceLocation;
  * @author Ordinastie
  *
  */
-public class TestRenderer extends BaseRenderer
+public class TestRenderer extends MalisisRenderer
 {
 	private AnimationRenderer ar;
 	private RenderParameters rp = new RenderParameters();
@@ -91,14 +92,14 @@ public class TestRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == TYPE_ISBRH_INVENTORY)
+		if (renderType == RenderType.ISBRH_INVENTORY)
 		{
 			shape.resetState();
 			drawShape(shape);
 			return;
 		}
 
-		if (renderType == TYPE_ISBRH_WORLD)
+		if (renderType == RenderType.ISBRH_WORLD)
 		{
 			setup(0);
 			rp.reset();
@@ -108,7 +109,7 @@ public class TestRenderer extends BaseRenderer
 			return;
 		}
 
-		if (renderType == TYPE_TESR_WORLD)
+		if (renderType == RenderType.TESR_WORLD)
 		{
 			//			ar.setStartTime(startTime);
 			//			enableBlending();

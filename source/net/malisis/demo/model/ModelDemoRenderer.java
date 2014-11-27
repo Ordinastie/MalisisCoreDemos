@@ -24,7 +24,8 @@
 
 package net.malisis.demo.model;
 
-import net.malisis.core.renderer.BaseRenderer;
+import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
@@ -45,7 +46,7 @@ import org.lwjgl.opengl.GL11;
  * @author Ordinastie
  *
  */
-public class ModelDemoRenderer extends BaseRenderer
+public class ModelDemoRenderer extends MalisisRenderer
 {
 	public static int renderId;
 	private ResourceLocation rlModel = new ResourceLocation(MalisisDemos.modid, "models/hopper.obj");
@@ -85,19 +86,19 @@ public class ModelDemoRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == TYPE_ISBRH_INVENTORY)
+		if (renderType == RenderType.ISBRH_INVENTORY)
 		{
 			rp.reset();
 			cube.resetState();
 			drawShape(cube, rp);
 			return;
 		}
-		else if (renderType == TYPE_ISBRH_WORLD)
+		else if (renderType == RenderType.ISBRH_WORLD)
 		{
 			initialize();
 			ar.setStartTime();
 		}
-		else if (renderType == TYPE_TESR_WORLD)
+		else if (renderType == RenderType.TESR_WORLD)
 		{
 			model.resetState();
 			next(GL11.GL_POLYGON);

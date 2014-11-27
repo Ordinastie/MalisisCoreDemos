@@ -1,9 +1,9 @@
 package net.malisis.demo.minty;
 
-import net.malisis.core.renderer.BaseRenderer;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.minecraft.init.Blocks;
 
-public class MintyOreRenderer extends BaseRenderer
+public class MintyOreRenderer extends MalisisRenderer
 {
 	@Override
 	public void render()

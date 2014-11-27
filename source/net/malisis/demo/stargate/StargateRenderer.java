@@ -2,8 +2,9 @@ package net.malisis.demo.stargate;
 
 import java.util.List;
 
-import net.malisis.core.renderer.BaseRenderer;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
+import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.AlphaTransform;
@@ -23,7 +24,7 @@ import net.malisis.core.renderer.model.MalisisModel;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class StargateRenderer extends BaseRenderer
+public class StargateRenderer extends MalisisRenderer
 {
 	//the animation renderer handle the timer and elapsed time for animations
 	//it's also a container for animations
@@ -339,14 +340,14 @@ public class StargateRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == TYPE_TESR_WORLD)
+		if (renderType == RenderType.TESR_WORLD)
 			renderStargateTileEntity();
-		else if (renderType == TYPE_ISBRH_WORLD)
+		else if (renderType == RenderType.ISBRH_WORLD)
 		{
 			//recall initialize() (for debug purpose)
 			initialize();
 		}
-		else if (renderType == TYPE_ISBRH_INVENTORY)
+		else if (renderType == RenderType.ISBRH_INVENTORY)
 		{
 			//draw standard cube with default renderparameters
 			cube.resetState();

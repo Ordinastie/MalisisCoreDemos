@@ -26,7 +26,8 @@ package net.malisis.demo.waves;
 
 import java.util.List;
 
-import net.malisis.core.renderer.BaseRenderer;
+import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.BrightnessTransform;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
@@ -43,7 +44,7 @@ import net.minecraft.init.Blocks;
  * @author Ordinastie
  *
  */
-public class WaveRenderer extends BaseRenderer
+public class WaveRenderer extends MalisisRenderer
 {
 	//Create the animation renderer
 	private AnimationRenderer ar = new AnimationRenderer();
@@ -92,19 +93,19 @@ public class WaveRenderer extends BaseRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == TYPE_ISBRH_INVENTORY)
+		if (renderType == RenderType.ISBRH_INVENTORY)
 		{
 			drawShape(cube);
 			return;
 		}
 
-		if (renderType == TYPE_ISBRH_WORLD)
+		if (renderType == RenderType.ISBRH_WORLD)
 		{
 			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
 			return;
 		}
 
-		if (renderType == TYPE_TESR_WORLD)
+		if (renderType == RenderType.TESR_WORLD)
 		{
 			ar.setStartTime(startTime);
 			enableBlending();

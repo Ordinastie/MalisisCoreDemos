@@ -34,6 +34,7 @@ import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlockDemo;
 import net.malisis.demo.multipleinv.MultipleInv;
+import net.malisis.demo.rwldemo.RWLDemo;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
 import net.malisis.demo.stargate.Stargate;
 import net.malisis.demo.tabinv.TabInv;
@@ -86,6 +87,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new MultiBlockDemo());
 		demos.add(new TabInv());
 		demos.add(new Waves());
+		demos.add(new RWLDemo());
 	}
 
 	//#region IMalisisMod
