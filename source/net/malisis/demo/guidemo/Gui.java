@@ -5,9 +5,9 @@ import java.util.Arrays;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
+import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
-import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
@@ -28,8 +28,12 @@ import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
+import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
+import net.malisis.core.inventory.MalisisSlot;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.eventbus.Subscribe;
@@ -68,8 +72,8 @@ public class Gui extends MalisisGui
 		//select.maxDisplayedOptions(5);
 		select.select(2);
 
-		btn1 = new UIButton(this, "Horizontal", 90).setPosition(0, 85, Anchor.CENTER);
-		btn2 = new UIButton(this, "<").setPosition(-50, 85, Anchor.CENTER).setSize(10, 10);
+		btn1 = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
+		btn2 = new UIButton(this, "<").setPosition(-49, 85, Anchor.CENTER).setSize(10, 10);
 		btnOver = new UIButton(this, ">").setPosition(50, 85, Anchor.CENTER).setSize(10, 10);
 
 		UIContainer tabCont1 = new UIContainer(this);
@@ -85,6 +89,14 @@ public class Gui extends MalisisGui
 		tabCont1.add(btn2);
 		tabCont1.add(btnOver);
 
+		int i = 0;
+		for (Item item : new Item[] { Items.cooked_porkchop, Items.cooked_beef, Items.cooked_chicken, Items.baked_potato })
+		{
+			UIImage img = new UIImage(this, new ItemStack(item));
+			UIButton btnImage = new UIButton(this, img).setSize(0, 0).setPosition(0, i++ * 24, Anchor.RIGHT);
+			tabCont1.add(btnImage);
+		}
+
 		/**
 		 * CONTAINER 2
 		 */
@@ -92,8 +104,15 @@ public class Gui extends MalisisGui
 		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 40);
 		label2.setFontScale(0.8F);
 
-		UIContainer inv = new UIInventory(this, inventoryContainer.getInventory(1));
 		UIContainer tabCont2 = new UIContainer(this);
+
+		MalisisInventory inv = inventoryContainer.getInventory(1);
+		i = 0;
+		for (MalisisSlot slot : inv.getSlots())
+		{
+			tabCont2.add(new UISlot(this, slot).setPosition(i * 18, 0).setTooltip("Slot number " + (i + 1)));
+			i++;
+		}
 
 		UITextField mltf = new UITextField(this, true);
 		mltf.setSize(125, 50);
@@ -115,7 +134,6 @@ public class Gui extends MalisisGui
 		ipsum.setSize(150, 0);
 		ipsum.setText("Contrairement à une opinion répandue, le Lorem Ipsum n'est pas simplement du texte aléatoire. Il trouve ses racines dans une oeuvre de la littérature latine classique datant de 45 av. J.-C., le rendant vieux de 2000 ans. Un professeur du Hampden-Sydney College, en Virginie, s'est intéressé à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 
-		tabCont2.add(inv);
 		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
 		tabCont2.add(label1);
 		tabCont2.add(label2);
