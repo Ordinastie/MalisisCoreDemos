@@ -104,6 +104,7 @@ public class RwlRenderer extends MalisisRenderer
 		ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
 
 		set(mop.blockX + dir.offsetX, mop.blockY + dir.offsetY, mop.blockZ + dir.offsetZ);
+		set(mop.blockX, mop.blockY, mop.blockZ);
 		//set(-1, 3, 6);
 
 		int color = 0x000066;
@@ -122,13 +123,14 @@ public class RwlRenderer extends MalisisRenderer
 
 		ForgeDirection facing = EntityUtils.getEntityFacing(player);
 		float a = 0;
-		String[] texts = { x + "," + y + "," + z, facing + " / " + a, "" + player.rotationYaw };
-		x = 0;
-		z = 0;
+		String[] texts = { x + "," + y + "," + z, facing + " / " + a, "" + player.rotationYaw, "Chunk " + (x >> 4) + ", " + (z >> 4) };
+		int ox = 0;
+		int oy = 1;
+		int oz = 0;
 		//	color = 0xAAAAFF;
 		if (facing == ForgeDirection.NORTH)
 		{
-			z = 1;
+			oz = 1;
 		}
 		else if (facing == ForgeDirection.EAST)
 		{
@@ -137,23 +139,38 @@ public class RwlRenderer extends MalisisRenderer
 		else if (facing == ForgeDirection.SOUTH)
 		{
 			a = 180;
-			x = -1;
+			ox = -1;
 		}
 		else if (facing == ForgeDirection.WEST)
 		{
 			a = 270;
-			x = -1;
-			z = 1;
+			ox = -1;
+			oz = 1;
 		}
 
 		GL11.glRotatef(-a, 0, 1, 0);
+
+		if (dir == ForgeDirection.UP)
+		{
+			GL11.glRotatef(-90, 1, 0, 0);
+			oz = 1;
+			if (facing == ForgeDirection.NORTH)
+			{
+				ox = 0;
+				oy = 0;
+			}
+			if (facing == ForgeDirection.WEST)
+			{
+				oy = 0;
+			}
+		}
 
 		int i = 0;
 		for (String str : texts)
 		{
 			int offset = getStringWidth(str);
-			float x = this.x - offset * 0.01F;
-			drawString(str, x, 1 - i * 0.1F, z, color, false);
+			float x = ox - offset * 0.01F;
+			drawString(str, x, oy - i * 0.1F, oz, color, false);
 			i++;
 		}
 
