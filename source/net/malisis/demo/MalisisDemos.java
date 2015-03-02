@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.configuration.Settings;
+import net.malisis.demo.collision.Collision;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
@@ -88,6 +89,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new TabInv());
 		demos.add(new Waves());
 		demos.add(new RWLDemo());
+		demos.add(new Collision());
 	}
 
 	//#region IMalisisMod
