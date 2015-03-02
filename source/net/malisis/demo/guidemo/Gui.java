@@ -31,6 +31,7 @@ import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,7 @@ public class Gui extends MalisisGui
 {
 	private UIPanel panel;
 	private UITab tab1;
-	private UIButton btn1, btn2, btnOver;
+	private UIButton btnL, btnR, btnHorizontal;
 	private UICheckBox cb;
 
 	public Gui(MalisisInventoryContainer inventoryContainer)
@@ -64,7 +65,7 @@ public class Gui extends MalisisGui
 		tf.setSize(200, 0);
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
-		tf.setColors(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
+		tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		UISelect select = new UISelect(this, 100, UISelect.Option.fromList(Arrays.asList("Option 1", "Option 2",
 				"Very ultra longer option 3", "Shorty", "Moar options", "Even more", "Even Steven", "And a potato too")));
@@ -74,9 +75,12 @@ public class Gui extends MalisisGui
 		select.select(2);
 		select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, false);
 
-		btn1 = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
-		btn2 = new UIButton(this, "<").setPosition(-49, 85, Anchor.CENTER).setSize(10, 10);
-		btnOver = new UIButton(this, ">").setPosition(50, 85, Anchor.CENTER).setSize(10, 10);
+		btnHorizontal = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
+		btnHorizontal.setOptions(0x660000, 0xFF0000, 0xFFCCCC, false);
+		btnL = new UIButton(this, "O").setPosition(-49, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
+		btnL.setOptions(0x660000, 0xFF0000, 0xFFCCCC, false);
+		btnR = new UIButton(this, "O").setPosition(50, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
+		btnR.setOptions(0x660000, 0xFF0000, 0xFFCCCC, false);
 
 		UIContainer tabCont1 = new UIContainer(this);
 		tabCont1.add(cb);
@@ -87,22 +91,23 @@ public class Gui extends MalisisGui
 		tabCont1.add(tf);
 		tabCont1.add(select);
 
-		tabCont1.add(btn1);
-		tabCont1.add(btn2);
-		tabCont1.add(btnOver);
+		tabCont1.add(btnHorizontal);
+		tabCont1.add(btnL);
+		tabCont1.add(btnR);
 
 		int i = 0;
-		for (Item item : new Item[] { Items.cooked_porkchop, Items.cooked_beef, Items.cooked_chicken, Items.baked_potato })
+		for (Item item : new Item[] { Items.cooked_porkchop, Items.cooked_beef, Items.cooked_chicken, Items.baked_potato,
+				Item.getItemFromBlock(Blocks.glass_pane) })
 		{
 			UIImage img = new UIImage(this, new ItemStack(item));
-			UIButton btnImage = new UIButton(this, img).setSize(10, 10).setPosition(0, i++ * 24, Anchor.RIGHT);
+			UIButton btnImage = new UIButton(this, img).setPosition(0, i++ * 19, Anchor.RIGHT);
 			tabCont1.add(btnImage);
 		}
 
 		/**
 		 * CONTAINER 2
 		 */
-		UILabel label1 = new UILabel(this, EnumChatFormatting.DARK_BLUE + "Colored label!").setPosition(20, 30);
+		UILabel label1 = new UILabel(this, EnumChatFormatting.UNDERLINE + "Colored label!").setPosition(20, 30);
 		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 40);
 		label2.setFontScale(2F / 3F);
 
@@ -120,6 +125,7 @@ public class Gui extends MalisisGui
 		mltf.setSize(125, 50);
 		mltf.setPosition(0, 55);
 		mltf.setFontScale(2 / 3F);
+		mltf.setEditable(false);
 		//		mltf.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis semper mi. Pellentesque dapibus diam egestas orci vulputate, a tempor ex hendrerit. Nullam tristique lacinia quam, a dapibus leo gravida eu. Donec placerat, turpis ut egestas dignissim, sem nibh tincidunt neque, eu facilisis massa felis eu nisl. Aenean pellentesque sed nunc et ultrices. Aenean facilisis convallis mauris in mollis. In porta hendrerit tellus id vehicula. Sed non interdum eros, vel condimentum diam. Sed vestibulum tincidunt velit, ac laoreet metus blandit quis. Aliquam sit amet ullamcorper velit. In tristique viverra imperdiet. Mauris facilisis ac leo non molestie.\r\n"
 		//				+ "\r\n"
 		//				+ "Phasellus orci metus, bibendum in molestie eu, interdum lacinia nulla. Nulla facilisi. Duis sagittis suscipit est vitae eleifend. Morbi bibendum tortor nec tincidunt pharetra. Vivamus tortor tortor, egestas sed condimentum ac, tristique non risus. Curabitur magna metus, porta sit amet dictum in, vulputate a dolor. Phasellus viverra euismod tortor, porta ultrices metus imperdiet a. Nulla pellentesque ipsum quis eleifend blandit. Aenean neque nulla, rhoncus et vestibulum eu, feugiat quis erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse lacus justo, porttitor aliquam tellus eu, commodo tristique leo. Suspendisse scelerisque blandit nisl at malesuada. Proin ut tincidunt augue. Phasellus vel nisl sapien.\r\n"
@@ -130,6 +136,7 @@ public class Gui extends MalisisGui
 		//				+ "\r\n"
 		//				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
 		mltf.setText("Line 1\n" + "Line 2\r\n" + "Line 3\r" + "Line 4");
+		mltf.getScrollbar().setAutoHide(true);
 
 		UIMultiLineLabel ipsum = new UIMultiLineLabel(this);
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
@@ -178,8 +185,8 @@ public class Gui extends MalisisGui
 		tab1 = new UITab(this, "Tab 1");
 		UITab tab2 = new UITab(this, "Tab 2");
 
-		tab1.setColor(0xFFDDEE);
-		tab2.setColor(0xCCCCFF);;
+		tab1.setOptions(0x660000, 0xFF0000, 0x6600CC, 0xFFDDEE, false, false);
+		tab2.setBgColor(0xCCCCFF);;
 
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
@@ -226,6 +233,6 @@ public class Gui extends MalisisGui
 		int r = v;
 		int b = 255 - g;
 		//MalisisCore.message(r + " > " + Integer.toHexString(r << 16 | 0x00FFFF));
-		tab1.setColor(r << 16 | g << 8 | b);
+		tab1.setBgColor(r << 16 | g << 8 | b);
 	}
 }
