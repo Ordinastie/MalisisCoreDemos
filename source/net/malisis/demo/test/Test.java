@@ -51,7 +51,7 @@ public class Test implements IDemo
 	{
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
-			//new TestRenderer().registerFor(TestBlock.class, TestTileEntity.class);
+			new TestRenderer().registerFor(TestBlock.class, TestTileEntity.class);
 		}
 	}
 }

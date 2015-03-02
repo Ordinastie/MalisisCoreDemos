@@ -73,7 +73,8 @@ public class TestBlock extends Block implements ITileEntityProvider
 		if (!world.isRemote)
 			return true;
 
-		new TestGui().display();
+		//new TestGui().display();
+		((TestTileEntity) world.getTileEntity(x, y, z)).progress = 0;
 
 		return true;
 	}

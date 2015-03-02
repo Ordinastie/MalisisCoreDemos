@@ -35,10 +35,13 @@ import net.malisis.core.renderer.animation.transformation.ParallelTransformation
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
+import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
@@ -62,6 +65,7 @@ public class TestRenderer extends MalisisRenderer
 
 		startTime = start;
 		shape.enableMergedVertexes();
+		shape = new Cube();
 
 		ar = new AnimationRenderer();
 
@@ -105,27 +109,32 @@ public class TestRenderer extends MalisisRenderer
 			rp.reset();
 
 			set(Blocks.quartz_block);
-			model.render(this, rp);
+			//model.render(this, rp);
 			return;
 		}
 
 		if (renderType == RenderType.TESR_WORLD)
 		{
+
+			GL11.glPushMatrix();
+
 			//			ar.setStartTime(startTime);
 			//			enableBlending();
 			//
-			//			shape.resetState();
-			//			applyTexture(shape);
-			//			rp.reset();
-			//			rp.interpolateUV.set(true);
-			//			rp.applyTexture.set(false);
+			shape.resetState();
+			applyTexture(shape);
+			rp.reset();
+			rp.interpolateUV.set(true);
+			rp.applyTexture.set(false);
 			//			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
 			//			//mvt.transform(mvs, ar.getElapsedTime());
 			//			//color.transform(rp, ar.getElapsedTime());
 			//			//alpha.transform(rp, ar.getElapsedTime());
 			//			rp.icon.set(block.getIcon(0, 0));
 			//
-			//			drawShape(shape, rp);
+			drawShape(shape, rp);
+			next();
+			GL11.glPopMatrix();
 		}
 	}
 }

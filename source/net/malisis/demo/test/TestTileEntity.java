@@ -35,5 +35,13 @@ public class TestTileEntity extends TileEntity
 	public boolean rotate;
 	public long startTime;
 	public int num;
+	public int progress;
 
+	@Override
+	public void updateEntity()
+	{
+		if (progress < 200)
+			progress++;
+
+	}
 }
