@@ -26,7 +26,8 @@ package net.malisis.demo.tabinv;
 
 import io.netty.buffer.ByteBuf;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-import net.malisis.demo.NetworkHandler;
+import net.malisis.core.network.MalisisMessage;
+import net.malisis.demo.MalisisDemos;
 import net.minecraft.inventory.Container;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -38,8 +39,13 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
+@MalisisMessage
 public class TabInvMessage implements IMessageHandler<TabInvMessage.Packet, IMessage>
 {
+	public TabInvMessage()
+	{
+		MalisisDemos.network.registerMessage(this, TabInvMessage.Packet.class, Side.SERVER);
+	}
 
 	@Override
 	public IMessage onMessage(Packet message, MessageContext ctx)
@@ -66,7 +72,7 @@ public class TabInvMessage implements IMessageHandler<TabInvMessage.Packet, IMes
 	public static void sendTab(int tab)
 	{
 		//just send a new packet with the tab
-		NetworkHandler.network.sendToServer(new Packet(tab));
+		MalisisDemos.network.sendToServer(new Packet(tab));
 	}
 
 	/**

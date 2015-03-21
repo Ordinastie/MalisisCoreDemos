@@ -53,12 +53,17 @@ public class BankGui extends MalisisGui
 	public BankGui(MalisisInventoryContainer container)
 	{
 		setInventoryContainer(container);
+	}
+
+	@Override
+	public void construct()
+	{
 
 		UIWindow window = new UIWindow(this, "Bank", UIPlayerInventory.INVENTORY_WIDTH + 39,
 				62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
 
 		int i = 0;
-		for (MalisisSlot slot : container.getInventory(1).getSlots())
+		for (MalisisSlot slot : inventoryContainer.getInventory(1).getSlots())
 		{
 			UIPanel panel = new UIPanel(this, UIPlayerInventory.INVENTORY_WIDTH + 29, 62);
 			panel.setPosition(0, 10 + i++ * 65);
@@ -77,7 +82,7 @@ public class BankGui extends MalisisGui
 			slotCont.put((CardSlot) slot, uicont);
 		}
 
-		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
 		playerInv.setPosition(-3, 0, Anchor.BOTTOM | Anchor.RIGHT);
 
 		window.add(playerInv);

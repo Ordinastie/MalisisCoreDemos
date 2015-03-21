@@ -42,7 +42,8 @@ import org.lwjgl.opengl.GL11;
 public class TestGui extends MalisisGui
 {
 
-	public TestGui()
+	@Override
+	public void construct()
 	{
 		UIWindow window = new UIWindow(this, "Test GUI", 300, 200);
 		UIBezier bezier = new UIBezier(this);

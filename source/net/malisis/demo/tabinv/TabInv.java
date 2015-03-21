@@ -25,10 +25,8 @@
 package net.malisis.demo.tabinv;
 
 import net.malisis.demo.IDemo;
-import net.malisis.demo.NetworkHandler;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * This demo is designed to detail how to handle different inventories in different GUI tabs.
@@ -54,9 +52,6 @@ public class TabInv implements IDemo
 
 	@Override
 	public void init()
-	{
-		//register changing tab message
-		NetworkHandler.register(TabInvMessage.class, TabInvMessage.Packet.class, Side.SERVER);
-	}
+	{}
 
 }

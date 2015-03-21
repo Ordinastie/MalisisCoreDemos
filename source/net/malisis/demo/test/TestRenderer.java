@@ -42,6 +42,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Sphere;
 
 /**
  * @author Ordinastie
@@ -110,6 +111,7 @@ public class TestRenderer extends MalisisRenderer
 
 			set(Blocks.quartz_block);
 			//model.render(this, rp);
+
 			return;
 		}
 
@@ -132,7 +134,8 @@ public class TestRenderer extends MalisisRenderer
 			//			//alpha.transform(rp, ar.getElapsedTime());
 			//			rp.icon.set(block.getIcon(0, 0));
 			//
-			drawShape(shape, rp);
+			//drawShape(shape, rp);
+			new Sphere().draw(5, 10, 5);
 			next();
 			GL11.glPopMatrix();
 		}

@@ -25,12 +25,12 @@
 package net.malisis.demo.tabinv;
 
 import net.malisis.core.client.gui.Anchor;
+import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UITabGroup.TabPosition;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -54,13 +54,17 @@ public class TabInvGui extends MalisisGui
 		//link this Gui with a container
 		//activates some behavior input behavior and render (like the picked itemStack on the cursor)
 		setInventoryContainer(container);
-
 		this.te = te;
+	}
+
+	@Override
+	public void construct()
+	{
 
 		//create the first window, with a title, size and position
 		UIWindow inventoryWindow = new UIWindow(this, "TE Inventory", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);
 		//create the inventory container and with the first inventory
-		UIInventory inv = new UIInventory(this, container.getInventory(1), 4).setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
+		UIInventory inv = new UIInventory(this, inventoryContainer.getInventory(1), 4).setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
 		//add the inventory to the window
 		inventoryWindow.add(inv);
 
@@ -76,7 +80,7 @@ public class TabInvGui extends MalisisGui
 
 		//create the tabGroup that will hold the tabs
 		//the position is relative to the container it will be attached to
-		UITabGroup tabGroup = new UITabGroup(this, TabPosition.BOTTOM).setPosition(10, 0);
+		UITabGroup tabGroup = new UITabGroup(this, ComponentPosition.BOTTOM).setPosition(10, 0);
 		//create the tabs with a title. Can accept UIImage too (and UIImage can be Icon+Texture or directly ItemStack)
 		//register this tells that this gui will receive events fired by the tab (TabChangeEvent and input events but we don't catch them)
 		tabInventory = new UITab(this, "TE Inventory").register(this);
@@ -94,7 +98,7 @@ public class TabInvGui extends MalisisGui
 		//windows are centered by default, so 0, 60 mean x-centered, and y-centered + 60 px (to leave place for the tabs)
 		playerWindow.setPosition(0, 60);
 		//create the player inventory container
-		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
 		//add player inv
 		playerWindow.add(playerInv);
 

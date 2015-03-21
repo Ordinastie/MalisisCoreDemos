@@ -51,20 +51,24 @@ public class SidedGui extends MalisisGui
 		this.tileEntity = te;
 		//set the InventoryContainer for the GUI
 		setInventoryContainer(container);
+	}
 
+	@Override
+	public void construct()
+	{
 		//create the window
 		UIWindow window = new UIWindow(this, 190, 230);
 
 		//create the inventory containers (UIContainer)
-		UIInventory contTriage = new UIInventory(this, te.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);
-		UIInventory contIngots = new UIInventory(this, te.ingotsInventory, 4).setPosition(0, 40, Anchor.LEFT);
-		UIInventory contStone = new UIInventory(this, te.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
+		UIInventory contTriage = new UIInventory(this, tileEntity.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);
+		UIInventory contIngots = new UIInventory(this, tileEntity.ingotsInventory, 4).setPosition(0, 40, Anchor.LEFT);
+		UIInventory contStone = new UIInventory(this, tileEntity.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
 
 		//create the progress bar
 		progressBar = new ProgressBar(this).setPosition(0, 30, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
 
 		//create the player inventory container
-		UIPlayerInventory playerInv = new UIPlayerInventory(this, container.getPlayerInventory());
+		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
 
 		//add everything to the window
 		window.add(contTriage);

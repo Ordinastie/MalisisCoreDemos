@@ -27,7 +27,9 @@ package net.malisis.demo;
 import java.util.ArrayList;
 
 import net.malisis.core.IMalisisMod;
+import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
+import net.malisis.core.network.MalisisNetwork;
 import net.malisis.demo.collision.Collision;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
@@ -62,6 +64,7 @@ public class MalisisDemos implements IMalisisMod
 	public static final String version = "1.7.2-0.1";
 
 	public static MalisisDemos instance;
+	public static MalisisNetwork network;
 	public static ArrayList<IDemo> demos = new ArrayList<>();
 
 	public static CreativeTabs tabDemos = new CreativeTabs(modid)
@@ -77,6 +80,9 @@ public class MalisisDemos implements IMalisisMod
 	public MalisisDemos()
 	{
 		instance = this;
+		network = new MalisisNetwork(instance);
+		MalisisCore.registerMod(this);
+
 		demos.add(new Stargate());
 		demos.add(new GuiDemo());
 		demos.add(new Minty());
@@ -120,14 +126,14 @@ public class MalisisDemos implements IMalisisMod
 	//#end IMalisisMod
 
 	@EventHandler
-	public static void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		for (IDemo demo : demos)
 			demo.preInit();
 	}
 
 	@EventHandler
-	public static void init(FMLInitializationEvent event)
+	public void init(FMLInitializationEvent event)
 	{
 		for (IDemo demo : demos)
 			demo.init();
