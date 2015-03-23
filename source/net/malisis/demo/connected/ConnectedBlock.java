@@ -48,12 +48,12 @@ public class ConnectedBlock extends Block
 		super(Material.glass);
 		setHardness(0.6F);
 		setStepSound(soundTypeGlass);
-		setBlockName("connected_block");
+		setUnlocalizedName("connected_block");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{
 		//we just need to create a ConnectedTextureIcon
 		//the textures, however, need to have a predefined pattern split into 2 files.

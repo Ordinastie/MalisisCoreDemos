@@ -44,9 +44,9 @@ public class WaveBlock extends Block implements ITileEntityProvider
 	{
 		//set the usual stuff
 		super(Material.water);
-		setBlockName("waveblock");
+		setUnlocalizedName("waveblock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":waves");
+		setTextureName(MalisisDemos.modid + ":waves");
 	}
 
 	@Override

@@ -46,13 +46,13 @@ public class TestBlock extends Block implements ITileEntityProvider
 	protected TestBlock()
 	{
 		super(Material.wood);
-		setBlockName("testblock");
+		setUnlocalizedName("testblock");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{
 		blockIcon = register.registerIcon(MalisisDemos.modid + ":test_frame");
 		//overlay = register.registerIcon(MalisisDemos.modid + ":ice_overlay");

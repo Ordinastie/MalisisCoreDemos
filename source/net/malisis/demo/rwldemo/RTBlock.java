@@ -45,12 +45,12 @@ public class RTBlock extends MalisisBlock
 	public RTBlock()
 	{
 		super(Material.iron);
-		setBlockName("rtBlock");
+		setUnlocalizedName("rtBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{}
 
 	@Override

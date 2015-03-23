@@ -31,18 +31,15 @@ import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.AlphaTransform;
 import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
 import net.malisis.core.renderer.animation.transformation.ColorTransform;
-import net.malisis.core.renderer.animation.transformation.ParallelTransformation;
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
-import net.malisis.core.renderer.animation.transformation.Translation;
+import net.malisis.core.renderer.element.Shape;
+import net.malisis.core.renderer.element.face.NorthFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.Sphere;
 
 /**
  * @author Ordinastie
@@ -62,7 +59,7 @@ public class TestRenderer extends MalisisRenderer
 
 	private void setup(long start)
 	{
-		model = new MalisisModel(new ResourceLocation(MalisisDemos.modid, "models/cube.obj"));
+		model = new MalisisModel(new ResourceLocation(MalisisDemos.modid, "models/sphere.obj"));
 
 		startTime = start;
 		shape.enableMergedVertexes();
@@ -71,16 +68,7 @@ public class TestRenderer extends MalisisRenderer
 		ar = new AnimationRenderer();
 
 		//@formatter:off
-		mvt = new ParallelTransformation(
-				new ChainedTransformation(
-					new Translation(0, -0.5F, 0, 0, 0, 0).forTicks(20).movement(Transformation.SINUSOIDAL),
-					new Translation(0, 0, 0, 0, -0.5F, 0).forTicks(20).movement(Transformation.SINUSOIDAL)
-					).loop(-1),
-				new ChainedTransformation(
-					new Rotation(-90, 90).aroundAxis(0, 1, 0).forTicks(60).movement(Transformation.SINUSOIDAL),
-					new Rotation(0, -180).aroundAxis(0, 1, 0).forTicks(60).movement(Transformation.SINUSOIDAL)
-					).loop(-1)
-				);
+		mvt = new Rotation(360).aroundAxis(0, 1, 0).forTicks(160).loop(-1);
 
 		color = new ChainedTransformation(
 					new ColorTransform(0xFF0000, 0x0000FF).forTicks(30),
@@ -107,37 +95,27 @@ public class TestRenderer extends MalisisRenderer
 		if (renderType == RenderType.ISBRH_WORLD)
 		{
 			setup(0);
-			rp.reset();
-
-			set(Blocks.quartz_block);
-			//model.render(this, rp);
-
 			return;
 		}
 
 		if (renderType == RenderType.TESR_WORLD)
 		{
+			set(Blocks.planks);
 
-			GL11.glPushMatrix();
-
-			//			ar.setStartTime(startTime);
-			//			enableBlending();
-			//
-			shape.resetState();
-			applyTexture(shape);
 			rp.reset();
-			rp.interpolateUV.set(true);
 			rp.applyTexture.set(false);
-			//			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
-			//			//mvt.transform(mvs, ar.getElapsedTime());
-			//			//color.transform(rp, ar.getElapsedTime());
-			//			//alpha.transform(rp, ar.getElapsedTime());
-			//			rp.icon.set(block.getIcon(0, 0));
-			//
-			//drawShape(shape, rp);
-			new Sphere().draw(5, 10, 5);
-			next();
-			GL11.glPopMatrix();
+
+			shape = new Shape(new NorthFace());
+			shape = new Cube();
+			applyTexture(shape, rp);
+			//shape.rotate(90.0025F, 0, 1, 0);
+
+			ar.animate(shape, mvt);
+			shape.applyMatrix();
+			shape.deductParameters();
+
+			drawShape(shape, rp);
+			//			model.render(this, rp);
 		}
 	}
 }

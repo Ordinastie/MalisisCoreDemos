@@ -56,13 +56,13 @@ public class SidedBlock extends Block implements ITileEntityProvider
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundTypeWood);
-		setBlockName("sidedBlockDemo");
-		setBlockTextureName(MalisisDemos.modid + ":sidedinv");
+		setUnlocalizedName("sidedBlockDemo");
+		setTextureName(MalisisDemos.modid + ":sidedinv");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{
 		//register the icons
 		blockIcon = register.registerIcon(getTextureName());

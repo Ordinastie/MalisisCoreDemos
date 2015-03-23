@@ -58,12 +58,12 @@ public class MultiBlockBlock extends Block implements ITileEntityProvider
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
-		setBlockName("multiBlockDemo");
+		setUnlocalizedName("multiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{
 		//create a MegaTextureIcon() with the right name/path (like for regular icon registering)
 		//second parameter for MegaTextureIcon() is the number of block the texture should spread across (default is texture width / 16)

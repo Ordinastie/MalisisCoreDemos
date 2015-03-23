@@ -46,16 +46,16 @@ public class StargateBlock extends BlockContainer
 	protected StargateBlock()
 	{
 		super(Material.iron);
-		setBlockName("sgBlock");
+		setUnlocalizedName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":stargate");
+		setTextureName(MalisisDemos.modid + ":stargate");
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{
 		//register default icon that will be used for the cube in the inventory
-		super.registerBlockIcons(register);
+		super.registerIcons(register);
 		//register the large icon for top face
 		sgPlatform = register.registerIcon(MalisisDemos.modid + ":sgplatform");
 		//register icon for side

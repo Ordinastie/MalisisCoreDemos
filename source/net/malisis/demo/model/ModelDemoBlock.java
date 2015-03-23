@@ -42,8 +42,8 @@ public class ModelDemoBlock extends Block implements ITileEntityProvider
 	protected ModelDemoBlock()
 	{
 		super(Material.wood);
-		setBlockName("modelDemo");
-		setBlockTextureName(MalisisDemos.modid + ":modeldemo");
+		setUnlocalizedName("modelDemo");
+		setTextureName(MalisisDemos.modid + ":modeldemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
 

@@ -30,7 +30,7 @@ public class ArmoryOre extends Block
 	{
 		//set the usual properties
 		super(Material.rock);
-		this.setBlockName("ArmoryOre");
+		this.setUnlocalizedName("ArmoryOre");
 		this.setHardness(1f);
 		this.setResistance(3f);
 		this.setCreativeTab(MalisisDemos.tabDemos);
@@ -40,7 +40,7 @@ public class ArmoryOre extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		//register a base icon for the block. It will be used under the overlay and will be used with the right color and brightness
 		blockIcon = iconRegister.registerIcon(MalisisDemos.modid + ":ArmoryOre_Ore_Glitter");

@@ -47,9 +47,9 @@ public class Bank extends Block implements ITileEntityProvider
 		super(Material.iron);
 		setHardness(1);
 		setStepSound(soundTypeAnvil);
-		setBlockName("bankdemo");
+		setUnlocalizedName("bankdemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockTextureName(MalisisDemos.modid + ":bankdemo");
+		setTextureName(MalisisDemos.modid + ":bankdemo");
 	}
 
 	@Override

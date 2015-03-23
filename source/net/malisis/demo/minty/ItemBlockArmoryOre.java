@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockArmoryOre extends ItemBlock
 {
-	public static final String[] oreTypes = {"Obsidium", "Azurite", "Crimsonite", "Titanium"};
-	
+	public static final String[] oreTypes = { "Obsidium", "Azurite", "Crimsonite", "Titanium" };
+
 	public ItemBlockArmoryOre(Block block)
 	{
 		super(block);
@@ -17,7 +17,7 @@ public class ItemBlockArmoryOre extends ItemBlock
 	@Override
 	public String getItemStackDisplayName(ItemStack is)
 	{
-		return oreTypes[is.getItemDamage()] + " Ore";
+		return oreTypes[is.getMetadata()] + " Ore";
 	}
 
 	@Override

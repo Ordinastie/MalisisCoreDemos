@@ -47,14 +47,14 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	{
 		super(Material.wood);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setBlockName("collisionBlock");
+		setUnlocalizedName("collisionBlock");
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister register)
+	public void registerIcons(IIconRegister register)
 	{}
 
 	@Override

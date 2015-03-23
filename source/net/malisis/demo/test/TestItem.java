@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
 public class TestItem extends ItemBlock
 {
@@ -54,7 +54,7 @@ public class TestItem extends ItemBlock
 	@Override
 	public String getItemStackDisplayName(ItemStack itemStack)
 	{
-		return "Slippery " + field_150939_a.getUnlocalizedName().substring(5);
+		return "Slippery " + blockInstance.getUnlocalizedName().substring(5);
 	}
 
 	@Override
