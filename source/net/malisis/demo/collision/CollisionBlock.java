@@ -26,14 +26,21 @@ package net.malisis.demo.collision;
 
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.util.AABBUtils;
+import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.chunkcollision.IChunkCollidable;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
@@ -63,8 +70,56 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 		return Blocks.planks.getIcon(side, metadata);
 	}
 
+	private int getRotation(ForgeDirection dir)
+	{
+		switch (dir)
+		{
+			case SOUTH:
+				return 1;
+			case WEST:
+				return 2;
+			case NORTH:
+				return 3;
+			case EAST:
+			default:
+				return 0;
+		}
+	}
+
+	@Override
+	public AxisAlignedBB[] getPlacedBoundingBox(IBlockAccess world, int x, int y, int z, int side, EntityPlayer entity, ItemStack itemStack)
+	{
+		ForgeDirection dir = EntityUtils.getEntityFacing(entity);
+		if (entity.isSneaking())
+			dir = dir.getOpposite();
+		int rotation = getRotation(dir);
+		return AABBUtils.rotate(getBoundingBox(null, x, y, z, BoundingBoxType.COLLISION), rotation);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack item)
+	{
+		ForgeDirection dir = EntityUtils.getEntityFacing(placer);
+		int metadata = dir.ordinal();
+		if (placer.isSneaking())
+			metadata = dir.getOpposite().ordinal();
+		world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+	}
+
 	@Override
 	public AxisAlignedBB[] getBoundingBox(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
+	{
+		return bucket(world, x, y, z, type);
+	}
+
+	public AxisAlignedBB[] bucket(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
+	{
+		//if (type == BoundingBoxType.SELECTION)
+		return new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(-1, 0, 0, 1, 1, 1) };
+
+	}
+
+	public AxisAlignedBB[] stairs(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
 	{
 		if (type == BoundingBoxType.SELECTION)
 			return new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(-2, 0, -2, 3, 4.5F, 3) };
@@ -72,8 +127,9 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 		float bx = 0;
 		float by = 0;
 		float bz = 0;
-		AxisAlignedBB[] aabbs = new AxisAlignedBB[9];
-		for (int i = 0; i < aabbs.length; i++)
+		AxisAlignedBB[] aabbs = new AxisAlignedBB[10];
+		aabbs[0] = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
+		for (int i = 0; i < aabbs.length - 1; i++)
 		{
 			by = i * 0.5F;
 			bx = Math.min(-2 + i, 2);
@@ -81,10 +137,37 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 			if (i < 5)
 				bz = 2;
 
-			aabbs[i] = AxisAlignedBB.getBoundingBox(bx, by, bz, bx + 1, by + 0.5F, bz + 1);
+			aabbs[i + 1] = AxisAlignedBB.getBoundingBox(bx, by, bz, bx + 1, by + 0.5F, bz + 1);
 
 		}
+
+		if (world != null)
+		{
+			int a = 0;
+			switch (world.getBlockMetadata(x, y, z))
+			{
+				case 3:
+					a = 1;
+					break;
+				case 4:
+					a = 2;
+					break;
+				case 2:
+					a = 3;
+					break;
+				case 5:
+					a = 0;
+					break;
+			}
+			AABBUtils.rotate(aabbs, a);
+		}
 		return aabbs;
+	}
+
+	@Override
+	public int blockRange()
+	{
+		return 5;
 	}
 
 	@Override
@@ -104,4 +187,5 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	{
 		return renderId;
 	}
+
 }

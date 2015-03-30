@@ -30,12 +30,14 @@ import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
+import net.malisis.demo.chunknotif.ChunkNotif;
 import net.malisis.demo.collision.Collision;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlockDemo;
+import net.malisis.demo.multiblock2.MultiBlockDemo2;
 import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.rwldemo.RWLDemo;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
@@ -56,7 +58,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-@Mod(modid = MalisisDemos.modid, name = MalisisDemos.modname, version = MalisisDemos.version)
+@Mod(modid = MalisisDemos.modid, name = MalisisDemos.modname, version = MalisisDemos.version, dependencies = "required-after:malisiscore")
 public class MalisisDemos implements IMalisisMod
 {
 	public static final String modid = "malisisdemos";
@@ -96,6 +98,8 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new Waves());
 		demos.add(new RWLDemo());
 		demos.add(new Collision());
+		demos.add(new ChunkNotif());
+		demos.add(new MultiBlockDemo2());
 	}
 
 	//#region IMalisisMod
