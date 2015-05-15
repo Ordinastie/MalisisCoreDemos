@@ -33,6 +33,7 @@ import net.malisis.core.network.MalisisNetwork;
 import net.malisis.demo.chunknotif.ChunkNotif;
 import net.malisis.demo.collision.Collision;
 import net.malisis.demo.connected.Connected;
+import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
@@ -100,6 +101,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new Collision());
 		demos.add(new ChunkNotif());
 		demos.add(new MultiBlockDemo2());
+		demos.add(new FontDemo());
 	}
 
 	//#region IMalisisMod
