@@ -25,6 +25,10 @@
 package net.malisis.demo.rwldemo;
 
 import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderParameters;
+import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.font.FontRenderOptions;
+import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Point;
 import net.malisis.core.util.Ray;
@@ -104,56 +108,69 @@ public class RwlRenderer extends MalisisRenderer
 		ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
 
 		set(mop.blockX + dir.offsetX, mop.blockY + dir.offsetY, mop.blockZ + dir.offsetZ);
-		set(mop.blockX, mop.blockY, mop.blockZ);
+		set(world, world.getBlock(mop.blockX, mop.blockY, mop.blockZ), mop.blockX, mop.blockY, mop.blockZ,
+				world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 		//set(-1, 3, 6);
 
 		int color = 0x000066;
+		GL11.glPushMatrix();
 		GL11.glTranslatef(x, y, z);
-
 		next(GL11.GL_LINE_LOOP);
+		//GL11.glDisable(GL11.GL_DEPTH_TEST);
 		disableTextures();
 
+		RenderParameters rp = new RenderParameters();
 		rp.colorMultiplier.set(color);
 
-		super.render();
+		drawShape(new Cube(), rp);
 
 		next(GL11.GL_QUADS);
+		GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		GL11.glPolygonOffset(-3.0F, -3.0F);
+		GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+
 		enableTextures();
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 		ForgeDirection facing = EntityUtils.getEntityFacing(player);
-		float a = 0;
-		String[] texts = { x + "," + y + "," + z, facing + " / " + a, "" + player.rotationYaw, "Chunk " + (x >> 4) + ", " + (z >> 4) };
-		int ox = 0;
-		int oy = 1;
-		int oz = 0;
-		//	color = 0xAAAAFF;
+		String[] texts = { x + "," + y + "," + z + " (" + blockMetadata + ")", "" + facing, "" + player.rotationYaw,
+				"Chunk " + (x >> 4) + ", " + (z >> 4) };
+
+		FontRenderOptions fro = new FontRenderOptions();
+		fro.fontScale = 0.1F;
+		fro.color = 0x000066;
+
+		float ox = 0;
+		float oy = 1 - fro.fontScale;
+		float oz = 0;
+
 		if (facing == ForgeDirection.NORTH)
 		{
 			oz = 1;
 		}
 		else if (facing == ForgeDirection.EAST)
 		{
-			a = 90;
+			//fro.angle = 270;
+			ox = -1;
 		}
 		else if (facing == ForgeDirection.SOUTH)
 		{
-			a = 180;
-			ox = -1;
+			//fro.angle = 180;
+			oz = -1;
 		}
 		else if (facing == ForgeDirection.WEST)
 		{
-			a = 270;
-			ox = -1;
-			oz = 1;
+			//fro.angle = 90;
+			ox = 1;
 		}
-
-		GL11.glRotatef(-a, 0, 1, 0);
 
 		if (dir == ForgeDirection.UP)
 		{
-			GL11.glRotatef(-90, 1, 0, 0);
-			oz = 1;
+			//			fro.angle = -90;
+			//			fro.aX = 1;
+			//			fro.aY = 0;
+			oz = 0;
+			oy = 1;
 			if (facing == ForgeDirection.NORTH)
 			{
 				ox = 0;
@@ -165,17 +182,24 @@ public class RwlRenderer extends MalisisRenderer
 			}
 		}
 
+		MalisisFont font = MalisisFont.minecraftFont;
 		int i = 0;
 		for (String str : texts)
 		{
-			int offset = getStringWidth(str);
-			float x = ox - offset * 0.01F;
-			drawString(str, x, oy - i * 0.1F, oz, color, false);
+			float offset = font.getStringWidth(str, fro.fontScale);
+			ox = x + ox;
+			oy = y + oy - i * fro.fontScale;
+			oz = z + oz;
+
+			drawText(font, str, ox, oy, oz, fro);
 			i++;
 		}
 
+		//	MalisisCore.message(fro.x + "," + fro.y + "," + fro.z);
 		next();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glPopMatrix();
+		GL11.glPolygonOffset(0.0F, 0.0F);
+		GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
 	}
 
 	public void renderRayTrace()
