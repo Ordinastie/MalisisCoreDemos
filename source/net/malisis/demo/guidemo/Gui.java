@@ -1,6 +1,5 @@
 package net.malisis.demo.guidemo;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import net.malisis.core.client.gui.Anchor;
@@ -64,17 +63,10 @@ public class Gui extends MalisisGui
 		setInventoryContainer(inventoryContainer);
 		guiscreenBackground = false;
 
-		try
-		{
-			ResourceLocation rl1 = new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf");
-			ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
-			fontBS = new MalisisFont(rl1);
-			fontH = new MalisisFont(rl2);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		ResourceLocation rl1 = new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf");
+		ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
+		fontBS = new MalisisFont(rl1);
+		fontH = new MalisisFont(rl2);
 	}
 
 	@Override

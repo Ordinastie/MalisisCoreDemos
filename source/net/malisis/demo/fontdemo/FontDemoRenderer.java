@@ -24,8 +24,6 @@
 
 package net.malisis.demo.fontdemo;
 
-import java.io.IOException;
-
 import net.malisis.core.MalisisCore;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.animation.Animation;
@@ -80,15 +78,7 @@ public class FontDemoRenderer extends MalisisRenderer
 		options.py = 40;
 		options.antialias = true;
 		options.fontSize = 256f;
-		try
-		{
-			font = new MalisisFont(rl, options);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		//font = new MinecraftFont();
+		font = new MalisisFont(rl, options);
 
 		if (generate && !(font instanceof MinecraftFont))
 		{
