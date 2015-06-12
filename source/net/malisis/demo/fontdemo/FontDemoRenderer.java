@@ -156,23 +156,72 @@ public class FontDemoRenderer extends MalisisRenderer
 		FontRenderOptions fro = new FontRenderOptions();
 		fro.color = 0x339966;
 		float fx = -11;
-		float fy = 3;
+		float fy = 3.5F;
 		float fz = 0;
 		fro.fontScale = 0.25f;
 		fro.shadow = true;
-		//fro.italic = true;
+		fro.underline = true;
 
-		String str = EnumChatFormatting.ITALIC + "Testi" + EnumChatFormatting.GOLD + EnumChatFormatting.ITALIC + "ng another "
-				+ EnumChatFormatting.RED + EnumChatFormatting.ITALIC + " color" + EnumChatFormatting.RESET + " and reset";
-		//font.render(this, str, fx, fy, fz, fro);
+		String str = "Jûst à \u8957 " + EnumChatFormatting.GOLD + "séamplè " + EnumChatFormatting.RED + " color" + EnumChatFormatting.RESET
+				+ " and reset";
+		//str = "ûs";
 
-		//MalisisFont.minecraftFont.render(this, str, fx, fy + .5F, fz, fro);
-
+		//	font.render(this, str, fx, fy, fz, fro);
+		//
 		//		float s = fro.fontScale / 9f;
 		//		GL11.glPushMatrix();
 		//		GL11.glTranslated(fx, fy, fz);
 		//		GL11.glScalef(s, -s, s);
-		//		Minecraft.getMinecraft().fontRendererObj.drawString(str, 0, 0, fro.color, true);
+		//		Minecraft.getMinecraft().fontRendererObj.drawString(str, 0, 0, fro.color, fro.shadow);
 		//		GL11.glPopMatrix();
+
+		/*draw();
+
+		bindTexture(new ResourceLocation("textures/font/unicode_page_78.png"));
+
+		GL11.glPushMatrix();
+		GL11.glTranslated(fx, fy - .25f, fz);
+		GL11.glScalef(s, -s, s);
+
+		char c = '\u7856';
+		int j = 23 >>> 4;
+		int k = 23 & 15;
+		float f = j;
+		float f1 = k + 1;
+		float f2 = c % 16 * 16 + f;
+		float f3 = (c & 255) / 16 * 16;
+		float f4 = f1 - f - 0.02F;
+
+		float u = f2 / 256F;
+		float v = f3 / 256F;
+		float U = (f2 + f4) / 256.0F;
+		float V = (f3 + 15.98F) / 256.0F;
+
+		float w = f4 / 2.0F;
+		float h = 7.99F;
+
+		CharData cd = MalisisFont.minecraftFont.getCharData(c);
+		u = cd.u();
+		v = cd.v();
+		U = cd.U();
+		V = cd.V();
+		w = cd.getFullWidth(FontGeneratorOptions.DEFAULT);
+		h = cd.getFullHeight(FontGeneratorOptions.DEFAULT);
+
+		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+		GL11.glTexCoord2f(u, v);
+		GL11.glVertex3f(0, 0, 0.0F);
+
+		GL11.glTexCoord2f(u, V);
+		GL11.glVertex3f(0, h, 0.0F);
+
+		GL11.glTexCoord2f(U, v);
+		GL11.glVertex3f(w, 0, 0.0F);
+
+		GL11.glTexCoord2f(U, V);
+		GL11.glVertex3f(w, h, 0.0F);
+		GL11.glEnd();
+
+		GL11.glPopMatrix();*/
 	}
 }

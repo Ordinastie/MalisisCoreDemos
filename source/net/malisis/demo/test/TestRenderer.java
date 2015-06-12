@@ -112,6 +112,7 @@ public class TestRenderer extends MalisisRenderer
 
 			ar.animate(shape, mvt);
 			shape.applyMatrix();
+
 			shape.deductParameters();
 
 			drawShape(shape, rp);

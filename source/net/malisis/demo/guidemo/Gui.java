@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
+import com.google.common.base.Predicate;
 import com.google.common.eventbus.Subscribe;
 
 public class Gui extends MalisisGui
@@ -92,35 +93,42 @@ public class Gui extends MalisisGui
 		//		tabCont3.add(bbEditor);
 		//		tabCont3.add(bbLabel);
 		//		tabCont3.add(bbLabel2);
+		boolean debug = true;
+		if (debug)
+		{
+			window.add(debug());
+		}
+		else
+		{
 
-		UIContainer tabCont1 = panel1();
-		UIContainer tabCont2 = panel2();
+			UIContainer tabCont1 = panel1();
+			UIContainer tabCont2 = panel2();
 
-		panel = new UIPanel(this, UIComponent.INHERITED, 140);
-		panel.add(tabCont1);
-		panel.add(tabCont2);
+			panel = new UIPanel(this, UIComponent.INHERITED, 140);
+			panel.add(tabCont1);
+			panel.add(tabCont2);
 
-		tab1 = new UITab(this, "Tab 1");
-		UITab tab2 = new UITab(this, "Tab 2");
-		tab2.setBgColor(0xCCCCFF);
+			tab1 = new UITab(this, "Tab 1");
+			UITab tab2 = new UITab(this, "Tab 2");
+			tab2.setBgColor(0xCCCCFF);
 
-		UITabGroup tabGroup = new UITabGroup(this, ComponentPosition.TOP);
-		tabGroup.addTab(tab1, tabCont1);
-		tabGroup.addTab(tab2, tabCont2);
-		//tabGroup.addTab(tab3, tabCont3);
+			UITabGroup tabGroup = new UITabGroup(this, ComponentPosition.TOP);
+			tabGroup.addTab(tab1, tabCont1);
+			tabGroup.addTab(tab2, tabCont2);
+			//tabGroup.addTab(tab3, tabCont3);
 
-		tabGroup.setActiveTab(tab1);
-		tabGroup.setSpacing(3);
-		tabGroup.attachTo(panel, true);
+			tabGroup.setActiveTab(tab2);
+			tabGroup.setSpacing(3);
+			tabGroup.attachTo(panel, true);
 
-		window.add(tabGroup);
-		window.add(panel);
+			window.add(tabGroup);
+			window.add(panel);
 
-		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
-		new UICloseHandle(this, playerInv);
-		window.add(playerInv);
-
-		//window.add(debug());
+			UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
+			new UICloseHandle(this, playerInv);
+			window.add(playerInv);
+		}
+		//
 
 		//		String str = EnumChatFormatting.ITALIC + "Testi" + EnumChatFormatting.GOLD + "ng another " + EnumChatFormatting.RED + " color"
 		//				+ EnumChatFormatting.RESET + " and reset";
@@ -158,15 +166,23 @@ public class Gui extends MalisisGui
 		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, EnumChatFormatting.AQUA + "with a tooltip!", 5));
 
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected().register(this);
-		rbMC.setFont(fontMC, null);
+		rbMC.setFont(fontMC);
 		rbBS = new UIRadioButton(this, "newRb", "Brush Script").setPosition(rbMC.getWidth() + 10, 14).register(this);
-		rbBS.setFont(fontBS, null);
+		rbBS.setFont(fontBS);
 		rbH = new UIRadioButton(this, "newRb", "Hobo").setPosition(rbMC.getWidth() + rbBS.getWidth() + 20, 14).register(this);
-		rbH.setFont(fontH, null);
+		rbH.setFont(fontH);
 
 		UISlider slider = new UISlider(this, 150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
 
 		UITextField tf = new UITextField(this, "This textfield will only accept numbers.");
+		tf.setValidator(new Predicate<String>()
+		{
+			@Override
+			public boolean apply(String input)
+			{
+				return input.matches("test");
+			}
+		});
 		tf.setSize(200, 0);
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
@@ -223,7 +239,7 @@ public class Gui extends MalisisGui
 		FontRenderOptions fro = new FontRenderOptions();
 		fro.color = 0x660066;
 		fro.fontScale = 2 / 3F;
-		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 40).setFont(null, fro);
+		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 40).setFontRenderOptions(fro);
 		//label2.setFontScale(2F / 3F);
 
 		UIContainer tabCont2 = new UIContainer(this);
@@ -238,6 +254,7 @@ public class Gui extends MalisisGui
 
 		fro = new FontRenderOptions();
 		fro.fontScale = 2 / 3F;
+		fro.color = 0x006600;
 
 		UITextField mltf = new UITextField(this, true);
 		mltf.setSize(125, 50);
@@ -253,8 +270,8 @@ public class Gui extends MalisisGui
 				+ "In commodo finibus urna, eu consectetur quam commodo dapibus. Pellentesque metus ligula, ullamcorper non lorem a, dapibus elementum quam. Praesent iaculis pellentesque dui eget pellentesque. Nunc vel varius dui. Aliquam sit amet ex feugiat, aliquet ipsum nec, sollicitudin dolor. Ut ac rhoncus enim. Quisque maximus diam nec neque placerat, euismod blandit purus congue. Integer finibus tellus ligula, eget pretium magna luctus vel. Pellentesque gravida pretium nisl sit amet fermentum. Quisque odio nunc, tristique vitae pretium ut, imperdiet a nunc. Sed eu purus ultricies, tincidunt sapien et, condimentum nunc. Duis luctus augue ac congue luctus. Integer ut commodo turpis, vitae hendrerit quam. Vivamus vulputate efficitur est nec dignissim. Praesent convallis posuere lacus ut suscipit. Aliquam at odio viverra, cursus nulla eget, maximus purus.\r\n"
 				+ "\r\n"
 				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
-		//mltf.setText("Line 1\n" + "Line 2\r\n" + "Line 3\r" + "Line 4");
-		mltf.setFont(null, fro);
+		mltf.setText("Some §5colored test");
+		mltf.setFontRenderOptions(fro);
 		mltf.getScrollbar().setAutoHide(true);
 
 		UILabel ipsum = new UILabel(this, true);
@@ -278,7 +295,7 @@ public class Gui extends MalisisGui
 				+ EnumChatFormatting.RESET
 				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 
-		ipsum.setFont(null, fro);
+		//		ipsum.setFontRenderOptions(fro);
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
 		tabCont2.add(new UIImage(this, MalisisGui.ITEM_TEXTURE, Items.diamond_axe.getIconFromDamage(0)).setPosition(0, 25));
@@ -293,34 +310,10 @@ public class Gui extends MalisisGui
 
 	private UIComponent debug()
 	{
-		FontRenderOptions fro = new FontRenderOptions();
-		fro.fontScale = 2 / 3f;
-
-		UILabel ipsum = new UILabel(this, true);
-		ipsum.setPosition(0, 0, Anchor.CENTER);
-		ipsum.setSize(150, 0);
-		ipsum.setText("Contrairement à une opinion répandue, "
-				+ EnumChatFormatting.DARK_GREEN
-				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
-				+ EnumChatFormatting.RESET
-				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
-				+ EnumChatFormatting.AQUA
-				+ " datant de 45 av. J.-C., le rendant"
-				+ EnumChatFormatting.RESET
-				+ " vieux de 2000 ans."
-				+ EnumChatFormatting.BLUE
-				+ "Un professeur du "
-				+ EnumChatFormatting.ITALIC
-				+ "Hampden-Sydney College"
-				+ EnumChatFormatting.BLUE
-				+ ", en Virginie, s'est intéressé"
-				+ EnumChatFormatting.RESET
-				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
-
-		ipsum.setFont(null, fro);
-		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
-
-		return ipsum;
+		UILabel label1 = new UILabel(this).setPosition(0, 30, Anchor.CENTER);
+		label1.setText(EnumChatFormatting.DARK_RED + "xxxxxxxxxx");
+		System.out.println(label1.getWidth());
+		return label1;
 	}
 
 	@Subscribe
@@ -347,11 +340,6 @@ public class Gui extends MalisisGui
 	@Subscribe
 	public void onSelect(UIRadioButton.SelectEvent event)
 	{
-		if (event.getComponent() == rbMC)
-			renderer.setDefaultFont(fontMC, getFontRenderOptions());
-		else if (event.getComponent() == rbBS)
-			renderer.setDefaultFont(fontBS, getFontRenderOptions());
-		else if (event.getComponent() == rbH)
-			renderer.setDefaultFont(fontH, getFontRenderOptions());
+
 	}
 }
