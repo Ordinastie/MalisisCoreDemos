@@ -2,6 +2,7 @@ package net.malisis.demo.guidemo;
 
 import java.util.Arrays;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
@@ -27,6 +28,7 @@ import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
+import net.malisis.core.client.gui.component.mceditor.MCEditor;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -34,13 +36,11 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.bbcode.gui.BBCodeEditor.BBCodeChangeEvent;
-import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 import com.google.common.base.Predicate;
 import com.google.common.eventbus.Subscribe;
@@ -58,16 +58,17 @@ public class Gui extends MalisisGui
 	//	private BBCodeEditor bbEditor;
 	private UILabel bbLabel;
 	private UILabel bbLabel2;
+	private FontRenderOptions fro;
 
 	public Gui(MalisisInventoryContainer inventoryContainer)
 	{
 		setInventoryContainer(inventoryContainer);
 		guiscreenBackground = false;
 
-		ResourceLocation rl1 = new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf");
-		ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
-		fontBS = new MalisisFont(rl1);
-		fontH = new MalisisFont(rl2);
+		//		ResourceLocation rl1 = new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf");
+		//		ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
+		//		fontBS = new MalisisFont(rl1);
+		//		fontH = new MalisisFont(rl2);
 	}
 
 	@Override
@@ -310,10 +311,29 @@ public class Gui extends MalisisGui
 
 	private UIComponent debug()
 	{
-		UILabel label1 = new UILabel(this).setPosition(0, 30, Anchor.CENTER);
-		label1.setText(EnumChatFormatting.DARK_RED + "xxxxxxxxxx");
-		System.out.println(label1.getWidth());
-		return label1;
+		MCEditor mce = new MCEditor(this);
+		mce.getTextfield().getFontRenderOptions().fontScale = 2 / 3F;
+		mce.getTextfield()
+				.setText(
+						"Contrairement à une opinion répandue, "
+								+ EnumChatFormatting.DARK_GREEN
+								+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
+								+ EnumChatFormatting.RESET
+								+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
+								+ EnumChatFormatting.AQUA
+								+ " datant de 45 av. J.-C., le rendant"
+								+ EnumChatFormatting.RESET
+								+ " vieux de 2000 ans."
+								+ EnumChatFormatting.BLUE
+								+ "Un professeur du "
+								+ EnumChatFormatting.ITALIC
+								+ "Hampden-Sydney College"
+								+ EnumChatFormatting.BLUE
+								+ ", en Virginie, s'est intéressé"
+								+ EnumChatFormatting.RESET
+								+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+
+		return mce.getTextfield();
 	}
 
 	@Subscribe
@@ -338,8 +358,11 @@ public class Gui extends MalisisGui
 	}
 
 	@Subscribe
-	public void onSelect(UIRadioButton.SelectEvent event)
+	public void onCheck(UICheckBox.CheckEvent event)
 	{
+		fro.disableECF = event.isChecked();
+		MalisisCore.message("Setting FRO.disableECF to " + fro.disableECF);
+		((UITextField) ((UIContainer) event.getComponent().getParent()).getComponent("mltf")).buildLines();
 
 	}
 }

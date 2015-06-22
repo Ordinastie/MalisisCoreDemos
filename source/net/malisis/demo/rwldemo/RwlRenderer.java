@@ -186,7 +186,7 @@ public class RwlRenderer extends MalisisRenderer
 		int i = 0;
 		for (String str : texts)
 		{
-			float offset = font.getStringWidth(str, fro.fontScale);
+			float offset = font.getStringWidth(str, fro);
 			ox = x + ox;
 			oy = y + oy - i * fro.fontScale;
 			oz = z + oz;
