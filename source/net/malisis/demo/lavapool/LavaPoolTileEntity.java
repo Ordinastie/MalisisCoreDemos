@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.util.BlockPos;
 import net.malisis.core.util.BlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -147,54 +146,6 @@ public class LavaPoolTileEntity extends TileEntity
 
 		for (BlockPos p : fillable)
 			lava.addAmount(worldObj, new BlockState(worldObj, p), 1);
-	}
-
-	public void fillOne()
-	{
-		Random rand = worldObj.rand;
-		getFillable();
-		if (fillable.size() == 0)
-		{
-			active = false;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		}
-		int total = fillable.size() * 16;
-		int toFill = 0;
-		for (BlockPos p : fillable)
-			toFill += 16 - lava.getAmount(new BlockState(worldObj, p));
-
-		//		MalisisCore.message(toFill + " > " + total);
-
-		int filled = toFill;
-		while (toFill == filled)
-		{
-			BlockPos pos = fillable.get(rand.nextInt(fillable.size()));
-			toFill = lava.addAmount(worldObj, new BlockState(worldObj, pos), 5);
-			lastPos = pos;
-		}
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	}
-
-	public void fillTop()
-	{
-		getFillable();
-		if (fillable.size() == 0)
-		{
-			active = false;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		}
-
-		int toFill = 0;
-		for (BlockPos p : fillable)
-			toFill += 16 - lava.getAmount(new BlockState(worldObj, p));
-
-		MalisisCore.message(toFill);
-
-		lava.addAmount(worldObj, new BlockState(worldObj, xCoord, yCoord + 1, zCoord), toFill);
-
 	}
 
 	@Override
