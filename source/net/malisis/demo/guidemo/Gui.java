@@ -28,7 +28,6 @@ import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
-import net.malisis.core.client.gui.component.mceditor.MCEditor;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -36,20 +35,22 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.bbcode.gui.BBCodeEditor.BBCodeChangeEvent;
+import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import com.google.common.base.Predicate;
 import com.google.common.eventbus.Subscribe;
 
 public class Gui extends MalisisGui
 {
-	private MalisisFont fontMC = MalisisFont.minecraftFont;
-	private MalisisFont fontBS;
-	private MalisisFont fontH;
+	private static MalisisFont fontMC = MalisisFont.minecraftFont;
+	private static MalisisFont fontBS;
+	private static MalisisFont fontH;
 	private UIPanel panel;
 	private UITab tab1;
 	private UIButton btnL, btnR, btnHorizontal;
@@ -65,16 +66,22 @@ public class Gui extends MalisisGui
 		setInventoryContainer(inventoryContainer);
 		guiscreenBackground = false;
 
+		if (fontH == null)
+		{
+			ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
+			fontH = new MalisisFont(rl2);
+		}
 		//		ResourceLocation rl1 = new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf");
-		//		ResourceLocation rl2 = new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf");
+
 		//		fontBS = new MalisisFont(rl1);
-		//		fontH = new MalisisFont(rl2);
+
 	}
 
 	@Override
 	public void construct()
 	{
 		UIWindow window = new UIWindow(this, 320, 240).setPosition(0, -20, Anchor.CENTER | Anchor.MIDDLE).setZIndex(0);
+		window.setClipContent(false);
 
 		//		UIContainer tabCont3 = new UIContainer(this, "BBEditor");
 		//
@@ -311,29 +318,28 @@ public class Gui extends MalisisGui
 
 	private UIComponent debug()
 	{
-		MCEditor mce = new MCEditor(this);
-		mce.getTextfield().getFontRenderOptions().fontScale = 2 / 3F;
-		mce.getTextfield()
-				.setText(
-						"Contrairement à une opinion répandue, "
-								+ EnumChatFormatting.DARK_GREEN
-								+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
-								+ EnumChatFormatting.RESET
-								+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
-								+ EnumChatFormatting.AQUA
-								+ " datant de 45 av. J.-C., le rendant"
-								+ EnumChatFormatting.RESET
-								+ " vieux de 2000 ans."
-								+ EnumChatFormatting.BLUE
-								+ "Un professeur du "
-								+ EnumChatFormatting.ITALIC
-								+ "Hampden-Sydney College"
-								+ EnumChatFormatting.BLUE
-								+ ", en Virginie, s'est intéressé"
-								+ EnumChatFormatting.RESET
-								+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+		UITextField mltf = new UITextField(this, true);
+		mltf.setSize(300, 200);
+		mltf.setPosition(0, 0);
+		//mltf.setEditable(false);
+		mltf.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis semper mi. Pellentesque dapibus diam egestas orci vulputate, a tempor ex hendrerit. Nullam tristique lacinia quam, a dapibus leo gravida eu. Donec placerat, turpis ut egestas dignissim, sem nibh tincidunt neque, eu facilisis massa felis eu nisl. Aenean pellentesque sed nunc et ultrices. Aenean facilisis convallis mauris in mollis. In porta hendrerit tellus id vehicula. Sed non interdum eros, vel condimentum diam. Sed vestibulum tincidunt velit, ac laoreet metus blandit quis. Aliquam sit amet ullamcorper velit. In tristique viverra imperdiet. Mauris facilisis ac leo non molestie.\r\n"
+				+ "\r\n"
+				+ "Phasellus orci metus, bibendum in molestie eu, interdum lacinia nulla. Nulla facilisi. Duis sagittis suscipit est vitae eleifend. Morbi bibendum tortor nec tincidunt pharetra. Vivamus tortor tortor, egestas sed condimentum ac, tristique non risus. Curabitur magna metus, porta sit amet dictum in, vulputate a dolor. Phasellus viverra euismod tortor, porta ultrices metus imperdiet a. Nulla pellentesque ipsum quis eleifend blandit. Aenean neque nulla, rhoncus et vestibulum eu, feugiat quis erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse lacus justo, porttitor aliquam tellus eu, commodo tristique leo. Suspendisse scelerisque blandit nisl at malesuada. Proin ut tincidunt augue. Phasellus vel nisl sapien.\r\n"
+				+ "\r"
+				+ "Sed ut lacinia tellus. Nam arcu ligula, accumsan id lorem id, dapibus bibendum tortor. Cras eleifend varius est, eget eleifend est commodo at. Vivamus sapien purus, faucibus ac urna id, scelerisque sagittis elit. Curabitur commodo elit nec diam vulputate finibus vitae porttitor magna. Nullam nec feugiat dolor. Pellentesque malesuada dolor arcu, ut sagittis mi mattis eu. Vivamus et tortor non nulla venenatis hendrerit nec faucibus quam. Aliquam laoreet leo in risus tempus placerat. In lobortis nulla id enim semper posuere a et libero. Nullam sit amet sapien commodo, egestas nisi eu, viverra nulla. Cras ac vulputate tellus, nec auctor elit.\r\n"
+				+ "\n"
+				+ "In commodo finibus urna, eu consectetur quam commodo dapibus. Pellentesque metus ligula, ullamcorper non lorem a, dapibus elementum quam. Praesent iaculis pellentesque dui eget pellentesque. Nunc vel varius dui. Aliquam sit amet ex feugiat, aliquet ipsum nec, sollicitudin dolor. Ut ac rhoncus enim. Quisque maximus diam nec neque placerat, euismod blandit purus congue. Integer finibus tellus ligula, eget pretium magna luctus vel. Pellentesque gravida pretium nisl sit amet fermentum. Quisque odio nunc, tristique vitae pretium ut, imperdiet a nunc. Sed eu purus ultricies, tincidunt sapien et, condimentum nunc. Duis luctus augue ac congue luctus. Integer ut commodo turpis, vitae hendrerit quam. Vivamus vulputate efficitur est nec dignissim. Praesent convallis posuere lacus ut suscipit. Aliquam at odio viverra, cursus nulla eget, maximus purus.\r\n"
+				+ "\r\n"
+				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
+		//mltf.setText("Some §5colored test");
+		FontRenderOptions fro = new FontRenderOptions();
+		fro.color = -1;
+		fro.shadow = true;
+		fro.fontScale = 2 / 3F;
+		mltf.setFontRenderOptions(fro);
+		mltf.getScrollbar().setAutoHide(true);
 
-		return mce.getTextfield();
+		return mltf;
 	}
 
 	@Subscribe

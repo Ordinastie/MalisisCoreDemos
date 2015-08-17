@@ -166,7 +166,8 @@ public class FontDemoRenderer extends MalisisRenderer
 				+ " and reset";
 		//str = "ûs";
 
-		//	font.render(this, str, fx, fy, fz, fro);
+		//		font = MalisisFont.minecraftFont;
+		font.render(this, str, fx, fy, fz, fro);
 		//
 		//		float s = fro.fontScale / 9f;
 		//		GL11.glPushMatrix();

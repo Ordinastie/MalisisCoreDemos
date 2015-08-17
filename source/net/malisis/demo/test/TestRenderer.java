@@ -33,8 +33,6 @@ import net.malisis.core.renderer.animation.transformation.ChainedTransformation;
 import net.malisis.core.renderer.animation.transformation.ColorTransform;
 import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
-import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.element.face.NorthFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
@@ -88,35 +86,24 @@ public class TestRenderer extends MalisisRenderer
 		if (renderType == RenderType.ISBRH_INVENTORY)
 		{
 			shape.resetState();
-			drawShape(shape);
+			rp.icon.set(Blocks.glowstone.getIcon(0, 0));
+			drawShape(shape, rp);
 			return;
 		}
 
 		if (renderType == RenderType.ISBRH_WORLD)
 		{
-			setup(0);
+			shape.resetState();
+			shape.setBounds(0.25F, 0, 0.25F, 0.75F, 0.5F, 0.75F);
+			rp.icon.set(Blocks.glowstone.getIcon(0, 0));
+			rp.renderAllFaces.set(true);
+			drawShape(shape, rp);
 			return;
 		}
 
 		if (renderType == RenderType.TESR_WORLD)
 		{
-			set(Blocks.planks);
 
-			rp.reset();
-			rp.applyTexture.set(false);
-
-			shape = new Shape(new NorthFace());
-			shape = new Cube();
-			applyTexture(shape, rp);
-			//shape.rotate(90.0025F, 0, 1, 0);
-
-			ar.animate(shape, mvt);
-			shape.applyMatrix();
-
-			shape.deductParameters();
-
-			drawShape(shape, rp);
-			//			model.render(this, rp);
 		}
 	}
 }

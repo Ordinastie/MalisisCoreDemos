@@ -44,6 +44,7 @@ import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.rwldemo.RWLDemo;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
 import net.malisis.demo.stargate.Stargate;
+import net.malisis.demo.syncdemo.Syncdemo;
 import net.malisis.demo.tabinv.TabInv;
 import net.malisis.demo.test.Test;
 import net.malisis.demo.waves.Waves;
@@ -104,6 +105,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new MultiBlockDemo2());
 		demos.add(new FontDemo());
 		demos.add(new LavaPoolDemo());
+		demos.add(new Syncdemo());
 	}
 
 	//#region IMalisisMod
