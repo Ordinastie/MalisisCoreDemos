@@ -19,6 +19,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 
 	public GuiTileEntity()
 	{
+		//create the inventory : 5 slots holding a maximum of 5 items
 		inventory = new MalisisInventory(this, 5);
 		inventory.setInventoryStackLimit(5);
 	}
@@ -39,6 +40,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	@Override
 	public MalisisGui getGui(MalisisInventoryContainer container)
 	{
+		//opens the GUI for this TE.
 		return new Gui(container);
 	}
 
