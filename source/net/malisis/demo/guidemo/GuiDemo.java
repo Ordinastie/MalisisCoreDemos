@@ -1,17 +1,17 @@
 package net.malisis.demo.guidemo;
 
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GuiDemo implements IDemo
 {
-	GuiBlock guiBlock;
+	public static GuiBlock guiBlock;
 
 	@Override
 	public void preInit()
 	{
 		guiBlock = new GuiBlock();
-		GameRegistry.registerBlock(guiBlock, guiBlock.getUnlocalizedName().substring(5));
+		guiBlock.register();
 
 		GameRegistry.registerTileEntity(GuiTileEntity.class, "guiTileEntity");
 	}

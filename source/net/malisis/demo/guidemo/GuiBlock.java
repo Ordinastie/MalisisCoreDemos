@@ -1,18 +1,20 @@
 package net.malisis.demo.guidemo;
 
+import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class GuiBlock extends Block implements ITileEntityProvider
+public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 {
 	public GuiBlock()
 	{
@@ -20,16 +22,16 @@ public class GuiBlock extends Block implements ITileEntityProvider
 		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
 		setUnlocalizedName("guiDemo");
-		setTextureName(MalisisDemos.modid + ":guidemo");
+		setTextureName(MalisisDemos.modid + ":blocks/guidemo");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, net.minecraft.util.EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 			return true;
 
-		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, pos);
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;

@@ -9,9 +9,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiTileEntity extends TileEntity implements IInventoryProvider
 {
@@ -30,7 +30,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
+	public MalisisInventory[] getInventories(EnumFacing side, Object... data)
 	{
 		return getInventories(data);
 	}
@@ -61,7 +61,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
+		return new S35PacketUpdateTileEntity(pos, 0, nbt);
 	}
 
 	@Override
