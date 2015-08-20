@@ -1,5 +1,6 @@
 package net.malisis.demo.minty;
 
+import net.malisis.demo.minty.ArmoryOre.OreType;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,9 @@ public class ItemBlockArmoryOre extends ItemBlock
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack is)
+	public String getItemStackDisplayName(ItemStack itemStack)
 	{
-		return oreTypes[is.getMetadata()] + " Ore";
+		return oreTypes[getMetadata(itemStack)] + " Ore";
 	}
 
 	@Override
@@ -26,4 +27,8 @@ public class ItemBlockArmoryOre extends ItemBlock
 		return meta;
 	}
 
+	public OreType getOreType(ItemStack itemStack)
+	{
+		return OreType.values()[getMetadata(itemStack)];
+	}
 }
