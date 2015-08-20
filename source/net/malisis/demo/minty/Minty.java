@@ -1,9 +1,8 @@
 package net.malisis.demo.minty;
 
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Demo based on Minty's Armory mod (https://github.com/MintyMint/Armory).<br>
@@ -23,7 +22,7 @@ public class Minty implements IDemo
 		//instantiate new block
 		ore = new ArmoryOre();
 		//register the block with an item with sub types
-		GameRegistry.registerBlock(ore, ItemBlockArmoryOre.class, ore.getUnlocalizedName().substring(5));
+		ore.register(ItemBlockArmoryOre.class);
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class Minty implements IDemo
 		{
 			//create a new renderer and register the block class to be used for it.
 			//hide behind a side check because we're not using a proxy
-			new MintyOreRenderer().registerFor(ArmoryOre.class);
+			new MintyOreRenderer().registerFor(ore);
 		}
 	}
 }
