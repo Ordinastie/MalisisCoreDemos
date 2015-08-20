@@ -25,8 +25,6 @@
 package net.malisis.demo.connected;
 
 import net.malisis.demo.IDemo;
-import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * This demo show how to use connected texture for a block.
@@ -36,7 +34,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class Connected implements IDemo
 {
-	Block connectedBlock;
+	ConnectedBlock connectedBlock;
 
 	@Override
 	public void preInit()
@@ -44,7 +42,7 @@ public class Connected implements IDemo
 		//create the block
 		connectedBlock = new ConnectedBlock();
 		//register the block
-		GameRegistry.registerBlock(connectedBlock, connectedBlock.getUnlocalizedName().substring(5));
+		connectedBlock.register();
 	}
 
 	@Override

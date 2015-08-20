@@ -24,23 +24,22 @@
 
 package net.malisis.demo.connected;
 
-import net.malisis.core.renderer.icon.ConnectedTextureIcon;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.icon.provider.ConnectedIconsProvider;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
-public class ConnectedBlock extends Block
+public class ConnectedBlock extends MalisisBlock
 {
 	public ConnectedBlock()
 	{
@@ -50,29 +49,11 @@ public class ConnectedBlock extends Block
 		setStepSound(soundTypeGlass);
 		setUnlocalizedName("connected_block");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
 
-	@Override
-	public void registerIcons(IIconRegister register)
-	{
 		//we just need to create a ConnectedTextureIcon
 		//the textures, however, need to have a predefined pattern split into 2 files.
-		//Both files will be automatically registered and stiched on the block texture sheet.
-		blockIcon = new ConnectedTextureIcon((TextureMap) register, MalisisDemos.modid + ":demo_glass_connected");
-	}
-
-	@Override
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-	{
-		//when not in world, just return the "full" icon (border for the 4 sides)
-		return ((ConnectedTextureIcon) blockIcon).getFullIcon();
-	}
-
-	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-	{
-		//when in world, let the ConnectedTextureIcon fetch the right icon
-		return ((ConnectedTextureIcon) blockIcon).getIcon(world, x, y, z, side);
+		//Both files will be automatically registered and stitched on the block texture sheet.
+		setBlockIconProvider(new ConnectedIconsProvider(MalisisDemos.modid + ":blocks/demo_glass_connected"));
 	}
 
 	@Override
@@ -84,10 +65,22 @@ public class ConnectedBlock extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+	public EnumWorldBlockLayer getBlockLayer()
+	{
+		return EnumWorldBlockLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isFullCube()
+	{
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
 		//block is non opaque but we still want to hide faces between two of this block
-		ForgeDirection dir = ForgeDirection.getOrientation(side);
-		return world.getBlock(x, y, z) != world.getBlock(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ);
+		return world.getBlockState(pos).getBlock() != world.getBlockState(pos.offset(side.getOpposite())).getBlock();
 	}
 }
