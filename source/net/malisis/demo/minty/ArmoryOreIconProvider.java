@@ -35,31 +35,24 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 /**
- * We need a custom IconProvider because we need to know whether to get the base icon or the overlay icon. We have to manually define when
- * to use the overlay or not. It's done in the renderer, by testing the current layer.
+ * We need a custom IconProvider because we need to know whether to get the base icon or the overlay icon. We have to check the current
+ * layer to know whether to use the overlay or not.
  *
  * @author Ordinastie
  *
  */
 public class ArmoryOreIconProvider extends DefaultIconProvider
 {
-	//whether we're currently drawing the overlay
-	private boolean isOverlay = false;
-
 	private EnumMap<OreType, MalisisIcon> icons = new EnumMap<>(OreType.class);
 
 	public ArmoryOreIconProvider()
 	{
 		super(MalisisDemos.modid + ":blocks/ArmoryOre_Ore_Glitter");
-	}
-
-	public void setOverlay(boolean isOverlay)
-	{
-		//sets when to use the base icon or the overlay
-		this.isOverlay = isOverlay;
 	}
 
 	@Override
@@ -84,7 +77,7 @@ public class ArmoryOreIconProvider extends DefaultIconProvider
 	{
 		//if base icon : use current default icon (glitter)
 		//special case for Lava where it uses regular lava
-		if (!isOverlay)
+		if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID)
 			return oreType == OreType.Lava ? MalisisIcon.get("minecraft:blocks/lava_still") : icon;
 
 		//fetch from the map

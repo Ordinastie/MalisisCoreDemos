@@ -30,7 +30,6 @@ public class MintyOreRenderer extends MalisisRenderer
 		//ISBRH already has the tessellator translated, TESR has the openGl states set up etc..
 		//this.block holds the block instance, this.pos, the coordinates, this.titeEntity the TE
 
-		ArmoryOre block = (ArmoryOre) this.block;
 		OreType oreType = null;
 		if (renderType == RenderType.ITEM)
 			oreType = ((ItemBlockArmoryOre) itemStack.getItem()).getOreType(itemStack);
@@ -43,7 +42,6 @@ public class MintyOreRenderer extends MalisisRenderer
 
 		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID)
 		{
-			((ArmoryOreIconProvider) block.getBlockIconProvider()).setOverlay(false);
 			//titanium doesn't have its own brightness
 			if (oreType != OreType.Titanium)
 			{
@@ -66,8 +64,6 @@ public class MintyOreRenderer extends MalisisRenderer
 			shape.resetState();
 			//reset parameters to their defaults so the brightness of this layer will be calculated
 			rp.reset();
-			//set the icon provider to use overlays (taken from directy from the OreType)
-			((ArmoryOreIconProvider) block.getBlockIconProvider()).setOverlay(true);
 			//draw second layer
 			drawShape(shape, rp);
 		}
