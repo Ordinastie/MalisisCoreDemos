@@ -30,32 +30,18 @@ import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
-import net.malisis.demo.chunknotif.ChunkNotif;
-import net.malisis.demo.collision.Collision;
+import net.malisis.demo.blockdir.BlockDirDemo;
 import net.malisis.demo.connected.Connected;
-import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
-import net.malisis.demo.lavapool.LavaPoolDemo;
 import net.malisis.demo.minty.Minty;
-import net.malisis.demo.model.ModelDemo;
-import net.malisis.demo.multiblock.MultiBlockDemo;
-import net.malisis.demo.multiblock2.MultiBlockDemo2;
-import net.malisis.demo.multipleinv.MultipleInv;
-import net.malisis.demo.rwldemo.RWLDemo;
-import net.malisis.demo.sidedinvdemo.SidedInvDemo;
-import net.malisis.demo.stargate.Stargate;
-import net.malisis.demo.syncdemo.Syncdemo;
-import net.malisis.demo.tabinv.TabInv;
-import net.malisis.demo.test.Test;
-import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -78,7 +64,7 @@ public class MalisisDemos implements IMalisisMod
 		@SideOnly(Side.CLIENT)
 		public Item getTabIconItem()
 		{
-			return Item.getItemFromBlock(Stargate.sgBlock);
+			return Item.getItemFromBlock(GuiDemo.guiBlock);
 		}
 	};
 
@@ -88,24 +74,25 @@ public class MalisisDemos implements IMalisisMod
 		network = new MalisisNetwork(instance);
 		MalisisCore.registerMod(this);
 
-		demos.add(new Stargate());
+		//		demos.add(new Stargate());
+		demos.add(new BlockDirDemo());
 		demos.add(new GuiDemo());
 		demos.add(new Minty());
-		demos.add(new ModelDemo());
-		demos.add(new Test());
+		//		demos.add(new ModelDemo());
+		//		demos.add(new Test());
 		demos.add(new Connected());
-		demos.add(new MultipleInv());
-		demos.add(new SidedInvDemo());
-		demos.add(new MultiBlockDemo());
-		demos.add(new TabInv());
-		demos.add(new Waves());
-		demos.add(new RWLDemo());
-		demos.add(new Collision());
-		demos.add(new ChunkNotif());
-		demos.add(new MultiBlockDemo2());
-		demos.add(new FontDemo());
-		demos.add(new LavaPoolDemo());
-		demos.add(new Syncdemo());
+		//		demos.add(new MultipleInv());
+		//		demos.add(new SidedInvDemo());
+		//		demos.add(new MultiBlockDemo());
+		//		demos.add(new TabInv());
+		//		demos.add(new Waves());
+		//		demos.add(new RWLDemo());
+		//		demos.add(new Collision());
+		//		demos.add(new ChunkNotif());
+		//		demos.add(new MultiBlockDemo2());
+		//		demos.add(new FontDemo());
+		//		demos.add(new LavaPoolDemo());
+		//		demos.add(new Syncdemo());
 	}
 
 	//#region IMalisisMod
