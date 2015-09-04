@@ -24,6 +24,7 @@
 
 package net.malisis.demo.blockdir;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.core.util.EntityUtils;
@@ -55,9 +56,12 @@ public class BlockDir extends MalisisBlock
 		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
 				prefix + "right", };
 
-		SidesIconProvider provider = new SidesIconProvider(names[0], names);
-		provider.setPropertyDirection(DIRECTION);
-		setBlockIconProvider(provider);
+		if (MalisisCore.isClient())
+		{
+			SidesIconProvider provider = new SidesIconProvider(names[0], names);
+			provider.setPropertyDirection(DIRECTION);
+			setBlockIconProvider(provider);
+		}
 	}
 
 	@Override

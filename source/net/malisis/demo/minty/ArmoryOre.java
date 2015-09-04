@@ -2,6 +2,7 @@ package net.malisis.demo.minty;
 
 import java.util.List;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
@@ -54,7 +55,9 @@ public class ArmoryOre extends MalisisBlock
 		setResistance(3f);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setStepSound(Block.soundTypeGravel);
-		setBlockIconProvider(new ArmoryOreIconProvider());
+
+		if (MalisisCore.isClient())
+			setBlockIconProvider(new ArmoryOreIconProvider());
 
 	}
 
