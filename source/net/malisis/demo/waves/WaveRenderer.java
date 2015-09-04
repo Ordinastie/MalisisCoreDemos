@@ -39,7 +39,6 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 
 /**
@@ -50,8 +49,6 @@ public class WaveRenderer extends MalisisRenderer
 {
 	//Create the animation renderer
 	private AnimationRenderer ar = new AnimationRenderer();
-	//start time (reset each time the block is redrawn (for debug purpose)
-	private long startTime;
 
 	//the transform that handles the movement of the vertexes
 	private Transformation mvt;
@@ -77,14 +74,13 @@ public class WaveRenderer extends MalisisRenderer
 		//create the params
 		rp = new RenderParameters();
 		rp.iconProvider.set(new DefaultIconProvider(Blocks.water));
+
+		//load the animations
+		loadAnimations();
 	}
 
-	//should be called only once from initialize(). For debug purpose, we recall it every time the block asks to be
-	//redrawn so we can change the transforms on the fly
-	private void setup(long start)
+	private void loadAnimations()
 	{
-		startTime = start;
-
 		//@formatter:off
 		mvt = new ChainedTransformation(
 					new Translation(0, -0.2F, 0, 0, 0, 0).forTicks(50).movement(Transformation.SINUSOIDAL),
@@ -103,23 +99,28 @@ public class WaveRenderer extends MalisisRenderer
 	{
 		if (renderType == RenderType.ITEM)
 		{
+			//draw a simple cube for the item
 			drawShape(cube);
 			return;
 		}
 
 		if (renderType == RenderType.BLOCK)
 		{
-			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
+			ar.setStartTime();
 			return;
 		}
 
 		if (renderType == RenderType.TILE_ENTITY)
 		{
-			ar.setStartTime(startTime);
+			//the wave block should be translucent
 			enableBlending();
 			wave.resetState();
+			//vertex brightness is animated
 			rp.usePerVertexBrightness.set(true);
 
+			//calculate the delay for the vertexes based on their position so that
+			//vertexes sharing the same position for multiple blocks have the same delay
+			//the surface will appear continuous
 			List<MergedVertex> mvs = wave.getMergedVertexes(wave.getFace("Top"));
 			for (MergedVertex mv : mvs)
 			{
@@ -134,6 +135,7 @@ public class WaveRenderer extends MalisisRenderer
 				br.transform(mv, ar.getElapsedTime());
 			}
 
+			//draw the shape
 			drawShape(wave, rp);
 		}
 	}
