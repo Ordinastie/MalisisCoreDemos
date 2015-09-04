@@ -24,33 +24,39 @@
 
 package net.malisis.demo.fontdemo;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
+ * This demo show how to use a custom font and render a text in the world.<br>
+ * There are two ways to render text :<br>
+ * - direct rendering in world <br>
+ * - create a shape from the text <br>
+ * In this example the shape will be animated to demonstrate how it's possible to interact with the shape.
+ *
  * @author Ordinastie
  *
  */
 public class FontDemo implements IDemo
 {
-	private FontDemoRenderer renderer;
-	private FontPointer fontPointer;
+	public static FontPointer fontPointer;
+	public static FontDemoRenderer renderer;
 
 	@Override
 	public void preInit()
 	{
+		//create the item and register
 		fontPointer = new FontPointer();
-
-		GameRegistry.registerItem(fontPointer, fontPointer.getUnlocalizedName());
+		fontPointer.register();
 	}
 
 	@Override
 	public void init()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if (MalisisCore.isClient())
 		{
+			//create the renderer and register it for RenderWorldLastEvent
+			//we keep a reference to the renderer for easy direct access from the item
 			renderer = new FontDemoRenderer();
 			renderer.registerForRenderWorldLast();
 		}

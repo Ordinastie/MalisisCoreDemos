@@ -24,45 +24,40 @@
 
 package net.malisis.demo.fontdemo;
 
+import net.malisis.core.MalisisCore;
+import net.malisis.core.item.MalisisItem;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
  *
  */
-public class FontPointer extends Item
+public class FontPointer extends MalisisItem
 {
 	public FontPointer()
 	{
+		//set basic infos
 		setUnlocalizedName("font_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
-
-	@Override
-	public void registerIcons(IIconRegister p_94581_1_)
-	{}
-
-	@Override
-	public IIcon getIconFromDamage(int p_77617_1_)
-	{
-		return Items.iron_hoe.getIconFromDamage(0);
+		//make the pointer use the Iron hoe item icon and model
+		if (MalisisCore.isClient())
+			setItemIconProvider(new DefaultIconProvider(Items.iron_hoe, 0));
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
+		//renderer not accessible server-side
 		if (!world.isRemote)
 			return itemStack;
 
-		//FontDemoRenderer.instance.reloadFont(player.isSneaking());
-		FontDemoRenderer.instance.animate(player.isSneaking());
+		//tell the renderer to start the animation for the shape rendered text
+		FontDemo.renderer.animate();
 
 		return itemStack;
 	}
