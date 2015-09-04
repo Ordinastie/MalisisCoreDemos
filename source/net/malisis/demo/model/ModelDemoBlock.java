@@ -24,8 +24,9 @@
 
 package net.malisis.demo.model;
 
+import net.malisis.core.MalisisCore;
+import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -35,16 +36,18 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class ModelDemoBlock extends Block implements ITileEntityProvider
+public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 {
-	public static int renderId = -1;
-
 	protected ModelDemoBlock()
 	{
+		//set the default stuff
 		super(Material.wood);
 		setUnlocalizedName("modelDemo");
-		setTextureName(MalisisDemos.modid + ":modeldemo");
-		setCreativeTab(MalisisDemos.tabDemos);
+		setTextureName(MalisisDemos.modid + ":blocks/modeldemo");
+
+		//set the texture (only used for the item)
+		if (MalisisCore.isClient())
+			setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override
@@ -64,11 +67,4 @@ public class ModelDemoBlock extends Block implements ITileEntityProvider
 	{
 		return false;
 	}
-
-	@Override
-	public int getRenderType()
-	{
-		return renderId;
-	}
-
 }

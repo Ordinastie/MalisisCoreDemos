@@ -24,14 +24,15 @@
 
 package net.malisis.demo.model;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
+ * This demo show how to load and render a model, with parts animated.
+ *
  * @author Ordinastie
- * 
+ *
  */
 public class ModelDemo implements IDemo
 {
@@ -40,17 +41,23 @@ public class ModelDemo implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create and register the block
 		modelBlock = new ModelDemoBlock();
-		GameRegistry.registerBlock(modelBlock, modelBlock.getUnlocalizedName().substring(5));
+		modelBlock.register();
+
+		//register the tileEntity associated
 		GameRegistry.registerTileEntity(ModelDemoTileEntity.class, "modelDemoTileEntity");
 	}
 
 	@Override
 	public void init()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if (MalisisCore.isClient())
 		{
-			new ModelDemoRenderer().registerFor(ModelDemoBlock.class, ModelDemoTileEntity.class);
+			//create the renderer and register it for both the block and the TE
+			ModelDemoRenderer mdr = new ModelDemoRenderer();
+			mdr.registerFor(modelBlock);
+			mdr.registerFor(ModelDemoTileEntity.class);
 		}
 	}
 }

@@ -25,6 +25,7 @@
 package net.malisis.demo.model;
 
 import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
@@ -35,6 +36,8 @@ import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
+import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
@@ -48,74 +51,89 @@ import org.lwjgl.opengl.GL11;
  */
 public class ModelDemoRenderer extends MalisisRenderer
 {
-	public static int renderId;
-	private ResourceLocation rlModel = new ResourceLocation(MalisisDemos.modid, "models/hopper.obj");
-	private MalisisModel model;
-	private AnimationRenderer ar;
+	private AnimationRenderer ar = new AnimationRenderer();
 	private Shape cube;
 	private Shape socle;
 	private Shape antenna;
+	private IIconProvider socleIp;
+	private IIconProvider antennaIp;
+	private RenderParameters rp;
 
 	@Override
 	protected void initialize()
 	{
-		rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
-		model = new MalisisModel(rlModel);
+		//load the model from the ResourceLocation
+		ResourceLocation rlModel = new ResourceLocation(MalisisDemos.modid, "models/modeldemo.obj");
+		MalisisModel model = new MalisisModel(rlModel);
+		//get the shapes used in the model
+		//the identifiers are the one used in the model editor for the different groups or objects
 		socle = model.getShape("Socle");
 		antenna = model.getShape("Antenna");
+		//create the cube used for the item
 		cube = new Cube();
 
+		//create IIconProviders for the two parts
+		socleIp = new DefaultIconProvider(Blocks.coal_block);
+		antennaIp = new DefaultIconProvider(Blocks.diamond_block);
+
+		//create the params
+		rp = new RenderParameters();
+
+		//load the animations
 		loadAnimation();
 	}
 
 	private void loadAnimation()
 	{
-		ar = new AnimationRenderer();
-
-		Rotation r = new Rotation(360).aroundAxis(0, 1, 0).forTicks(40);
+		//the antenna part will be floating mid air up and down, while rotating on itself
 		Translation t = new Translation(0, 0.0F, 0, 0, 0.3F, 0).movement(Transformation.SINUSOIDAL).forTicks(20);
 		Translation t2 = new Translation(0, 0.0F, 0, 0, -0.3F, 0).movement(Transformation.SINUSOIDAL).forTicks(20);
 		ChainedTransformation c = new ChainedTransformation(t, t2);
 
+		//Rotation
+		Rotation r = new Rotation(360).aroundAxis(0, 1, 0).forTicks(40);
+
+		//complete transformation
 		ParallelTransformation p = new ParallelTransformation(r, c).loop(-1);
 
-		Animation anim = new Animation(antenna, p);
-		ar.addAnimation(anim);
+		//Add the animation to the animation renderer
+		ar.addAnimation(new Animation(antenna, p));
 	}
 
 	@Override
 	public void render()
 	{
-		if (renderType == RenderType.ISBRH_INVENTORY)
+		if (renderType == RenderType.ITEM)
 		{
-			rp.reset();
-			cube.resetState();
-			drawShape(cube, rp);
+			//draw
+			drawShape(cube);
 			return;
 		}
-		else if (renderType == RenderType.ISBRH_WORLD)
+
+		if (renderType == RenderType.BLOCK)
 		{
-			initialize();
 			ar.setStartTime();
+			return;
 		}
-		else if (renderType == RenderType.TESR_WORLD)
+
+		if (renderType == RenderType.TILE_ENTITY)
 		{
-			model.resetState();
+			ar.animate();
+
+			//if the model is not made with quads only, draw polygons otherwise,
+			//the non animated part can (and should) be draw for BLOCK renderType
 			next(GL11.GL_POLYGON);
 
-			rp.icon.set(Blocks.coal_block.getIcon(0, 0));
+			//draw the socle with corresponding icon
+			socle.resetState();
+			rp.iconProvider.set(socleIp);
 			drawShape(socle, rp);
 
-			rp.icon.set(Blocks.diamond_block.getIcon(0, 0));
-			ar.animate();
+			//draw the antenna with corresponding icon
+			antenna.resetState();
+			rp.iconProvider.set(antennaIp);
 			drawShape(antenna, rp);
 		}
 
-	}
-
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		return true;
 	}
 }
