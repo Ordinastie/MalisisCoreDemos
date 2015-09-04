@@ -32,9 +32,4 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class WaveTileEntity extends TileEntity
 {
-	@Override
-	public boolean canUpdate()
-	{
-		return false;
-	}
 }

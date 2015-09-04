@@ -24,8 +24,9 @@
 
 package net.malisis.demo.waves;
 
+import net.malisis.core.MalisisCore;
+import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -35,18 +36,18 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class WaveBlock extends Block implements ITileEntityProvider
+public class WaveBlock extends MalisisBlock implements ITileEntityProvider
 {
-	//will be set by BaseRenderer.registerFor()
-	public static int renderId = -1;
-
 	protected WaveBlock()
 	{
 		//set the usual stuff
 		super(Material.water);
 		setUnlocalizedName("waveblock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTextureName(MalisisDemos.modid + ":waves");
+
+		//set the texture to be used (only used for item)
+		if (MalisisCore.isClient())
+			setTextureName(MalisisDemos.modid + ":blocks/waves");
 	}
 
 	@Override
@@ -61,11 +62,4 @@ public class WaveBlock extends Block implements ITileEntityProvider
 		//create the TE
 		return new WaveTileEntity();
 	}
-
-	@Override
-	public int getRenderType()
-	{
-		return renderId;
-	}
-
 }

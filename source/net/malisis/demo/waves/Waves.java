@@ -24,10 +24,9 @@
 
 package net.malisis.demo.waves;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * This demo is an example for animations.
@@ -44,9 +43,8 @@ public class Waves implements IDemo
 	{
 		//create the block
 		waveBlock = new WaveBlock();
+		waveBlock.register();
 
-		//register the block
-		GameRegistry.registerBlock(waveBlock, waveBlock.getUnlocalizedName().substring(5));
 		//register the TileEntity
 		GameRegistry.registerTileEntity(WaveTileEntity.class, "waveTE");
 	}
@@ -54,10 +52,12 @@ public class Waves implements IDemo
 	@Override
 	public void init()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if (MalisisCore.isClient())
 		{
 			//use the renderer for both the block and the TE
-			new WaveRenderer().registerFor(WaveBlock.class, WaveTileEntity.class);
+			WaveRenderer wbr = new WaveRenderer();
+			wbr.registerFor(waveBlock);
+			wbr.registerFor(WaveTileEntity.class);
 		}
 	}
 

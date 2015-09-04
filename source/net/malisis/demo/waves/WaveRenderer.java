@@ -27,6 +27,7 @@ package net.malisis.demo.waves;
 import java.util.List;
 
 import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.animation.transformation.BrightnessTransform;
@@ -37,6 +38,7 @@ import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 
@@ -60,6 +62,8 @@ public class WaveRenderer extends MalisisRenderer
 	private Shape wave;
 	//shape used for inventory
 	private Shape cube;
+	//RenderParameters
+	private RenderParameters rp;
 
 	@Override
 	protected void initialize()
@@ -69,6 +73,10 @@ public class WaveRenderer extends MalisisRenderer
 		cube = new Cube();
 		//enable the mergedVertexes so we can easily manipulate them with the animations
 		wave.enableMergedVertexes();
+
+		//create the params
+		rp = new RenderParameters();
+		rp.iconProvider.set(new DefaultIconProvider(Blocks.water));
 	}
 
 	//should be called only once from initialize(). For debug purpose, we recall it every time the block asks to be
@@ -93,39 +101,39 @@ public class WaveRenderer extends MalisisRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == RenderType.ISBRH_INVENTORY)
+		if (renderType == RenderType.ITEM)
 		{
 			drawShape(cube);
 			return;
 		}
 
-		if (renderType == RenderType.ISBRH_WORLD)
+		if (renderType == RenderType.BLOCK)
 		{
 			setup((int) Minecraft.getMinecraft().theWorld.getTotalWorldTime());
 			return;
 		}
 
-		if (renderType == RenderType.TESR_WORLD)
+		if (renderType == RenderType.TILE_ENTITY)
 		{
 			ar.setStartTime(startTime);
 			enableBlending();
-			shape.resetState();
+			wave.resetState();
 			rp.usePerVertexBrightness.set(true);
 
-			List<MergedVertex> mvs = shape.getMergedVertexes(shape.getFace("Top"));
+			List<MergedVertex> mvs = wave.getMergedVertexes(wave.getFace("Top"));
 			for (MergedVertex mv : mvs)
 			{
 				int delay = 0;
-				int x = (int) ((this.x + mv.getX()) % 10);
+				int x = (int) ((pos.getX() + mv.getX()) % 10);
 				delay += 10 * Math.abs(x - 5);
-				int z = (int) ((this.z + mv.getZ()) % 10);
+				int z = (int) ((pos.getZ() + mv.getZ()) % 10);
 				delay += 10 * Math.abs(z - 5);;
 				mvt.delay(delay);
 				mvt.transform(mv, ar.getElapsedTime());
 				br.delay(delay * 2);
 				br.transform(mv, ar.getElapsedTime());
 			}
-			rp.icon.set(Blocks.water.getIcon(1, 0));
+
 			drawShape(wave, rp);
 		}
 	}

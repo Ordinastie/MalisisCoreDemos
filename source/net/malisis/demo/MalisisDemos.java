@@ -35,6 +35,7 @@ import net.malisis.demo.connected.Connected;
 import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
+import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -86,7 +87,7 @@ public class MalisisDemos implements IMalisisMod
 		//		demos.add(new SidedInvDemo());
 		//		demos.add(new MultiBlockDemo());
 		//		demos.add(new TabInv());
-		//		demos.add(new Waves());
+		demos.add(new Waves());
 		//		demos.add(new RWLDemo());
 		//		demos.add(new Collision());
 		//		demos.add(new ChunkNotif());
