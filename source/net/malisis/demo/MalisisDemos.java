@@ -81,7 +81,6 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new GuiDemo());
 		demos.add(new Minty());
 		//		demos.add(new ModelDemo());
-		//		demos.add(new Test());
 		demos.add(new Connected());
 		//		demos.add(new MultipleInv());
 		//		demos.add(new SidedInvDemo());
