@@ -27,16 +27,19 @@ package net.malisis.demo.blockdir;
 import net.malisis.demo.IDemo;
 
 /**
+ * This demo show how to make a block that can have different directions.
+ *
  * @author Ordinastie
  *
  */
 public class BlockDirDemo implements IDemo
 {
-	public static BlockDir blockDir;
+	private BlockDir blockDir;
 
 	@Override
 	public void preInit()
 	{
+		//create and register the block
 		blockDir = new BlockDir();
 		blockDir.register();
 	}

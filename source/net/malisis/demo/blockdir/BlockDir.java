@@ -25,73 +25,39 @@
 package net.malisis.demo.blockdir;
 
 import net.malisis.core.MalisisCore;
+import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.icon.provider.SidesIconProvider;
-import net.malisis.core.util.EntityUtils;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
 
 /**
+ * Only thing needed is for the block to implement {@link IBlockDirectional}, granted it extends {@link MalisisBlock}.<br>
+ * The {@code MalisisBlock} will forward the required {@link Block} calls to {@code IBlockDirectional} default implementation.
+ *
  * @author Ordinastie
  *
  */
-public class BlockDir extends MalisisBlock
+public class BlockDir extends MalisisBlock implements IBlockDirectional
 {
-	public static final PropertyDirection DIRECTION = PropertyDirection.create("direction", EnumFacing.Plane.HORIZONTAL);
-
 	public BlockDir()
 	{
+		//set usual properties
 		super(Material.clay);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setUnlocalizedName("blockDirDemo");
 
-		String prefix = MalisisDemos.modid + ":blocks/dirblock_";
-		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
-				prefix + "right", };
-
 		if (MalisisCore.isClient())
 		{
+
+			String prefix = MalisisDemos.modid + ":blocks/dirblock_";
+			String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
+					prefix + "right", };
+
+			//create the iconProvider
 			SidesIconProvider provider = new SidesIconProvider(names[0], names);
-			provider.setPropertyDirection(DIRECTION);
 			setBlockIconProvider(provider);
 		}
-	}
-
-	@Override
-	protected BlockState createBlockState()
-	{
-		return new BlockState(this, DIRECTION);
-	}
-
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
-		EnumFacing dir = EntityUtils.getEntityFacing(placer).getOpposite();
-		return getDefaultState().withProperty(DIRECTION, dir);
-	}
-
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(DIRECTION, EnumFacing.getHorizontal(meta));
-	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return ((EnumFacing) state.getValue(DIRECTION)).getHorizontalIndex();
 	}
 }
