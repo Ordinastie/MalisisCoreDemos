@@ -36,6 +36,7 @@ import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.renderer.model.MalisisModel;
@@ -73,8 +74,8 @@ public class ModelDemoRenderer extends MalisisRenderer
 		cube = new Cube();
 
 		//create IIconProviders for the two parts
-		socleIp = new DefaultIconProvider(Blocks.coal_block);
-		antennaIp = new DefaultIconProvider(Blocks.diamond_block);
+		socleIp = new DefaultIconProvider(new VanillaIcon(Blocks.coal_block));
+		antennaIp = new DefaultIconProvider(new VanillaIcon(Blocks.diamond_block));
 
 		//create the params
 		rp = new RenderParameters();

@@ -27,11 +27,13 @@ package net.malisis.demo.minty;
 import java.util.EnumMap;
 
 import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.malisis.demo.minty.ArmoryOre.OreType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -47,6 +49,7 @@ import net.minecraft.world.IBlockAccess;
 public class ArmoryOreIconProvider extends DefaultIconProvider
 {
 	private EnumMap<OreType, MalisisIcon> icons = new EnumMap<>(OreType.class);
+	private VanillaIcon lavaIcon = new VanillaIcon(Blocks.lava);
 	private boolean isOverlay;
 
 	public ArmoryOreIconProvider()
@@ -82,7 +85,7 @@ public class ArmoryOreIconProvider extends DefaultIconProvider
 		//if base icon : use current default icon (glitter)
 		//special case for Lava where it uses regular lava
 		if (!isOverlay)
-			return oreType == OreType.Lava ? MalisisIcon.get("minecraft:blocks/lava_still") : icon;
+			return oreType == OreType.Lava ? lavaIcon : icon;
 
 		//fetch from the map
 		return icons.get(oreType);

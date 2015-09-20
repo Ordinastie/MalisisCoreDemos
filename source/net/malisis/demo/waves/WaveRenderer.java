@@ -38,6 +38,7 @@ import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.minecraft.init.Blocks;
 
@@ -73,7 +74,7 @@ public class WaveRenderer extends MalisisRenderer
 
 		//create the params
 		rp = new RenderParameters();
-		rp.iconProvider.set(new DefaultIconProvider(Blocks.water));
+		rp.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.water)));
 
 		//load the animations
 		loadAnimations();
