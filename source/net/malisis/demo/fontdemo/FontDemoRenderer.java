@@ -35,8 +35,10 @@ import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.util.EntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -156,9 +158,15 @@ public class FontDemoRenderer extends MalisisRenderer
 		//set the position lower
 		fy -= 0.4F;
 		//some "dynamic text"
-		BlockPos p = Minecraft.getMinecraft().thePlayer.getPosition();
+		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+		BlockPos p = player.getPosition();
 		str = "Player position : " + EnumChatFormatting.DARK_AQUA + p.getX() + ", " + p.getY() + ", " + p.getZ();
 		//render the text at the position with the options
 		font.render(this, str, fx, fy, fz, fro);
+		fy -= 0.3F;
+		str = "Facing : " + EnumChatFormatting.DARK_AQUA + EntityUtils.getEntityFacing(player) + " ("
+				+ EntityUtils.getEntityRotation(player) + ")";
+		font.render(this, str, fx, fy, fz, fro);
+
 	}
 }
