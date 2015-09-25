@@ -33,7 +33,7 @@ import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -187,7 +187,7 @@ public class Gui extends MalisisGui
 
 	private UIContainer panel2()
 	{
-		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, MalisisIcon.get("minecraft:items/diamond_axe")).setPosition(0, 0);
+		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.diamond_axe)).setPosition(0, 0);
 		//Colored Label
 		UILabel label1 = new UILabel(this, EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + "Colored label!")
 				.setPosition(20, 0);
