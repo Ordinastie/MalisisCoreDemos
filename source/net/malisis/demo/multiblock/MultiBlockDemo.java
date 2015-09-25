@@ -25,7 +25,6 @@
 package net.malisis.demo.multiblock;
 
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * This demo shows how to use multiblock structure to handle large size blocks with a Megatexture.<br>
@@ -37,15 +36,18 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class MultiBlockDemo implements IDemo
 {
-	MultiBlockBlock multiBlock;
+	AABBBlock aabbBlock;
+	PatternBlock patternBlock;
 
 	@Override
 	public void preInit()
 	{
-		//create the block
-		multiBlock = new MultiBlockBlock();
-		//register the block
-		GameRegistry.registerBlock(multiBlock, multiBlock.getUnlocalizedName().substring(5));
+		//create and register the blocks
+		aabbBlock = new AABBBlock();
+		aabbBlock.register();
+
+		patternBlock = new PatternBlock();
+		patternBlock.register();
 	}
 
 	@Override
