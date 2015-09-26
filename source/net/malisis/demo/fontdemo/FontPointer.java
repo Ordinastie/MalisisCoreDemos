@@ -24,6 +24,8 @@
 
 package net.malisis.demo.fontdemo;
 
+import java.util.List;
+
 import net.malisis.core.MalisisCore;
 import net.malisis.core.item.MalisisItem;
 import net.malisis.core.renderer.icon.VanillaIcon;
@@ -61,5 +63,11 @@ public class FontPointer extends MalisisItem
 		FontDemo.renderer.animate();
 
 		return itemStack;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced)
+	{
+		tooltip.add("Right click to start font shape animation.");
 	}
 }
