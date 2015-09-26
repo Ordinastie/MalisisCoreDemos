@@ -31,6 +31,7 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
 import net.malisis.demo.blockdir.BlockDirDemo;
+import net.malisis.demo.blocklistener.BlockListenerDemo;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
@@ -91,7 +92,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new Waves());
 		//		demos.add(new RWLDemo());
 		//		demos.add(new Collision());
-		//		demos.add(new ChunkNotif());
+		demos.add(new BlockListenerDemo());
 		demos.add(new FontDemo());
 		//		demos.add(new LavaPoolDemo());
 		//		demos.add(new Syncdemo());

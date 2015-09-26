@@ -22,36 +22,30 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.chunknotif;
+package net.malisis.demo.blocklistener;
 
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
+ * This demo show how to make a block that is able to listen to other block placement and breaking that happens around it.
+ *
  * @author Ordinastie
  *
  */
-public class ChunkNotif implements IDemo
+public class BlockListenerDemo implements IDemo
 {
-	public static NotifBlock notifBlock;
+	public static BlockListenerBlock blockListener;
 
 	@Override
 	public void preInit()
 	{
-		notifBlock = new NotifBlock();
-		GameRegistry.registerBlock(notifBlock, notifBlock.getName());
-
+		//create and register the block
+		blockListener = new BlockListenerBlock();
+		blockListener.register();
 	}
 
 	@Override
 	public void init()
-	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-			//new CollisionBlockRenderer().registerFor(CollisionBlock.class);
-		}
-	}
+	{}
 
 }

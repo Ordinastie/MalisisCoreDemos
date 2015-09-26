@@ -55,7 +55,7 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
-		setUnlocalizedName("multiBlockDemo");
+		setUnlocalizedName("aabbMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		if (MalisisCore.isClient())
