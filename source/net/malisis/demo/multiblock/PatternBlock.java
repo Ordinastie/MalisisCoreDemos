@@ -24,10 +24,7 @@
 
 package net.malisis.demo.multiblock;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.util.multiblock.IMultiBlock;
 import net.malisis.core.util.multiblock.MultiBlock;
 import net.malisis.core.util.multiblock.PatternMultiBlock;
@@ -58,9 +55,7 @@ public class PatternBlock extends MalisisBlock implements IMultiBlock//, IBlockL
 		setStepSound(soundTypeWood);
 		setUnlocalizedName("patternMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-
-		if (MalisisCore.isClient())
-			setBlockIconProvider(new DefaultIconProvider(new VanillaIcon(Blocks.gold_block)));
+		setTexture(Blocks.gold_block);
 
 		//create the multiBlock
 		IBlockState birchPlanks = Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);

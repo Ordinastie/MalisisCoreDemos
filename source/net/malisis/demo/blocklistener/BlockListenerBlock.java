@@ -24,9 +24,7 @@
 
 package net.malisis.demo.blocklistener;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.util.MBlockState;
 import net.malisis.core.util.chunklistener.IBlockListener;
 import net.malisis.demo.MalisisDemos;
@@ -53,12 +51,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);
-
-		if (MalisisCore.isClient())
-		{
-			//set the icons to be used
-			setBlockIconProvider(new DefaultIconProvider(MalisisDemos.modid + ":blocks/blocklistener"));
-		}
+		setTextureName(MalisisDemos.modid + ":blocks/blocklistener");
 	}
 
 	@Override

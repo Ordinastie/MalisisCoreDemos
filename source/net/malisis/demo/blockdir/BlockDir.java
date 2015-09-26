@@ -50,7 +50,6 @@ public class BlockDir extends MalisisBlock implements IBlockDirectional
 
 		if (MalisisCore.isClient())
 		{
-
 			String prefix = MalisisDemos.modid + ":blocks/dirblock_";
 			String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
 					prefix + "right", };

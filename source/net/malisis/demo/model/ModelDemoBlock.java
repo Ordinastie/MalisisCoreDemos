@@ -24,7 +24,6 @@
 
 package net.malisis.demo.model;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
@@ -43,11 +42,9 @@ public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 		//set the default stuff
 		super(Material.wood);
 		setUnlocalizedName("modelDemo");
+		setCreativeTab(MalisisDemos.tabDemos);
+		//texture only used for the item
 		setTextureName(MalisisDemos.modid + ":blocks/modeldemo");
-
-		//set the texture (only used for the item)
-		if (MalisisCore.isClient())
-			setCreativeTab(MalisisDemos.tabDemos);
 	}
 
 	@Override

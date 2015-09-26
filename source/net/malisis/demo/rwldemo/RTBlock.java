@@ -24,12 +24,9 @@
 
 package net.malisis.demo.rwldemo;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.BlockPlanks;
@@ -51,12 +48,7 @@ public class RTBlock extends MalisisBlock implements IBlockDirectional
 		super(Material.iron);
 		setUnlocalizedName("rtBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-
-		//set the icon
-		if (MalisisCore.isClient())
-			setBlockIconProvider(new DefaultIconProvider(new VanillaIcon(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT,
-					BlockPlanks.EnumType.BIRCH))));
-
+		setTexture(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
 	}
 
 	@Override
