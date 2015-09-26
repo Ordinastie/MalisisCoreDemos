@@ -24,48 +24,42 @@
 
 package net.malisis.demo.rwldemo;
 
-import net.malisis.core.renderer.MalisisRenderer;
-import net.malisis.core.renderer.RenderParameters;
-import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.MalisisCore;
+import net.malisis.core.item.MalisisItem;
+import net.malisis.core.renderer.icon.VanillaIcon;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
  *
  */
-public class RTBlockRenderer extends MalisisRenderer
+public class RWLPointer extends MalisisItem
 {
-	private Shape s;
-
-	@Override
-	protected void initialize()
+	public RWLPointer()
 	{
-		int n = 4;
-		float f = (float) 1 / n;
+		setUnlocalizedName("rwl_pointer");
+		setCreativeTab(MalisisDemos.tabDemos);
 
-		Shape t = new Cube();
-		t.setSize(1, f, f);
-
-		Shape[] shapes = new Shape[n];
-		for (int i = 0; i < n; i++)
-		{
-			shapes[i] = new Shape(t);
-			shapes[i].translate(0, i * f, i * f);
-		}
-
-		s = Shape.fromShapes(shapes);
-		s.storeState();
-
-		rp = new RenderParameters();
-		rp.renderAllFaces.set(true);
+		//use the wooden sword icon
+		if (MalisisCore.isClient())
+			setItemIconProvider(new DefaultIconProvider(new VanillaIcon(Items.wooden_sword)));
 	}
 
 	@Override
-	public void render()
+	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
-		initialize();
+		//renderer not accessible server-side
+		if (!world.isRemote)
+			return itemStack;
 
-		drawShape(s, rp);
+		//switch between block information and RayTracing modes
+		RWLDemo.renderer.changeMode();
+
+		return itemStack;
 	}
-
 }

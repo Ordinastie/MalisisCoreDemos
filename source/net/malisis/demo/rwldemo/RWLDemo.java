@@ -24,45 +24,48 @@
 
 package net.malisis.demo.rwldemo;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
+ * This demo shows how to use a renderer for the RenderWorldLastEvent.<br>
+ * When holding the pointer item, two modes are available :<br>
+ * - informations about the block the player is currently looking at can be displayed.<br>
+ * - RayTracing is performed when entering that mode and then displayed in world, showing where it intersects with a block.<br>
+ * To demonstrate RayTracing, a stair shaped block is provided too.
+ *
  * @author Ordinastie
  *
  */
 public class RWLDemo implements IDemo
 {
 	public static RTBlock rtBlock;
-	public static Pointer pointer;
+	public static RWLPointer rwlPointer;
 	@SideOnly(Side.CLIENT)
 	public static RwlRenderer renderer;
 
 	@Override
 	public void preInit()
 	{
+		//create the block and register it
 		rtBlock = new RTBlock();
 		rtBlock.register();
-		pointer = new Pointer();
 
-		GameRegistry.registerItem(pointer, pointer.getUnlocalizedName());
+		//create the item and register it
+		rwlPointer = new RWLPointer();
+		rwlPointer.register();
 	}
 
 	@Override
 	public void init()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if (MalisisCore.isClient())
 		{
 			//create a new renderer and register it to be used for RenderWorldLastEvent
-			//hide behind a side check because we're not using a proxy
 			renderer = new RwlRenderer();
 			renderer.registerForRenderWorldLast();
-
-			//renderer for the block
-			new RTBlockRenderer().registerFor(RTBlock.class);
 		}
 	}
 }

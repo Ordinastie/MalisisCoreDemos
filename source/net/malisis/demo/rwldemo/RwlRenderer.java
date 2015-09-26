@@ -26,6 +26,9 @@ package net.malisis.demo.rwldemo;
 
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
+import net.malisis.core.renderer.element.Face;
+import net.malisis.core.renderer.element.Shape;
+import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
@@ -35,13 +38,14 @@ import net.malisis.core.util.Ray;
 import net.malisis.core.util.RaytraceWorld;
 import net.malisis.core.util.Vector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -51,33 +55,44 @@ import org.lwjgl.opengl.GL11;
  */
 public class RwlRenderer extends MalisisRenderer
 {
-	private int mode = 0;
+	//current display mode : 0
+	private boolean rayTraceMode = false;
+	//start of rayTracing
 	private Point start;
+	//end of rayTracing
 	private Point end;
+	//eventual hit of rayTracing
 	private Point hit;
+	//RayTraceWorld instance
 	private RaytraceWorld rayTrace;
 
 	public void changeMode()
 	{
-		mode = (mode + 1) % 2;
-		if (mode == 1)
-			setLine();
+		//switch between modes
+		rayTraceMode = !rayTraceMode;
+		//do the rayTrace when switching to that mode
+		if (rayTraceMode)
+			rayTrace();
 	}
 
-	public void setLine()
+	public void rayTrace()
 	{
-		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-		MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
-
+		//set necessary data for rayTracing
+		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		Vec3 look = player.getLook(partialTick);
-		Vec3 pos = player.getPosition(partialTick);
+		Vec3 pos = player.getPositionEyes(partialTick);
 		start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
+
 		Ray ray = new Ray(start, new Vector(look));
 		rayTrace = new RaytraceWorld(ray);
+		//limit distance to 10 blocks
 		rayTrace.setLength(10);
 		end = rayTrace.getDestination();
 
-		mop = rayTrace.trace();
+		//do the actual rayTracing
+		MovingObjectPosition mop = rayTrace.trace();
+
+		//set the hit point if necessary
 		if (mop.typeOfHit == MovingObjectType.BLOCK)
 			hit = new Point(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
 		else
@@ -88,139 +103,152 @@ public class RwlRenderer extends MalisisRenderer
 	@Override
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
-		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-		return player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == RWLDemo.pointer;
+		//only render if the pointer is currently equipped
+		return EntityUtils.isEquipped(Minecraft.getMinecraft().thePlayer, RWLDemo.rwlPointer);
 	}
 
 	@Override
 	public void render()
 	{
-		if (mode == 0)
-			renderBlockHighlight();
-		else if (mode == 1)
+		//render based on current mode
+		if (rayTraceMode)
 			renderRayTrace();
+		else
+			renderBlockHighlight();
 	}
 
 	private void renderBlockHighlight()
 	{
-		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
-		ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
+		pos = mop.getBlockPos();
+		blockState = world.getBlockState(pos);
+		set(world, blockState.getBlock(), pos, blockState);
 
-		set(mop.blockX + dir.offsetX, mop.blockY + dir.offsetY, mop.blockZ + dir.offsetZ);
-		set(world, world.getBlock(mop.blockX, mop.blockY, mop.blockZ), mop.blockX, mop.blockY, mop.blockZ,
-				world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
-		//set(-1, 3, 6);
-
-		int color = 0x000066;
-		GL11.glPushMatrix();
-		GL11.glTranslatef(x, y, z);
+		//draw a blue block highlight
 		next(GL11.GL_LINE_LOOP);
-		//GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
+		//disable texture when drawing lines
 		disableTextures();
 
+		//draw the cube with a color
 		RenderParameters rp = new RenderParameters();
-		rp.colorMultiplier.set(color);
+		rp.colorMultiplier.set(0x000066);
 
 		drawShape(new Cube(), rp);
+		GlStateManager.popMatrix();
 
+		//draw the block informations
 		next(GL11.GL_QUADS);
-		GL11.glPopMatrix();
-		GL11.glPushMatrix();
+		GlStateManager.disableDepth();
+		GlStateManager.pushMatrix();
+		//prevent z-fighting for the text
 		GL11.glPolygonOffset(-3.0F, -3.0F);
 		GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
 
+		//reenable the textures
 		enableTextures();
 
-		ForgeDirection facing = EntityUtils.getEntityFacing(player);
-		String[] texts = { x + "," + y + "," + z + " (" + blockMetadata + ")", "" + facing, "" + player.rotationYaw,
-				"Chunk " + (x >> 4) + ", " + (z >> 4) };
-
-		FontRenderOptions fro = new FontRenderOptions();
-		fro.fontScale = 0.1F;
-		fro.color = 0x000066;
-
 		float ox = 0;
-		float oy = 1 - fro.fontScale;
+		float oy = 1;
 		float oz = 0;
+		float angle = 0;
 
-		if (facing == ForgeDirection.NORTH)
-		{
+		//do some math for text placement based on the direction the player is facing
+		EnumFacing facing = EntityUtils.getEntityFacing(player);
+		if (facing == EnumFacing.NORTH)
 			oz = 1;
-		}
-		else if (facing == ForgeDirection.EAST)
+		else if (facing == EnumFacing.EAST)
+			angle = 270;
+		else if (facing == EnumFacing.SOUTH)
 		{
-			//fro.angle = 270;
+			angle = 180;
 			ox = -1;
 		}
-		else if (facing == ForgeDirection.SOUTH)
+		else if (facing == EnumFacing.WEST)
 		{
-			//fro.angle = 180;
-			oz = -1;
-		}
-		else if (facing == ForgeDirection.WEST)
-		{
-			//fro.angle = 90;
-			ox = 1;
+			angle = 90;
+			oz = 1;
+			ox = -1;
 		}
 
-		if (dir == ForgeDirection.UP)
+		GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ());
+		GlStateManager.rotate(angle, 0, 1, 0);
+
+		//special case when player is looking down (the top face of a block)
+		if (mop.sideHit == EnumFacing.UP)
 		{
-			//			fro.angle = -90;
-			//			fro.aX = 1;
-			//			fro.aY = 0;
-			oz = 0;
-			oy = 1;
-			if (facing == ForgeDirection.NORTH)
-			{
-				ox = 0;
+			oz = 1;
+			if (facing == EnumFacing.NORTH || facing == EnumFacing.WEST)
 				oy = 0;
-			}
-			if (facing == ForgeDirection.WEST)
-			{
-				oy = 0;
-			}
+
+			GL11.glRotatef(-90, 1, 0, 0);
 		}
 
+		//set the font and options to use for the text
 		MalisisFont font = MalisisFont.minecraftFont;
-		int i = 0;
+		FontRenderOptions fro = new FontRenderOptions();
+		fro.shadow = true;
+		fro.fontScale = 0.1F;
+		fro.color = 0x9999CC;
+
+		//set the texts to display
+		String[] texts = { pos.getX() + ", " + pos.getY() + ", " + pos.getZ(), blockState.toString(), "Side " + mop.sideHit,
+				"Chunk " + (pos.getX() >> 4) + ", " + (pos.getZ() >> 4) };
+
+		//draw the lines of text
+		int i = 1;
 		for (String str : texts)
-		{
-			float offset = font.getStringWidth(str, fro);
-			ox = x + ox;
-			oy = y + oy - i * fro.fontScale;
-			oz = z + oz;
+			drawText(font, str, ox, oy - i++ * fro.fontScale, oz, fro);
 
-			drawText(font, str, ox, oy, oz, fro);
-			i++;
-		}
-
-		//	MalisisCore.message(fro.x + "," + fro.y + "," + fro.z);
+		//reset OGL states
 		next();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
+		GlStateManager.enableDepth();
 		GL11.glPolygonOffset(0.0F, 0.0F);
 		GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
 	}
 
 	public void renderRayTrace()
 	{
-
 		next(GL11.GL_LINES);
 		disableTextures();
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		//disable depth to see the line go through blocks
+		GlStateManager.disableDepth();
 
-		t.setColorRGBA_I(0x339933, 0xFF);
-		t.addVertex(start.x, start.y, start.z);
-		if (hit != null)
+		//create the vertexes for start and end of the line
+		int color = 0x339933;
+		Vertex vstart = new Vertex(start.x, start.y, start.z);
+		vstart.setColor(color);
+		Vertex vend = new Vertex(end.x, end.y, end.z);
+		vend.setColor(color);
+
+		Face f;
+		if (hit == null)
+			f = new Face(vstart, vend);
+		else
 		{
-			t.addVertex(hit.x, hit.y, hit.z);
-			t.setColorRGBA_I(0xAA3333, 0xFF);
-			t.addVertex(hit.x, hit.y, hit.z);
-		}
-		t.addVertex(end.x, end.y, end.z);
+			//if a block was hit, add vertexes at the hit point to split the line
+			Vertex vhitstart = new Vertex(hit.x, hit.y, hit.z);
+			vhitstart.setColor(color);
+			color = 0xAA3333;
+			Vertex vhitend = new Vertex(hit.x, hit.y, hit.z);
+			vhitend.setColor(color);
+			//change the end color
+			vend.setColor(color);
 
+			f = new Face(vstart, vhitstart, vhitend, vend);
+		}
+
+		//draw the line
+		RenderParameters rp = new RenderParameters();
+		rp.usePerVertexColor.set(true);
+		drawShape(new Shape(f), rp);
+
+		//reset OGL states
 		next(GL11.GL_QUADS);
 		enableTextures();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GlStateManager.enableDepth();
 	}
 }

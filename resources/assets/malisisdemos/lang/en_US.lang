@@ -16,3 +16,5 @@ tile.blockDirDemo.name=Block Directionnal Demo
 
 item.demoCard.name=Card (Multiple Inventories Demo)
 item.font_pointer.name=Pointer (Font Demo)
+item.rwl_pointer.name=Pointer (RWL Demo)
+

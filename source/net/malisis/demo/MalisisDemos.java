@@ -38,6 +38,7 @@ import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlockDemo;
+import net.malisis.demo.rwldemo.RWLDemo;
 import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -90,7 +91,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new MultiBlockDemo());
 		//		demos.add(new TabInv());
 		demos.add(new Waves());
-		//		demos.add(new RWLDemo());
+		demos.add(new RWLDemo());
 		//		demos.add(new Collision());
 		demos.add(new BlockListenerDemo());
 		demos.add(new FontDemo());

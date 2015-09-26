@@ -24,61 +24,64 @@
 
 package net.malisis.demo.rwldemo;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
+import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.icon.VanillaIcon;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
+import net.malisis.core.util.AABBUtils;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
  *
  */
-public class RTBlock extends MalisisBlock
+public class RTBlock extends MalisisBlock implements IBlockDirectional
 {
-	public static int renderId = -1;
-
 	public RTBlock()
 	{
+		//set usual properties
 		super(Material.iron);
 		setUnlocalizedName("rtBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
+
+		//set the icon
+		if (MalisisCore.isClient())
+			setBlockIconProvider(new DefaultIconProvider(new VanillaIcon(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT,
+					BlockPlanks.EnumType.BIRCH))));
+
 	}
 
 	@Override
-	public void registerIcons(IIconRegister register)
-	{}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
+	public AxisAlignedBB[] getBoundingBox(IBlockAccess world, BlockPos pos, BoundingBoxType type)
 	{
-		return Blocks.command_block.getIcon(0, 0);
-	}
-
-	@Override
-	public AxisAlignedBB[] getBoundingBox(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
-	{
+		//for SELECTION, return a 0->1 box
 		if (type == BoundingBoxType.SELECTION)
-			return new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1) };
+			return AABBUtils.identities();
 
+		//create a stair-like shaped block
+		//note that the rotation is automatically handle by MalisisBlock and IBlockDirectional
 		int n = 4;
 		float f = (float) 1 / n;
 
 		AxisAlignedBB[] aabbs = new AxisAlignedBB[n];
 
 		for (int i = 0; i < n; i++)
-			aabbs[i] = AxisAlignedBB.getBoundingBox(0, i * f, i * f, 1, (i + 1) * f, (i + 1) * f);
+			aabbs[i] = new AxisAlignedBB(0, 1 - i * f, i * f, 1, 1 - (i + 1) * f, (i + 1) * f);
 
 		return aabbs;
 	}
 
 	@Override
-	public int getRenderType()
+	public boolean isOpaqueCube()
 	{
-		return renderId;
+		return false;
 	}
 }
