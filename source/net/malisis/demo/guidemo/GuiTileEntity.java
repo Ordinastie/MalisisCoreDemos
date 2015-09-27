@@ -9,7 +9,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,15 +24,9 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(Object... data)
+	public MalisisInventory getInventory(Object... data)
 	{
-		return new MalisisInventory[] { inventory };
-	}
-
-	@Override
-	public MalisisInventory[] getInventories(EnumFacing side, Object... data)
-	{
-		return getInventories(data);
+		return inventory;
 	}
 
 	@SideOnly(Side.CLIENT)
