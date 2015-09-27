@@ -25,8 +25,7 @@
 package net.malisis.demo.tabinv;
 
 import net.malisis.demo.IDemo;
-import net.minecraft.block.Block;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * This demo is designed to detail how to handle different inventories in different GUI tabs.
@@ -36,16 +35,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class TabInv implements IDemo
 {
-	public Block tabInvBlock;
+	public TabInvBlock tabInvBlock;
 
 	@Override
 	public void preInit()
 	{
-		//create the block
+		//create and register the block
 		tabInvBlock = new TabInvBlock();
+		tabInvBlock.register();
 
-		//register block
-		GameRegistry.registerBlock(tabInvBlock, tabInvBlock.getUnlocalizedName());
 		//register te
 		GameRegistry.registerTileEntity(TabInvTileEntity.class, "tabInvTe");
 	}

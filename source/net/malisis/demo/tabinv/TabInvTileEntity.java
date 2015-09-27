@@ -33,16 +33,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
-public class TabInvTileEntity extends TileEntity implements IInventoryProvider
+public class TabInvTileEntity extends TileEntity implements IInventoryProvider, IUpdatePlayerListBox
 {
 	//inventory in first tab
 	public MalisisInventory inventory;
@@ -112,7 +112,7 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public void updateEntity()
+	public void update()
 	{
 		if (worldObj.isRemote)
 			return;
@@ -157,6 +157,13 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
+	public MalisisInventory getInventory(Object... data)
+	{
+		//make the default inventory
+		return inventory;
+	}
+
+	@Override
 	public MalisisInventory[] getInventories(Object... data)
 	{
 		//return both inventories, because they will be both added to the container
@@ -164,17 +171,10 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
-	{
-		//used for ISidedInventories
-		return getInventories(data);
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public MalisisGui getGui(MalisisInventoryContainer container)
 	{
-		//get the gui to open (do not forget @SideOnly
+		//get the gui to open (do not forget @SideOnly)
 		return new TabInvGui(this, container);
 	}
 
@@ -182,12 +182,22 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
+		inventory.readFromNBT(tag.getCompoundTag("inventory"));
+		converter.readFromNBT(tag.getCompoundTag("converter"));
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
+		//write both inventories in their own tag
+		NBTTagCompound inventoryTag = new NBTTagCompound();
+		inventory.writeToNBT(inventoryTag);
+		tag.setTag("inventory", inventoryTag);
+
+		NBTTagCompound converterTag = new NBTTagCompound();
+		converter.writeToNBT(converterTag);
+		tag.setTag("converter", converterTag);
 	}
 
 	//special slot just to store what kind of filter we need for the slot
@@ -214,5 +224,4 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider
 			return 40;
 		}
 	}
-
 }

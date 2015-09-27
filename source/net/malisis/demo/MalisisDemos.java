@@ -39,6 +39,7 @@ import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlockDemo;
 import net.malisis.demo.rwldemo.RWLDemo;
+import net.malisis.demo.tabinv.TabInv;
 import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -89,7 +90,7 @@ public class MalisisDemos implements IMalisisMod
 		//		demos.add(new MultipleInv());
 		//		demos.add(new SidedInvDemo());
 		demos.add(new MultiBlockDemo());
-		//		demos.add(new TabInv());
+		demos.add(new TabInv());
 		demos.add(new Waves());
 		demos.add(new RWLDemo());
 		//		demos.add(new Collision());

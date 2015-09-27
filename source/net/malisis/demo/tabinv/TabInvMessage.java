@@ -26,21 +26,21 @@ package net.malisis.demo.tabinv;
 
 import io.netty.buffer.ByteBuf;
 import net.malisis.core.inventory.MalisisInventoryContainer;
+import net.malisis.core.network.IMalisisMessageHandler;
 import net.malisis.core.network.MalisisMessage;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.inventory.Container;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
 @MalisisMessage
-public class TabInvMessage implements IMessageHandler<TabInvMessage.Packet, IMessage>
+public class TabInvMessage implements IMalisisMessageHandler<TabInvMessage.Packet, IMessage>
 {
 	public TabInvMessage()
 	{
@@ -48,16 +48,12 @@ public class TabInvMessage implements IMessageHandler<TabInvMessage.Packet, IMes
 	}
 
 	@Override
-	public IMessage onMessage(Packet message, MessageContext ctx)
+	public void process(Packet message, MessageContext ctx)
 	{
-		//should never be server, but better double check
-		if (ctx.side == Side.CLIENT)
-			return null;
-
 		//get open container and check it's one of ours
 		Container c = ctx.getServerHandler().playerEntity.openContainer;
 		if (!(c instanceof MalisisInventoryContainer))
-			return null;
+			return;
 
 		//get the provider via the container (instead of passing the coords via the packet which costs more and is less secure
 		//TODO :  maybe add a shortcut for that too
@@ -65,7 +61,7 @@ public class TabInvMessage implements IMessageHandler<TabInvMessage.Packet, IMes
 		//set the tab server side
 		te.setTab(message.tab);
 
-		return null;
+		return;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -60,7 +60,6 @@ public class TabInvGui extends MalisisGui
 	@Override
 	public void construct()
 	{
-
 		//create the first window, with a title, size and position
 		UIWindow inventoryWindow = new UIWindow(this, "TE Inventory", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);
 		//create the inventory container and with the first inventory
@@ -72,10 +71,13 @@ public class TabInvGui extends MalisisGui
 		UIWindow converterWindow = new UIWindow(this, "Converter", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);;
 		//this time, we add the slots manually to the window because we want them to have custom position
 		UISlot uislot = new UISlot(this, te.slotIron).setPosition(-30, 20, Anchor.CENTER);
+		uislot.setTooltip("Iron");
 		converterWindow.add(uislot);
 		uislot = new UISlot(this, te.slotGold).setPosition(30, 20, Anchor.CENTER);
+		uislot.setTooltip("Gold");
 		converterWindow.add(uislot);
 		uislot = new UISlot(this, te.slotDiamond).setPosition(0, 60, Anchor.CENTER);
+		uislot.setTooltip("(Almost) Free diamond");
 		converterWindow.add(uislot);
 
 		//create the tabGroup that will hold the tabs

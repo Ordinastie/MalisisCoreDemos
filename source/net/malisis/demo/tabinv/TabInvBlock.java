@@ -24,22 +24,25 @@
 
 package net.malisis.demo.tabinv;
 
+import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
  *
  */
-public class TabInvBlock extends Block implements ITileEntityProvider
+public class TabInvBlock extends MalisisBlock implements ITileEntityProvider
 {
 
 	protected TabInvBlock()
@@ -49,19 +52,19 @@ public class TabInvBlock extends Block implements ITileEntityProvider
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
 		setUnlocalizedName("tabInv");
-		setTextureName(MalisisDemos.modid + ":tabinv");
 		setCreativeTab(MalisisDemos.tabDemos);
+		setTextureName(MalisisDemos.modid + ":blocks/tabinv");
 
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 			return true;
 
 		//fetch the inventory provider. if no inventory at the coords, te = null
-		TabInvTileEntity te = TileEntityUtils.getTileEntity(TabInvTileEntity.class, world, x, y, z);
+		TabInvTileEntity te = TileEntityUtils.getTileEntity(TabInvTileEntity.class, world, pos);
 		//open the provider for the player (creates container, add the inventories from the provider to it) if te == null, does nothing
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
@@ -73,6 +76,14 @@ public class TabInvBlock extends Block implements ITileEntityProvider
 	{
 		//creates the TileEntity
 		return new TabInvTileEntity();
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		TabInvTileEntity te = TileEntityUtils.getTileEntity(TabInvTileEntity.class, world, pos);
+		if (te != null)
+			te.breakInventories(world, pos);
 	}
 
 }
