@@ -24,52 +24,47 @@
 
 package net.malisis.demo.multipleinv;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
+import net.malisis.core.item.MalisisItem;
+import net.malisis.core.renderer.icon.VanillaIcon;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
-public class Card extends Item implements IInventoryProvider
+public class Card extends MalisisItem implements IInventoryProvider
 {
 	public Card()
 	{
 		setUnlocalizedName("demoCard");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
 
-	@Override
-	public void registerIcons(IIconRegister p_94581_1_)
-	{}
-
-	@Override
-	public IIcon getIconFromDamage(int damage)
-	{
-		return Items.map.getIconFromDamage(damage);
+		if (MalisisCore.isClient())
+			setItemIconProvider(new DefaultIconProvider(new VanillaIcon(Items.map)));
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
+		//don't do anything on the client
 		if (world.isRemote)
 			return itemStack;
 
+		//open the inventory for current itemStack
 		MalisisInventory.open((EntityPlayerMP) player, this, itemStack);
 
 		return itemStack;
@@ -83,21 +78,18 @@ public class Card extends Item implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(Object... data)
+	public MalisisInventory getInventory(Object... data)
 	{
+		//make sure an ItemStack was passed for data
 		if (!(data[0] instanceof ItemStack))
 			return null;
 
+		//create the inventory
 		MalisisInventory inventory = new MalisisInventory(this, 27);
 		inventory.setInventoryStackLimit(2);
 		inventory.setItemStackProvider((ItemStack) data[0]);
-		return new MalisisInventory[] { inventory };
-	}
 
-	@Override
-	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
-	{
-		return getInventories(data);
+		return inventory;
 	}
 
 	@Override

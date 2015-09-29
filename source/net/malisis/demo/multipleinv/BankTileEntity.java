@@ -32,7 +32,6 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
@@ -44,20 +43,14 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 
 	public BankTileEntity()
 	{
+		//create the inventory
 		inventory = new MalisisInventory(this, new CardSlot[] { new CardSlot(0), new CardSlot(1), new CardSlot(2) });
-
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(Object... data)
+	public MalisisInventory getInventory(Object... data)
 	{
-		return new MalisisInventory[] { inventory };
-	}
-
-	@Override
-	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
-	{
-		return getInventories(data);
+		return inventory;
 	}
 
 	@Override
@@ -82,6 +75,8 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 
 	public class CardSlot extends MalisisSlot
 	{
+		//the inventory stored in the card
+		//we want to keep track of it so it can be removed for the container for this slot's inventory
 		private MalisisInventory cardIventory;
 
 		public CardSlot(int index)
@@ -98,21 +93,26 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 		@Override
 		public void onSlotChanged()
 		{
+			//if there was an inventory before
 			if (cardIventory != null)
 			{
+				//remove the card inventory from all opened containers
 				for (MalisisInventoryContainer container : BankTileEntity.this.inventory.getOpenedContainers())
 					container.removeInventory(cardIventory);
 				cardIventory = null;
 			}
 
+			//stack is not null, new card is placed in the slot
 			if (getItemStack() != null)
 			{
-				if (getItemStack().stackTagCompound != null && getItemStack().stackTagCompound.hasKey("inventoryId"))
+				if (getItemStack().getTagCompound() != null && getItemStack().getTagCompound().hasKey("inventoryId"))
 					return;
 
+				//get the inventory from the card
 				Card item = (Card) getItemStack().getItem();
-				cardIventory = item.getInventories(getItemStack())[0];
+				cardIventory = item.getInventory(getItemStack());
 
+				//add the inventory to all opened containers
 				for (MalisisInventoryContainer container : BankTileEntity.this.inventory.getOpenedContainers())
 					container.addInventory(cardIventory);
 			}

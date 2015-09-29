@@ -25,27 +25,33 @@
 package net.malisis.demo.multipleinv;
 
 import net.malisis.demo.IDemo;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
+ * This demo shows how to handle multiple inventories.<br>
+ * - The Card item holds their own inventory.<br>
+ * - The Bank block also has a 3 slot inventory which can only accept Card items. Putting a card in the slot open the Card inventory in the
+ * bank so you can transfer items between two cards.
+ * 
  * @author Ordinastie
  *
  */
 public class MultipleInv implements IDemo
 {
-	public static Block bank;
-	public static Item card;
+	public static Bank bank;
+	public static Card card;
 
 	@Override
 	public void preInit()
 	{
+		//create and register the bank
 		bank = new Bank();
-		card = new Card();
+		bank.register();
 
-		GameRegistry.registerBlock(bank, bank.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(card, card.getUnlocalizedName());
+		//create and register the card
+		card = new Card();
+		card.register();
+
 		GameRegistry.registerTileEntity(BankTileEntity.class, "bankTileEntity");
 	}
 
