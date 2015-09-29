@@ -25,7 +25,7 @@
 package net.malisis.demo.sidedinvdemo;
 
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * This demo is designd to show how to handle sided inventories
@@ -40,13 +40,12 @@ public class SidedInvDemo implements IDemo
 	@Override
 	public void preInit()
 	{
-		//create the block
+		//create and register the block
 		sidedBlock = new SidedBlock();
-		//register the block
-		GameRegistry.registerBlock(sidedBlock, sidedBlock.getUnlocalizedName().substring(5));
+		sidedBlock.register();
+
 		//register the TileEntity
 		GameRegistry.registerTileEntity(SidedTileEntity.class, "sidedTe");
-
 	}
 
 	@Override

@@ -24,32 +24,32 @@
 
 package net.malisis.demo.sidedinvdemo;
 
-import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.MalisisCore;
+import net.malisis.core.block.IBlockDirectional;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.inventory.ISidedInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
+import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
+import net.malisis.demo.tabinv.TabInvTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author Ordinastie
  *
  */
-public class SidedBlock extends Block implements ITileEntityProvider
+public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBlockDirectional
 {
-	//Use different icons for sides
-	protected IIcon triageIcon;
-	protected IIcon stonesIcon;
-	protected IIcon ingotsIcon;
-
 	public SidedBlock()
 	{
 		//set usual properties
@@ -57,42 +57,28 @@ public class SidedBlock extends Block implements ITileEntityProvider
 		setHardness(1.0F);
 		setStepSound(Block.soundTypeWood);
 		setUnlocalizedName("sidedBlockDemo");
-		setTextureName(MalisisDemos.modid + ":sidedinv");
 		setCreativeTab(MalisisDemos.tabDemos);
+
+		if (MalisisCore.isClient())
+		{
+			//set the icons to use for the sides
+			SidesIconProvider provider = new SidesIconProvider(MalisisDemos.modid + ":blocks/sidedinv");
+			provider.setSideIcon(EnumFacing.WEST, MalisisDemos.modid + ":blocks/sidedingots");
+			provider.setSideIcon(EnumFacing.EAST, MalisisDemos.modid + ":blocks/sidedstones");
+			provider.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/sidedtriage");
+			setBlockIconProvider(provider);
+		}
 	}
 
 	@Override
-	public void registerIcons(IIconRegister register)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		//register the icons
-		blockIcon = register.registerIcon(getTextureName());
-		triageIcon = register.registerIcon(MalisisDemos.modid + ":sidedtriage");
-		stonesIcon = register.registerIcon(MalisisDemos.modid + ":sidedstones");
-		ingotsIcon = register.registerIcon(MalisisDemos.modid + ":sidedingots");
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		//get the right icon for the right side
-		if (side == ForgeDirection.UP.ordinal())
-			return triageIcon;
-		else if (side == ForgeDirection.EAST.ordinal())
-			return stonesIcon;
-		else if (side == ForgeDirection.WEST.ordinal())
-			return ingotsIcon;
-		else
-			return blockIcon;
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-	{
+		//don't do anything on the client
 		if (world.isRemote)
 			return true;
 
 		//get the InventoryProvider.
-		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+		ISidedInventoryProvider te = TileEntityUtils.getTileEntity(ISidedInventoryProvider.class, world, pos);
 		//open the inventory
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
@@ -104,5 +90,13 @@ public class SidedBlock extends Block implements ITileEntityProvider
 	{
 		//Create the TileEntity
 		return new SidedTileEntity();
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		TabInvTileEntity te = TileEntityUtils.getTileEntity(TabInvTileEntity.class, world, pos);
+		if (te != null)
+			te.breakInventories(world, pos);
 	}
 }

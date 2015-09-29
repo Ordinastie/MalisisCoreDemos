@@ -25,15 +25,17 @@
 package net.malisis.demo.sidedinvdemo;
 
 import net.malisis.core.client.gui.MalisisGui;
+import net.malisis.core.inventory.ISidedInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
-import net.malisis.core.tileentity.TileEntitySidedInventory;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 /**
  * This tile entity will handle 3 different inventories :<br>
@@ -46,7 +48,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class SidedTileEntity extends TileEntitySidedInventory
+public class SidedTileEntity extends TileEntity implements ISidedInventoryProvider, IUpdatePlayerListBox
 {
 	//the 3 different inventories
 	public MalisisInventory triageInventory;
@@ -55,7 +57,7 @@ public class SidedTileEntity extends TileEntitySidedInventory
 	//current processing timer
 	public int timer;
 	//total time before processing again
-	public int totalTime = 20;
+	public int totalTime = 60;
 
 	public SidedTileEntity()
 	{
@@ -65,7 +67,7 @@ public class SidedTileEntity extends TileEntitySidedInventory
 		ingotsInventory = new MalisisInventory(this, 16)
 		{
 			@Override
-			public boolean isItemValidForSlot(int slotNumber, ItemStack itemStack)
+			public boolean itemValidForSlot(MalisisSlot slot, ItemStack itemStack)
 			{
 				//accept only gold or iron ingots
 				return itemStack != null && (itemStack.getItem() == Items.gold_ingot || itemStack.getItem() == Items.iron_ingot);
@@ -75,7 +77,7 @@ public class SidedTileEntity extends TileEntitySidedInventory
 		stoneInventory = new MalisisInventory(this, 16)
 		{
 			@Override
-			public boolean isItemValidForSlot(int slotNumber, ItemStack itemStack)
+			public boolean itemValidForSlot(MalisisSlot slot, ItemStack itemStack)
 			{
 				if (itemStack == null)
 					return false;
@@ -90,11 +92,28 @@ public class SidedTileEntity extends TileEntitySidedInventory
 		triageInventory.setName("Triage");
 		ingotsInventory.setName("Ingots");
 		stoneInventory.setName("Stones");
+	}
 
-		//add the inventories with their respective sides
-		addSidedInventory(triageInventory, ForgeDirection.UP);
-		addSidedInventory(ingotsInventory, ForgeDirection.EAST);
-		addSidedInventory(stoneInventory, ForgeDirection.WEST);
+	@Override
+	public MalisisInventory getInventory(Object... data)
+	{
+		return triageInventory;
+	}
+
+	@Override
+	public MalisisInventory getInventory(EnumFacing side)
+	{
+		switch (side)
+		{
+			case UP:
+				return triageInventory;
+			case EAST:
+				return stoneInventory;
+			case WEST:
+				return ingotsInventory;
+			default:
+				return null;
+		}
 	}
 
 	public float getTimer(float partialTick)
@@ -107,7 +126,7 @@ public class SidedTileEntity extends TileEntitySidedInventory
 	}
 
 	@Override
-	public void updateEntity()
+	public void update()
 	{
 		timer++;
 		//time to process
@@ -115,8 +134,8 @@ public class SidedTileEntity extends TileEntitySidedInventory
 		{
 			timer = 0;
 			//only process on server
-			if (worldObj.isRemote)
-				return;
+			//			if (worldObj.isRemote)
+			//				return;
 
 			MalisisSlot slot = triageInventory.getFirstOccupiedSlot();
 			//if inventory is empty, no process to do
