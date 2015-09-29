@@ -7,19 +7,13 @@ public class StargateTileEntity extends TileEntity
 {
 	//start time for animations
 	public long placedTimer;
-
-	@Override
-	public boolean canUpdate()
-	{
-		//no need to for update
-		return false;
-	}
+	public AxisAlignedBB aabb = new AxisAlignedBB(-2, 0, -2, 3, 2, 3);
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()
 	{
 		//extends the rendering bound so the TE is rendered even when not looking directly at the base block
-		return AxisAlignedBB.getBoundingBox(xCoord - 2, yCoord, zCoord - 2, xCoord + 3, yCoord + 2, zCoord + 3);
+		return aabb.offset(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 }

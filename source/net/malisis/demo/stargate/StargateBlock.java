@@ -24,61 +24,45 @@
 
 package net.malisis.demo.stargate;
 
+import net.malisis.core.MalisisCore;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
+import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class StargateBlock extends BlockContainer
+public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 {
-	//renderId of the renderer (set by BaseRenderer.registerFor())
-	public static int renderId = -1;
-	//large icon for top face
-	private IIcon sgPlatform;
-	//icon for the side
-	private IIcon sgPlatformSide;
 
 	protected StargateBlock()
 	{
 		super(Material.iron);
 		setUnlocalizedName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTextureName(MalisisDemos.modid + ":stargate");
+
+		if (MalisisCore.isClient())
+		{
+			//set the icon provider
+			setBlockIconProvider(new SgIconProvider());
+		}
 	}
 
 	@Override
-	public void registerIcons(IIconRegister register)
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
-		//register default icon that will be used for the cube in the inventory
-		super.registerIcons(register);
-		//register the large icon for top face
-		sgPlatform = register.registerIcon(MalisisDemos.modid + ":sgplatform");
-		//register icon for side
-		sgPlatformSide = register.registerIcon(MalisisDemos.modid + ":sgplatformside");
-	}
-
-	public IIcon getPlateformIcon()
-	{
-		//get the large top face icon
-		return sgPlatform;
-	}
-
-	public IIcon getPlateformSideIcon()
-	{
-		//get the side icon
-		return sgPlatformSide;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
-	{
-		//sets teh starting time for the animations
-		((StargateTileEntity) world.getTileEntity(x, y, z)).placedTimer = world.getTotalWorldTime();
+		//sets the starting time for the animations
+		StargateTileEntity te = TileEntityUtils.getTileEntity(StargateTileEntity.class, world, pos);
+		if (te != null)
+			te.placedTimer = world.getTotalWorldTime();
 	}
 
 	@Override
@@ -100,9 +84,37 @@ public class StargateBlock extends BlockContainer
 		return false;
 	}
 
-	@Override
-	public int getRenderType()
+	//the icon provider is custom one that holds the 3 icons that will be needed
+	//the default one will be use for the inventory block
+	public static class SgIconProvider implements IBlockIconProvider
 	{
-		return renderId;
+		private MalisisIcon defaultIcon = new MalisisIcon(MalisisDemos.modid + ":blocks/stargate");
+		private MalisisIcon platform = new MalisisIcon(MalisisDemos.modid + ":blocks/sgplatform");
+		private MalisisIcon platformSide = new MalisisIcon(MalisisDemos.modid + ":blocks/sgplatformside");
+
+		@Override
+		public MalisisIcon getIcon()
+		{
+			return defaultIcon;
+		}
+
+		public MalisisIcon getPlatformIcon()
+		{
+			return platform;
+		}
+
+		public MalisisIcon getPlatformSideIcon()
+		{
+			return platformSide;
+		}
+
+		@Override
+		public void registerIcons(TextureMap map)
+		{
+			defaultIcon.register(map);
+			platform.register(map);
+			platformSide.register(map);
+		}
 	}
+
 }

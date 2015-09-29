@@ -41,6 +41,7 @@ import net.malisis.demo.multiblock.MultiBlockDemo;
 import net.malisis.demo.multipleinv.MultipleInv;
 import net.malisis.demo.rwldemo.RWLDemo;
 import net.malisis.demo.sidedinvdemo.SidedInvDemo;
+import net.malisis.demo.stargate.Stargate;
 import net.malisis.demo.syncdemo.SyncDemo;
 import net.malisis.demo.tabinv.TabInv;
 import net.malisis.demo.waves.Waves;
@@ -84,7 +85,7 @@ public class MalisisDemos implements IMalisisMod
 		network = new MalisisNetwork(instance);
 		MalisisCore.registerMod(this);
 
-		//		demos.add(new Stargate());
+		demos.add(new Stargate());
 		demos.add(new BlockDirDemo());
 		demos.add(new GuiDemo());
 		demos.add(new Minty());

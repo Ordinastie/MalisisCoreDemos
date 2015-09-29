@@ -20,9 +20,12 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.VanillaIcon;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.renderer.model.MalisisModel;
+import net.malisis.demo.stargate.StargateBlock.SgIconProvider;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class StargateRenderer extends MalisisRenderer
 {
@@ -35,6 +38,8 @@ public class StargateRenderer extends MalisisRenderer
 	private Shape topFace;
 	//model that will hold all the shapes
 	private MalisisModel model;
+
+	private SgIconProvider sgIconProvider = (SgIconProvider) Stargate.sgBlock.getBlockIconProvider();
 
 	//number of slices the opening animation will use
 	private int slices = 5;
@@ -59,11 +64,13 @@ public class StargateRenderer extends MalisisRenderer
 	{
 		//build the basic cube for inventory rendering
 		cube = new Cube();
+		//create the default
 		//build the topFace shape and place it accordingly
 		topFace = new Shape(new TopFace());
 		//move the face a bit higher than the platform to avoid z-fighting
 		topFace.translate(0, -0.999F + sliceHeight, 0);
 		topFace.scale(5F, 1F, 5F);
+		topFace.storeState();
 
 		//create the model that will hold all the shapes
 		model = new MalisisModel();
@@ -88,7 +95,7 @@ public class StargateRenderer extends MalisisRenderer
 	private void createOpeningAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
 
 		int ot = openTimer / slices;
 		Shape shape;
@@ -131,9 +138,9 @@ public class StargateRenderer extends MalisisRenderer
 	private void createUnrollingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
 		rp.interpolateUV.set(false);
-		rp.useBlockBrightness.set(false);
+		rp.useEnvironmentBrightness.set(false);
 		rp.calculateBrightness.set(false);
 		rp.calculateAOColor.set(false);
 		rp.colorFactor.set(1F);
@@ -206,22 +213,22 @@ public class StargateRenderer extends MalisisRenderer
 	{
 		RenderParameters rp = new RenderParameters();
 		rp.renderAllFaces.set(true);
-		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
+		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
 		rp.interpolateUV.set(false);
 
 		// override rendering parameters for bottom face
 		rpFaceArch = new RenderParameters();
 		rpFaceArch.calculateAOColor.set(false);
 		rpFaceArch.calculateBrightness.set(false);
-		rpFaceArch.useBlockBrightness.set(false);
+		rpFaceArch.useEnvironmentBrightness.set(false);
 		rpFaceArch.brightness.set(32);
-		rpFaceArch.icon.set(Blocks.diamond_block.getIcon(0, 0));
+		rpFaceArch.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.diamond_block)));
 
 		// create the shape
 		Shape base = new Cube();
 		base.setParameters(rp, true);
-		base.shrink(ForgeDirection.UP, 0.62F);
-		base.shrink(ForgeDirection.DOWN, 0.79F);
+		base.shrink(EnumFacing.UP, 0.62F);
+		base.shrink(EnumFacing.DOWN, 0.79F);
 		base.storeState();
 
 		int totalAngle = 140;
@@ -297,7 +304,7 @@ public class StargateRenderer extends MalisisRenderer
 		AlphaTransform at = new AlphaTransform(0, 255).forTicks(fadeTimer, deployTimer);
 		rpTopFace = new RenderParameters();
 		rpTopFace.alpha.set(0);
-		rpTopFace.icon.set(Stargate.sgBlock.getPlateformIcon());
+		rpTopFace.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformIcon()));
 		Animation anim = new Animation(rpTopFace, at);
 		ar.addAnimation(anim);
 
@@ -309,9 +316,9 @@ public class StargateRenderer extends MalisisRenderer
 		//@formatter:on
 		rpLavaFace = new RenderParameters();
 		rpLavaFace.calculateBrightness.set(false);
-		rpLavaFace.useBlockBrightness.set(false);
+		rpLavaFace.useEnvironmentBrightness.set(false);
 		rpLavaFace.alpha.set(0);
-		rpLavaFace.icon.set(Blocks.lava.getIcon(1, 0));
+		rpLavaFace.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.lava)));
 		anim = new Animation(rpLavaFace, pt);
 		ar.addAnimation(anim);
 	}
@@ -320,8 +327,8 @@ public class StargateRenderer extends MalisisRenderer
 	private void createFloatingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rp.icon.set(Blocks.gold_block.getIcon(0, 0));
-		rp.useBlockBrightness.set(false);
+		rpFaceArch.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.gold_block)));
+		rp.useEnvironmentBrightness.set(false);
 		rp.brightness.set(Vertex.BRIGHTNESS_MAX);
 		rp.alpha.set(175);
 
@@ -340,14 +347,14 @@ public class StargateRenderer extends MalisisRenderer
 	@Override
 	public void render()
 	{
-		if (renderType == RenderType.TESR_WORLD)
+		if (renderType == RenderType.TILE_ENTITY)
 			renderStargateTileEntity();
-		else if (renderType == RenderType.ISBRH_WORLD)
+		else if (renderType == RenderType.BLOCK)
 		{
 			//recall initialize() (for debug purpose)
 			initialize();
 		}
-		else if (renderType == RenderType.ISBRH_INVENTORY)
+		else if (renderType == RenderType.ITEM)
 		{
 			//draw standard cube with default renderparameters
 			cube.resetState();
@@ -358,7 +365,7 @@ public class StargateRenderer extends MalisisRenderer
 	private void renderStargateTileEntity()
 	{
 		//set the timer for the animimation renderer. It calculates the elpasedTime
-		ar.setStartTime(((StargateTileEntity) tileEntity).placedTimer);
+		ar.setStartTick(((StargateTileEntity) tileEntity).placedTimer);
 
 		//enable blending because we have fading for the TopFace
 		enableBlending();
@@ -377,7 +384,7 @@ public class StargateRenderer extends MalisisRenderer
 		{
 			//make sure we draw shapes only because we added animations for RenderParameters too
 			if (s instanceof Shape)
-				drawShape((Shape) s, rp);
+				drawShape((Shape) s);
 		}
 
 		//first draw the lava face
@@ -388,13 +395,6 @@ public class StargateRenderer extends MalisisRenderer
 		topFace.translate(0, 0.001F, 0);
 		drawShape(topFace, rpTopFace);
 
-	}
-
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		//we want to render a basic 3D cube
-		return true;
 	}
 
 }
