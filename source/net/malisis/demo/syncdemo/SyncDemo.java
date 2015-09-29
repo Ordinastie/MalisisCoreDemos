@@ -24,35 +24,36 @@
 
 package net.malisis.demo.syncdemo;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
+ * This demo shows how you can easily synchronize data between client and server.
+ *
  * @author Ordinastie
  *
  */
-public class Syncdemo implements IDemo
+public class SyncDemo implements IDemo
 {
 	public static SyncBlock syncBlock;
 
 	@Override
-	public void init()
+	public void preInit()
 	{
+		//create the block and register it
 		syncBlock = new SyncBlock();
 		syncBlock.register();
 
+		//register the TE
 		GameRegistry.registerTileEntity(SyncTileEntity.class, "SyncTileEntity");
 	}
 
 	@Override
-	public void preInit()
+	public void init()
 	{
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-		{
+		//create and register the renderer for the TileEntity that will display client side values
+		if (MalisisCore.isClient())
 			new SyncTeRenderer().registerFor(SyncTileEntity.class);
-		}
-
 	}
 }

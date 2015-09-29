@@ -25,11 +25,8 @@
 package net.malisis.demo.syncdemo;
 
 import net.malisis.core.renderer.MalisisRenderer;
-import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author Ordinastie
@@ -37,35 +34,30 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class SyncTeRenderer extends MalisisRenderer
 {
-	private Shape cube;
-
-	@Override
-	protected void initialize()
-	{
-		cube = new Cube();
-	}
-
-	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTick)
-	{
-		super.renderTileEntityAt(tileEntity, x, y, z, partialTick);
-	}
-
 	@Override
 	public void render()
 	{
-		drawShape(cube);
+		//make it so the text always face the player
+		setBillboard(0.5F, 1.2F, 0.5F);
 
 		FontRenderOptions fro = new FontRenderOptions();
+		//reduce the size of the text
 		fro.fontScale = 0.25F;
 
+		//get the values from the TE
 		String label = ((SyncTileEntity) tileEntity).label;
-		int counter = ((SyncTileEntity) tileEntity).getCounter();
+		int counter = ((SyncTileEntity) tileEntity).counter;
 		int color = ((SyncTileEntity) tileEntity).color;
 
-		String str = label + " : " + counter + " (" + Integer.toHexString(color) + ")";
+		//display the text with updated values on the client
+		String str = label + " : " + counter + " (#" + Integer.toHexString(color) + ")";
 		fro.color = color;
 
-		MalisisFont.minecraftFont.render(this, str, 0, 1.2F, 0, fro);
+		//make it centered on the block
+		float width = MalisisFont.minecraftFont.getStringWidth(str, fro);
+		MalisisFont.minecraftFont.render(this, str, -width / 18F, 0, 0, fro);
+
+		//clear billboarding
+		endBillboard();
 	}
 }

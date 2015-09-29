@@ -27,15 +27,21 @@ package net.malisis.demo.syncdemo;
 import net.malisis.core.util.syncer.Sync;
 import net.malisis.core.util.syncer.Syncable;
 import net.malisis.core.util.syncer.Syncer;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author Ordinastie
  *
  */
+//To define a class that will need to sync its data, @Syncable annotation is required.
+//TileEntity is the identifier of the handler that will handler the synchronization. TileEntity handler is builtin MalisisCore.
+//You can register you own handlers for your own objects.
 @Syncable("TileEntity")
-public class SyncTileEntity extends TileEntity
+public class SyncTileEntity extends TileEntity implements IUpdatePlayerListBox
 {
+	//define a field that will be sync with @Sync annotation and define an identifier of your choosing
+	//only primitives, String, and ISyncableData can be annotated with @Sync
 	@Sync("counter")
 	public int counter = 0;
 	@Sync("label")
@@ -43,34 +49,33 @@ public class SyncTileEntity extends TileEntity
 	@Sync("color")
 	public int color = 0;
 
+	//labels to cycle each time the block is right clicked
 	private int labelIndex = 0;
 	private String[] labels = new String[] { "Counter", "Label", "Value", "Amount", "Metadata" };
 
 	public void activate()
 	{
-		labelIndex++;
-		if (labelIndex >= labels.length)
-			labelIndex = 0;
-		label = labels[labelIndex];
-
+		//set the new label
+		label = labels[labelIndex++ % labels.length];
+		//set the new color to a random value
 		color = worldObj.rand.nextInt(0xFFFFFF);
+		//Synchronize the fields with the identifiers label and color
 		Syncer.sync(this, "label", "color");
 	}
 
-	public int getCounter()
-	{
-		return counter;
-	}
-
 	@Override
-	public void updateEntity()
+	public void update()
 	{
+		//only update on the server
 		if (worldObj.isRemote)
 			return;
+		//only increment once per second
 		if ((worldObj.getTotalWorldTime() % 20) != 0)
 			return;
 
+		//increment counter
 		counter++;
+		//synchronize the field counter
 		Syncer.sync(this, "counter");
 	}
 }

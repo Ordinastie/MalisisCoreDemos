@@ -24,16 +24,18 @@
 
 package net.malisis.demo.syncdemo;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -44,38 +46,31 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 {
 	public SyncBlock()
 	{
+		//set usual properties
 		super(Material.wood);
-
 		setUnlocalizedName("syncblock");
 		setHardness(2F);
 		setStepSound(soundTypeWood);
 		setCreativeTab(MalisisDemos.tabDemos);
+
+		//set the icons to use
+		if (MalisisCore.isClient())
+			setBlockIconProvider(new DefaultIconProvider(MalisisDemos.modid + ":blocks/syncDemo"));
 	}
 
 	@Override
-	public IIcon getIcon(int side, int meta)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		return Blocks.wool.getIcon(side, meta);
-	}
-
-	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
-	{
-		SyncTileEntity syncTe = TileEntityUtils.getTileEntity(SyncTileEntity.class, world, x, y, z);
-
-		return getIcon(side, syncTe != null ? syncTe.getCounter() % 15 : 0);
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ)
-	{
+		//the action is done server side only
 		if (world.isRemote)
 			return true;
 
-		SyncTileEntity syncTe = TileEntityUtils.getTileEntity(SyncTileEntity.class, world, x, y, z);
+		//get the TileEntity
+		SyncTileEntity syncTe = TileEntityUtils.getTileEntity(SyncTileEntity.class, world, pos);
 		if (syncTe == null)
 			return true;
 
+		//update the values on the TE
 		syncTe.activate();
 
 		return true;
@@ -85,11 +80,5 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 	public TileEntity createNewTileEntity(World worldIn, int meta)
 	{
 		return new SyncTileEntity();
-	}
-
-	@Override
-	public int getRenderType()
-	{
-		return -1;
 	}
 }
