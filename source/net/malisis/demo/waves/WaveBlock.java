@@ -24,7 +24,6 @@
 
 package net.malisis.demo.waves;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
@@ -46,8 +45,7 @@ public class WaveBlock extends MalisisBlock implements ITileEntityProvider
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//set the texture to be used (only used for item)
-		if (MalisisCore.isClient())
-			setTextureName(MalisisDemos.modid + ":blocks/waves");
+		setTextureName(MalisisDemos.modid + ":blocks/waves");
 	}
 
 	@Override

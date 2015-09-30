@@ -49,11 +49,9 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 		setUnlocalizedName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
 
+		//set the icon provider
 		if (MalisisCore.isClient())
-		{
-			//set the icon provider
 			setBlockIconProvider(new SgIconProvider());
-		}
 	}
 
 	@Override

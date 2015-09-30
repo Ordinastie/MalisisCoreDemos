@@ -24,9 +24,7 @@
 
 package net.malisis.demo.syncdemo;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
@@ -52,10 +50,8 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 		setHardness(2F);
 		setStepSound(soundTypeWood);
 		setCreativeTab(MalisisDemos.tabDemos);
-
 		//set the icons to use
-		if (MalisisCore.isClient())
-			setBlockIconProvider(new DefaultIconProvider(MalisisDemos.modid + ":blocks/syncDemo"));
+		setTextureName(MalisisDemos.modid + ":blocks/syncDemo");
 	}
 
 	@Override
