@@ -35,6 +35,7 @@ import net.malisis.demo.blocklistener.BlockListenerDemo;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
+import net.malisis.demo.lavapool.LavaPoolDemo;
 import net.malisis.demo.minty.Minty;
 import net.malisis.demo.model.ModelDemo;
 import net.malisis.demo.multiblock.MultiBlockDemo;
@@ -100,7 +101,7 @@ public class MalisisDemos implements IMalisisMod
 		//		demos.add(new Collision());
 		demos.add(new BlockListenerDemo());
 		demos.add(new FontDemo());
-		//		demos.add(new LavaPoolDemo());
+		demos.add(new LavaPoolDemo());
 		demos.add(new SyncDemo());
 	}
 

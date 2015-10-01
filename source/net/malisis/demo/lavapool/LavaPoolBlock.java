@@ -25,25 +25,29 @@
 package net.malisis.demo.lavapool;
 
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.util.BlockPos;
-import net.malisis.core.util.BlockState;
+import net.malisis.core.util.MBlockState;
+import net.malisis.core.util.TileEntityUtils;
 import net.malisis.core.util.chunklistener.IBlockListener;
+import net.malisis.core.util.multiblock.IMultiBlock;
+import net.malisis.core.util.multiblock.MultiBlock;
 import net.malisis.core.util.multiblock.PatternMultiBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
  *
  */
-public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener
+public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener, IMultiBlock
 {
 	PatternMultiBlock multiBlock;
 
@@ -55,12 +59,8 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 		setHardness(2F);
 		setStepSound(soundTypeGlass);
 		setCreativeTab(MalisisDemos.tabDemos);
+		setTexture(Blocks.command_block);
 
-		setMultiblock();
-	}
-
-	private void setMultiblock()
-	{
 		multiBlock = new PatternMultiBlock();
 		multiBlock.addLayer("ABBBA", "B   B", "B   B", "B   B", "ABBBA");
 		multiBlock.addLayer("ACCCA", "C   C", "C   C", "C   C", "ADDDA");
@@ -68,35 +68,31 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 		multiBlock.addLayer("ABBBA", "B   B", "B   B", "B   B", "ABBBA");
 		multiBlock.withRef('A', Blocks.obsidian).withRef('B', Blocks.stone).withRef('C', Blocks.iron_bars).withRef('D', Blocks.glass);
 		multiBlock.setOffset(new BlockPos(-2, 0, -2));
-
 	}
 
 	@Override
-	public void registerIcons(IIconRegister reg)
+	public MultiBlock getMultiBlock(IBlockAccess world, net.minecraft.util.BlockPos pos, IBlockState state)
 	{
-		//use gold_block icons
+		return multiBlock;
 	}
 
-	@Override
-	public IIcon getIcon(int side, int meta)
+	public void setActive(World world, BlockPos pos, IBlockState state, MBlockState newState)
 	{
-		return Blocks.gold_block.getIcon(side, meta);
-	}
-
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z)
-	{
-		setMultiblock();
-
-		boolean b = multiBlock.isComplete(world, new BlockPos(x, y, z));
-		LavaPoolTileEntity te = (LavaPoolTileEntity) world.getTileEntity(x, y, z);
+		boolean b = getMultiBlock(world, pos, state).isComplete(world, pos, newState);
+		LavaPoolTileEntity te = TileEntityUtils.getTileEntity(LavaPoolTileEntity.class, world, pos);
 		te.setActive(b);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		LavaPoolTileEntity te = (LavaPoolTileEntity) world.getTileEntity(x, y, z);
+		setActive(world, pos, state, null);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
+	{
+		LavaPoolTileEntity te = TileEntityUtils.getTileEntity(LavaPoolTileEntity.class, world, pos);
 		te.startAnim = true;
 		return true;
 	}
@@ -114,28 +110,16 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	}
 
 	@Override
-	public boolean onBlockSet(World world, BlockPos pos, BlockState newState)
+	public boolean onBlockSet(World world, BlockPos pos, MBlockState blockSet)
 	{
-		if (multiBlock == null)
-			return true;
-
-		boolean b = multiBlock.isComplete(world, pos, newState);
-		LavaPoolTileEntity te = (LavaPoolTileEntity) world.getTileEntity(pos.getX(), pos.getY(), pos.getZ());
-		te.setActive(b);
-
+		setActive(world, pos, world.getBlockState(pos), blockSet);
 		return true;
 	}
 
 	@Override
 	public boolean onBlockRemoved(World world, BlockPos pos, BlockPos blockPos)
 	{
-		if (multiBlock == null)
-			return true;
-
-		boolean b = !multiBlock.isFromMultiblock(blockPos.substract(pos)) && multiBlock.isComplete(world, pos);
-		LavaPoolTileEntity te = (LavaPoolTileEntity) world.getTileEntity(pos.getX(), pos.getY(), pos.getZ());
-		te.setActive(b);
-
+		setActive(world, pos, world.getBlockState(pos), new MBlockState(Blocks.air));
 		return true;
 	}
 

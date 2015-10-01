@@ -24,10 +24,9 @@
 
 package net.malisis.demo.lavapool;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * @author Ordinastie
@@ -39,7 +38,7 @@ public class LavaPoolDemo implements IDemo
 	public static FiniteLava finiteLava;
 
 	@Override
-	public void init()
+	public void preInit()
 	{
 		lavaPool = new LavaPoolBlock();
 		lavaPool.register();
@@ -51,9 +50,9 @@ public class LavaPoolDemo implements IDemo
 	}
 
 	@Override
-	public void preInit()
+	public void init()
 	{
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		if (MalisisCore.isClient())
 		{
 			new LavaPoolRenderer().registerFor(LavaPoolTileEntity.class);
 		}

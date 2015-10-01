@@ -28,7 +28,6 @@ import net.malisis.core.util.finiteliquid.FiniteLiquid;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
 
 /**
  * @author Ordinastie
@@ -41,13 +40,7 @@ public class FiniteLava extends FiniteLiquid
 		super(Material.lava);
 		setUnlocalizedName("finite_lava");
 		setCreativeTab(MalisisDemos.tabDemos);
-
+		setTexture(Blocks.lava);
 		setDelay(20);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int meta)
-	{
-		return Blocks.lava.getIcon(side, meta);
 	}
 }

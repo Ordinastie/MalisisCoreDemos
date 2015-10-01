@@ -28,20 +28,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.malisis.core.util.BlockPos;
-import net.malisis.core.util.BlockState;
+import net.malisis.core.util.AABBUtils;
+import net.malisis.core.util.BlockPosUtils;
+import net.malisis.core.util.MBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 
 /**
  * @author Ordinastie
  *
  */
-public class LavaPoolTileEntity extends TileEntity
+public class LavaPoolTileEntity extends TileEntity implements IUpdatePlayerListBox
 {
 	private static FiniteLava lava = LavaPoolDemo.finiteLava;
 	private boolean active = false;
@@ -56,7 +60,7 @@ public class LavaPoolTileEntity extends TileEntity
 	{
 		this.active = active;
 		this.empty = !active;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(pos);;
 	}
 
 	public boolean isActive()
@@ -67,11 +71,11 @@ public class LavaPoolTileEntity extends TileEntity
 	public void getFillable()
 	{
 		fillable.clear();
-		for (BlockPos p : BlockPos.getAllInBox(AxisAlignedBB.getBoundingBox(-1, 0, -1, 2, 1, 2).offset(xCoord, yCoord, zCoord)))
+		for (BlockPos p : BlockPosUtils.getAllInBox(AABBUtils.offset(pos, new AxisAlignedBB(-1, 0, -1, 2, 1, 2))))
 		{
-			BlockState state = new BlockState(worldObj, p);
+			MBlockState state = new MBlockState(worldObj, p);
 			int a = lava.getAmount(state);
-			if (a != -1 && a != 16)
+			if (a != -1 && a != 15)
 				fillable.add(p);
 		}
 	}
@@ -79,9 +83,9 @@ public class LavaPoolTileEntity extends TileEntity
 	public void getEmptyable()
 	{
 		emptyable.clear();
-		for (BlockPos p : BlockPos.getAllInBox(AxisAlignedBB.getBoundingBox(-1, 0, -1, 2, 1, 2).offset(xCoord, yCoord, zCoord)))
+		for (BlockPos p : BlockPosUtils.getAllInBox(AABBUtils.offset(pos, new AxisAlignedBB(-1, 0, -1, 2, 1, 2))))
 		{
-			BlockState state = new BlockState(worldObj, p);
+			MBlockState state = new MBlockState(worldObj, p);
 			int a = lava.getAmount(state);
 			if (a > 0)
 				emptyable.add(p);
@@ -89,21 +93,21 @@ public class LavaPoolTileEntity extends TileEntity
 	}
 
 	@Override
-	public void updateEntity()
+	public void update()
 	{
 		//	MalisisCore.message(active + " > " + empty);
 		Random rand = worldObj.rand;
 		if (worldObj.isRemote)
 		{
-			int x = xCoord, z = zCoord;
+			int x = pos.getX(), z = pos.getZ();
 			if (lastPos != null && !active)
 			{
 				x = lastPos.getX();
 				z = lastPos.getZ();
 			}
 			if (active || empty)
-				worldObj.spawnParticle(empty ? "crit" : "flame", x + rand.nextFloat(), yCoord + 1.1F, z + rand.nextFloat(), 0.0D, 0.0D,
-						0.0D);
+				worldObj.spawnParticle(empty ? EnumParticleTypes.CRIT : EnumParticleTypes.FLAME, x + rand.nextFloat(), pos.getY() + 1.1F, z
+						+ rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 
 		if (!worldObj.isRemote)
@@ -123,15 +127,15 @@ public class LavaPoolTileEntity extends TileEntity
 		if (emptyable.size() == 0)
 		{
 			empty = false;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(pos);
 			return;
 		}
 
 		BlockPos pos = emptyable.get(rand.nextInt(emptyable.size()));
-		BlockState state = new BlockState(worldObj, pos);
+		MBlockState state = new MBlockState(worldObj, pos);
 		lava.setAmount(worldObj, state, lava.getAmount(state) / 2);
 		lastPos = pos;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(pos);
 	}
 
 	public void fillAll()
@@ -140,12 +144,12 @@ public class LavaPoolTileEntity extends TileEntity
 		if (fillable.size() == 0)
 		{
 			active = false;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(pos);
 			return;
 		}
 
 		for (BlockPos p : fillable)
-			lava.addAmount(worldObj, new BlockState(worldObj, p), 1);
+			lava.addAmount(worldObj, new MBlockState(worldObj, p), 1);
 	}
 
 	@Override
@@ -177,7 +181,7 @@ public class LavaPoolTileEntity extends TileEntity
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
+		return new S35PacketUpdateTileEntity(pos, 0, nbt);
 	}
 
 	@Override
@@ -189,6 +193,12 @@ public class LavaPoolTileEntity extends TileEntity
 	@Override
 	public AxisAlignedBB getRenderBoundingBox()
 	{
-		return AxisAlignedBB.getBoundingBox(-3, 0, -3, 2, 2, 2).offset(xCoord, yCoord, zCoord);
+		return AABBUtils.offset(pos, new AxisAlignedBB(-3, 0, -3, 2, 2, 2));
+	}
+
+	@Override
+	public boolean shouldRenderInPass(int pass)
+	{
+		return pass == 1;
 	}
 }
