@@ -52,7 +52,7 @@ public class RTBlock extends MalisisBlock implements IBlockDirectional
 	}
 
 	@Override
-	public AxisAlignedBB[] getBoundingBox(IBlockAccess world, BlockPos pos, BoundingBoxType type)
+	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, BoundingBoxType type)
 	{
 		//for SELECTION, return a 0->1 box
 		if (type == BoundingBoxType.SELECTION)
