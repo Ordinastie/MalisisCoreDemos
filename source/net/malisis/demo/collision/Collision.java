@@ -24,12 +24,12 @@
 
 package net.malisis.demo.collision;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
+ * This demo show how to make a block with a bounding box larger than its 1x1x1 block space.
+ * 
  * @author Ordinastie
  *
  */
@@ -40,18 +40,18 @@ public class Collision implements IDemo
 	@Override
 	public void preInit()
 	{
+		//create and register the block
 		collisionBlock = new CollisionBlock();
-		GameRegistry.registerBlock(collisionBlock, collisionBlock.getName());
+		collisionBlock.register();
 
 	}
 
 	@Override
 	public void init()
 	{
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-		{
-			new CollisionBlockRenderer().registerFor(CollisionBlock.class);
-		}
+		//create the renderer and register the block for it
+		if (MalisisCore.isClient())
+			new CollisionBlockRenderer().registerFor(collisionBlock);
 	}
 
 }

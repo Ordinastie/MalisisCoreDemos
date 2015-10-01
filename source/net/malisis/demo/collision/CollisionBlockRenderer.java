@@ -24,12 +24,14 @@
 
 package net.malisis.demo.collision;
 
-import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
+import net.malisis.core.renderer.icon.VanillaIcon;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 
 /**
@@ -38,27 +40,45 @@ import net.minecraft.util.AxisAlignedBB;
  */
 public class CollisionBlockRenderer extends MalisisRenderer
 {
+	private Shape shape = new Cube();
+	private RenderParameters rp = new RenderParameters();
 
 	@Override
 	public void render()
 	{
-		Shape s;
-		AxisAlignedBB[] aabbs = ((MalisisBlock) block).getBoundingBox(world, x, y, z, BoundingBoxType.RENDER);
+		//reset the shape
+		shape.resetState();
 
+		//set params
 		rp.renderAllFaces.set(true);
+		rp.interpolateUV.set(true);
 		rp.alpha.set(255);
-		rp.interpolateUV.set(false);
-		drawShape(new Cube(), rp);
 
+		//make sure icon is not set for the center cube (or item)
+		rp.icon.reset();
+
+		//draw regular cube
+		drawShape(shape, rp);
+
+		//we don't want the stairs for the item
+		if (renderType == RenderType.ITEM)
+			return;
+
+		//get the AABBS for rendering
+		AxisAlignedBB[] aabbs = ((MalisisBlock) block).getRenderBoundingBox(world, pos, blockState);
+
+		//make the stairs translucent
 		rp.alpha.set(150);
+		rp.interpolateUV.set(false);
+		//use the planks icon
+		rp.icon.set(new VanillaIcon(Blocks.planks));
 
-		for (AxisAlignedBB aabb : aabbs)
+		//draw each aabb making the stairs except the first one
+		for (int i = 1; i < aabbs.length; i++)
 		{
-			s = new Cube();
-			s.setBounds((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY, (float) aabb.maxZ);
-			if (renderType == RenderType.ISBRH_INVENTORY)
-				s.scale(.2F);
-			drawShape(s, rp);
+			shape.resetState();
+			shape.setBounds(aabbs[i]);
+			drawShape(shape, rp);
 		}
 	}
 }
