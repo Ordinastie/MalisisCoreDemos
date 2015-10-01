@@ -37,7 +37,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
@@ -70,7 +70,7 @@ public class PatternBlock extends MalisisBlock implements IMultiBlock//, IBlockL
 	}
 
 	@Override
-	public MultiBlock getMultiBlock(World world, BlockPos pos, IBlockState state)
+	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state)
 	{
 		return multiBlock;
 	}

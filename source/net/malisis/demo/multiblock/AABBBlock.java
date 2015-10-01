@@ -39,7 +39,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
@@ -71,7 +71,7 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 	}
 
 	@Override
-	public MultiBlock getMultiBlock(World world, BlockPos pos, IBlockState state)
+	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state)
 	{
 		return multiBlock;
 	}
