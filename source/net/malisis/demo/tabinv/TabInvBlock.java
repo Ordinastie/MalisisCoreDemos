@@ -51,7 +51,7 @@ public class TabInvBlock extends MalisisBlock implements ITileEntityProvider
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
-		setUnlocalizedName("tabInv");
+		setName("tabInv");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTextureName(MalisisDemos.modid + ":blocks/tabinv");
 

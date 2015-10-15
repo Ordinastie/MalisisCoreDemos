@@ -26,6 +26,7 @@ package net.malisis.demo.stargate;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.core.util.TileEntityUtils;
@@ -39,6 +40,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 {
@@ -46,12 +49,12 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 	protected StargateBlock()
 	{
 		super(Material.iron);
-		setUnlocalizedName("sgBlock");
+		setName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//set the icon provider
 		if (MalisisCore.isClient())
-			setBlockIconProvider(new SgIconProvider());
+			setIconProvider(new SgIconProvider());
 	}
 
 	@Override
@@ -80,6 +83,15 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 	public boolean isOpaqueCube()
 	{
 		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public MalisisRenderer getRenderer()
+	{
+		StargateRenderer sgr = new StargateRenderer();
+		sgr.registerFor(StargateTileEntity.class);
+		return sgr;
 	}
 
 	//the icon provider is custom one that holds the 3 icons that will be needed

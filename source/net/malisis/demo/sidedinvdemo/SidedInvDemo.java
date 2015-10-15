@@ -50,8 +50,6 @@ public class SidedInvDemo implements IDemo
 
 	@Override
 	public void init()
-	{
-
-	}
+	{}
 
 }

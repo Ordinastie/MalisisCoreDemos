@@ -39,7 +39,7 @@ public class StargateRenderer extends MalisisRenderer
 	//model that will hold all the shapes
 	private MalisisModel model;
 
-	private SgIconProvider sgIconProvider = (SgIconProvider) Stargate.sgBlock.getBlockIconProvider();
+	private SgIconProvider sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
 
 	//number of slices the opening animation will use
 	private int slices = 5;

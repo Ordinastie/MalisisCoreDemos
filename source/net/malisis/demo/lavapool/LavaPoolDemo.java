@@ -53,9 +53,7 @@ public class LavaPoolDemo implements IDemo
 	public void init()
 	{
 		if (MalisisCore.isClient())
-		{
 			new LavaPoolRenderer().registerFor(LavaPoolTileEntity.class);
-		}
 
 	}
 }

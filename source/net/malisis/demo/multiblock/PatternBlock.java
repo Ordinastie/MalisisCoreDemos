@@ -53,7 +53,7 @@ public class PatternBlock extends MalisisBlock implements IMultiBlock//, IBlockL
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
-		setUnlocalizedName("patternMultiBlockDemo");
+		setName("patternMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(Blocks.gold_block);
 

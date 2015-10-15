@@ -50,11 +50,11 @@ public class Card extends MalisisItem implements IInventoryProvider
 {
 	public Card()
 	{
-		setUnlocalizedName("demoCard");
+		setName("demoCard");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		if (MalisisCore.isClient())
-			setItemIconProvider(new DefaultIconProvider(new VanillaIcon(Items.map)));
+			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.map)));
 	}
 
 	@Override

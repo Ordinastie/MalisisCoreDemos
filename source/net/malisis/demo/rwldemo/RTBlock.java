@@ -46,7 +46,7 @@ public class RTBlock extends MalisisBlock implements IBlockDirectional
 	{
 		//set usual properties
 		super(Material.iron);
-		setUnlocalizedName("rtBlock");
+		setName("rtBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
 	}

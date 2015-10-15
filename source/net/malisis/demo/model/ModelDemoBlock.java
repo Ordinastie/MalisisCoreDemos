@@ -25,11 +25,14 @@
 package net.malisis.demo.model;
 
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -41,7 +44,7 @@ public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 	{
 		//set the default stuff
 		super(Material.wood);
-		setUnlocalizedName("modelDemo");
+		setName("modelDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//texture only used for the item
 		setTextureName(MalisisDemos.modid + ":blocks/modeldemo");
@@ -63,5 +66,14 @@ public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 	public boolean isNormalCube()
 	{
 		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public MalisisRenderer getRenderer()
+	{
+		ModelDemoRenderer mdr = new ModelDemoRenderer();
+		mdr.registerFor(ModelDemoTileEntity.class);
+		return mdr;
 	}
 }

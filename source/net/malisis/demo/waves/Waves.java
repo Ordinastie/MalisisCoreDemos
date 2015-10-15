@@ -24,7 +24,6 @@
 
 package net.malisis.demo.waves;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -51,14 +50,6 @@ public class Waves implements IDemo
 
 	@Override
 	public void init()
-	{
-		if (MalisisCore.isClient())
-		{
-			//use the renderer for both the block and the TE
-			WaveRenderer wbr = new WaveRenderer();
-			wbr.registerFor(waveBlock);
-			wbr.registerFor(WaveTileEntity.class);
-		}
-	}
+	{}
 
 }

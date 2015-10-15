@@ -38,7 +38,7 @@ public class FiniteLava extends FiniteLiquid
 	public FiniteLava()
 	{
 		super(Material.lava);
-		setUnlocalizedName("finite_lava");
+		setName("finite_lava");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(Blocks.lava);
 		setDelay(20);

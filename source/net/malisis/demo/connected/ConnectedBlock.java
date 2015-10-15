@@ -48,14 +48,14 @@ public class ConnectedBlock extends MalisisBlock
 		super(Material.glass);
 		setHardness(0.6F);
 		setStepSound(soundTypeGlass);
-		setUnlocalizedName("connected_block");
+		setName("connected_block");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//we just need to create a ConnectedTextureIcon
 		//the textures, however, need to have a predefined pattern split into 2 files.
 		//Both files will be automatically registered and stitched on the block texture sheet.
 		if (MalisisCore.isClient())
-			setBlockIconProvider(new ConnectedIconsProvider(MalisisDemos.modid + ":blocks/demo_glass_connected"));
+			setIconProvider(new ConnectedIconsProvider(MalisisDemos.modid + ":blocks/demo_glass_connected"));
 	}
 
 	@Override

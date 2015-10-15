@@ -45,12 +45,12 @@ import net.minecraft.world.World;
  */
 public class Bank extends MalisisBlock implements ITileEntityProvider
 {
-	protected Bank()
+	public Bank()
 	{
 		super(Material.iron);
 		setHardness(1);
 		setStepSound(soundTypeAnvil);
-		setUnlocalizedName("bankdemo");
+		setName("bankdemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTextureName(MalisisDemos.modid + ":blocks/bankdemo");
 	}

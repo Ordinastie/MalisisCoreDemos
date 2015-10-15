@@ -45,11 +45,11 @@ public class FontPointer extends MalisisItem
 	public FontPointer()
 	{
 		//set basic infos
-		setUnlocalizedName("font_pointer");
+		setName("font_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//make the pointer use the Iron hoe item icon and model
 		if (MalisisCore.isClient())
-			setItemIconProvider(new DefaultIconProvider(new VanillaIcon(Items.iron_hoe, 0)));
+			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.iron_hoe, 0)));
 	}
 
 	@Override

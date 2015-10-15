@@ -24,7 +24,6 @@
 
 package net.malisis.demo.model;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -51,13 +50,5 @@ public class ModelDemo implements IDemo
 
 	@Override
 	public void init()
-	{
-		if (MalisisCore.isClient())
-		{
-			//create the renderer and register it for both the block and the TE
-			ModelDemoRenderer mdr = new ModelDemoRenderer();
-			mdr.registerFor(modelBlock);
-			mdr.registerFor(ModelDemoTileEntity.class);
-		}
-	}
+	{}
 }

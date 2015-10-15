@@ -55,14 +55,14 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(soundTypeWood);
-		setUnlocalizedName("aabbMultiBlockDemo");
+		setName("aabbMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		if (MalisisCore.isClient())
 		{
 			MegaTextureIconProvider iconProvider = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
 			iconProvider.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
-			setBlockIconProvider(iconProvider);
+			setIconProvider(iconProvider);
 		}
 
 		//create the multiblock with the AABB

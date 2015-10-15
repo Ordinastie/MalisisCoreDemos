@@ -21,7 +21,7 @@ public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 		super(Material.ground);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
-		setUnlocalizedName("guiDemo");
+		setName("guiDemo");
 		setTextureName(MalisisDemos.modid + ":blocks/guidemo");
 	}
 

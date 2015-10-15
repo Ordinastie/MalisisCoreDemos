@@ -1,6 +1,5 @@
 package net.malisis.demo.stargate;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -27,13 +26,5 @@ public class Stargate implements IDemo
 
 	@Override
 	public void init()
-	{
-		if (MalisisCore.isClient())
-		{
-			//use the renderer for both the block and the TileEntity
-			StargateRenderer sgr = new StargateRenderer();
-			sgr.registerFor(sgBlock);
-			sgr.registerFor(StargateTileEntity.class);
-		}
-	}
+	{}
 }

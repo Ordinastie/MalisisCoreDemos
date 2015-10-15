@@ -25,11 +25,14 @@
 package net.malisis.demo.waves;
 
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -41,7 +44,7 @@ public class WaveBlock extends MalisisBlock implements ITileEntityProvider
 	{
 		//set the usual stuff
 		super(Material.water);
-		setUnlocalizedName("waveblock");
+		setName("waveblock");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//set the texture to be used (only used for item)
@@ -59,5 +62,15 @@ public class WaveBlock extends MalisisBlock implements ITileEntityProvider
 	{
 		//create the TE
 		return new WaveTileEntity();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public MalisisRenderer getRenderer()
+	{
+		//use the renderer for both the block and the TE
+		WaveRenderer wbr = new WaveRenderer();
+		wbr.registerFor(WaveTileEntity.class);
+		return wbr;
 	}
 }

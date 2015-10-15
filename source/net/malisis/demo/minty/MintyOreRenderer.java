@@ -35,7 +35,7 @@ public class MintyOreRenderer extends MalisisRenderer
 		if (renderType == RenderType.ITEM)
 			oreType = ((ItemBlockArmoryOre) itemStack.getItem()).getOreType(itemStack);
 		if (renderType == RenderType.BLOCK)
-			oreType = (OreType) blockState.getValue(ArmoryOre.oreTypeProperty);
+			oreType = (OreType) blockState.getValue(ArmoryOre.ORE_TYPE);
 
 		//Note : rp is RenderParameters and hold all the parameters available to tweak the rendering
 		//reset the parameters so you don't use unwanted bleeding data
@@ -43,7 +43,7 @@ public class MintyOreRenderer extends MalisisRenderer
 
 		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID)
 		{
-			((ArmoryOreIconProvider) block.getBlockIconProvider()).setOverlay(false);
+			((ArmoryOreIconProvider) block.getIconProvider()).setOverlay(false);
 			//titanium doesn't have its own brightness
 			if (oreType != OreType.Titanium)
 			{
@@ -67,7 +67,7 @@ public class MintyOreRenderer extends MalisisRenderer
 			//reset parameters to their defaults so the brightness of this layer will be calculated
 			rp.reset();
 			//set the icon provider to use overlays (taken from directy from the OreType)
-			((ArmoryOreIconProvider) block.getBlockIconProvider()).setOverlay(true);
+			((ArmoryOreIconProvider) block.getIconProvider()).setOverlay(true);
 			//draw second layer
 			drawShape(shape, rp);
 		}

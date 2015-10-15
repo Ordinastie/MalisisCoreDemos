@@ -47,7 +47,5 @@ public class Connected implements IDemo
 
 	@Override
 	public void init()
-	{
-
-	}
+	{}
 }

@@ -55,7 +55,7 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	{
 		super(Material.anvil);
 
-		setUnlocalizedName("lavapool");
+		setName("lavapool");
 		setHardness(2F);
 		setStepSound(soundTypeGlass);
 		setCreativeTab(MalisisDemos.tabDemos);

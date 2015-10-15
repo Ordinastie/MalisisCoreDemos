@@ -56,7 +56,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBl
 		super(Material.wood);
 		setHardness(1.0F);
 		setStepSound(Block.soundTypeWood);
-		setUnlocalizedName("sidedBlockDemo");
+		setName("sidedBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		if (MalisisCore.isClient())
@@ -66,7 +66,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBl
 			provider.setSideIcon(EnumFacing.WEST, MalisisDemos.modid + ":blocks/sidedingots");
 			provider.setSideIcon(EnumFacing.EAST, MalisisDemos.modid + ":blocks/sidedstones");
 			provider.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/sidedtriage");
-			setBlockIconProvider(provider);
+			setIconProvider(provider);
 		}
 	}
 

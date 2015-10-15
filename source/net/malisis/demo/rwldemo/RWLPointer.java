@@ -42,12 +42,12 @@ public class RWLPointer extends MalisisItem
 {
 	public RWLPointer()
 	{
-		setUnlocalizedName("rwl_pointer");
+		setName("rwl_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//use the wooden sword icon
 		if (MalisisCore.isClient())
-			setItemIconProvider(new DefaultIconProvider(new VanillaIcon(Items.wooden_sword)));
+			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.wooden_sword)));
 	}
 
 	@Override

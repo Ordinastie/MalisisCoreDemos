@@ -26,6 +26,8 @@ package net.malisis.demo.fontdemo;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.demo.IDemo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This demo show how to use a custom font and render a text in the world.<br>
@@ -40,6 +42,7 @@ import net.malisis.demo.IDemo;
 public class FontDemo implements IDemo
 {
 	public static FontPointer fontPointer;
+	@SideOnly(Side.CLIENT)
 	public static FontDemoRenderer renderer;
 
 	@Override

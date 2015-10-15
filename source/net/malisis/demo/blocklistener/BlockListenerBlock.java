@@ -47,7 +47,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 		//set usual caracteristics
 		super(Material.wood);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setUnlocalizedName("blockListener");
+		setName("blockListener");
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);

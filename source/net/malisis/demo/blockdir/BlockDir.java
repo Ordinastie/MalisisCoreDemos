@@ -46,7 +46,7 @@ public class BlockDir extends MalisisBlock implements IBlockDirectional
 		//set usual properties
 		super(Material.clay);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setUnlocalizedName("blockDirDemo");
+		setName("blockDirDemo");
 
 		if (MalisisCore.isClient())
 		{
@@ -56,7 +56,7 @@ public class BlockDir extends MalisisBlock implements IBlockDirectional
 
 			//create the iconProvider
 			SidesIconProvider provider = new SidesIconProvider(names[0], names);
-			setBlockIconProvider(provider);
+			setIconProvider(provider);
 		}
 	}
 }

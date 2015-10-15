@@ -13,6 +13,11 @@ tile.waveblock.name=Waves Demo
 tile.bankdemo.name=Bank (Multiple Inventories Demo)
 tile.blockListener.name=Block Listener Demo
 tile.blockDirDemo.name=Block Directionnal Demo
+tile.syncblock.name=Syncer Demo
+tile.lavapool.name=Lava Pool Demo
+tile.finite_lava.name=Finite Lava
+tile.collisionBlock.name=Collision Demo
+tile.rtBlock.name=RayTrace Demo
 
 item.demoCard.name=Card (Multiple Inventories Demo)
 item.font_pointer.name=Pointer (Font Demo)
