@@ -109,7 +109,7 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	@Override
 	public AxisAlignedBB[] getBoundingBox(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
 	{
-		return bucket(world, x, y, z, type);
+		return stairs(world, x, y, z, type);
 	}
 
 	public AxisAlignedBB[] bucket(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
