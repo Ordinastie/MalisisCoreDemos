@@ -133,7 +133,7 @@ public class StargateRenderer extends MalisisRenderer
 		RenderParameters rp = new RenderParameters();
 		rp.icon.set(Stargate.sgBlock.getPlateformSideIcon());
 		rp.interpolateUV.set(false);
-		rp.useBlockBrightness.set(false);
+		rp.useEnvironmentBrightness.set(false);
 		rp.calculateBrightness.set(false);
 		rp.calculateAOColor.set(false);
 		rp.colorFactor.set(1F);
@@ -213,7 +213,7 @@ public class StargateRenderer extends MalisisRenderer
 		rpFaceArch = new RenderParameters();
 		rpFaceArch.calculateAOColor.set(false);
 		rpFaceArch.calculateBrightness.set(false);
-		rpFaceArch.useBlockBrightness.set(false);
+		rpFaceArch.useEnvironmentBrightness.set(false);
 		rpFaceArch.brightness.set(32);
 		rpFaceArch.icon.set(Blocks.diamond_block.getIcon(0, 0));
 
@@ -309,7 +309,7 @@ public class StargateRenderer extends MalisisRenderer
 		//@formatter:on
 		rpLavaFace = new RenderParameters();
 		rpLavaFace.calculateBrightness.set(false);
-		rpLavaFace.useBlockBrightness.set(false);
+		rpLavaFace.useEnvironmentBrightness.set(false);
 		rpLavaFace.alpha.set(0);
 		rpLavaFace.icon.set(Blocks.lava.getIcon(1, 0));
 		anim = new Animation(rpLavaFace, pt);
@@ -321,7 +321,7 @@ public class StargateRenderer extends MalisisRenderer
 	{
 		RenderParameters rp = new RenderParameters();
 		rp.icon.set(Blocks.gold_block.getIcon(0, 0));
-		rp.useBlockBrightness.set(false);
+		rp.useEnvironmentBrightness.set(false);
 		rp.brightness.set(Vertex.BRIGHTNESS_MAX);
 		rp.alpha.set(175);
 

@@ -27,7 +27,7 @@ public class MintyOreRenderer extends MalisisRenderer
 		{
 			//do not automatically calculate brightness for the block
 			rp.calculateBrightness.set(false);
-			rp.useBlockBrightness.set(false);
+			rp.useEnvironmentBrightness.set(false);
 			//use this brightness instead
 			rp.brightness.set(block.getOreBrightness(blockMetadata));
 		}
