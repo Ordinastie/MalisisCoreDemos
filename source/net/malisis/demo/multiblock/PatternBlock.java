@@ -35,6 +35,7 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
@@ -43,7 +44,7 @@ import net.minecraft.world.IBlockAccess;
  * @author Ordinastie
  *
  */
-public class PatternBlock extends MalisisBlock implements IMultiBlock//, IBlockListener
+public class PatternBlock extends MalisisBlock implements IMultiBlock
 {
 	public PatternMultiBlock multiBlock;
 
@@ -70,31 +71,8 @@ public class PatternBlock extends MalisisBlock implements IMultiBlock//, IBlockL
 	}
 
 	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state)
+	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
 	{
 		return multiBlock;
 	}
-
-	//	@Override
-	//	public int blockRange()
-	//	{
-	//		return 3;
-	//	}
-	//
-	//	@Override
-	//	public boolean onBlockSet(World world, BlockPos pos, MBlockState newState)
-	//	{
-	//		return true;
-	//	}
-	//
-	//	@Override
-	//	public boolean onBlockRemoved(World world, BlockPos pos, BlockPos newPos)
-	//	{
-	//		if (multiBlock.isFromMultiblock(world, newPos))
-	//		{
-	//			world.setBlockToAir(pos);
-	//			return false;
-	//		}
-	//		return true;
-	//	}
 }

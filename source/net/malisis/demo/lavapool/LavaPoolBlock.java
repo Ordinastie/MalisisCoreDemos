@@ -37,6 +37,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -71,14 +72,14 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	}
 
 	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, net.minecraft.util.BlockPos pos, IBlockState state)
+	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
 	{
 		return multiBlock;
 	}
 
 	public void setActive(World world, BlockPos pos, IBlockState state, MBlockState newState)
 	{
-		boolean b = getMultiBlock(world, pos, state).isComplete(world, pos, newState);
+		boolean b = multiBlock.isComplete(world, pos, newState);
 		LavaPoolTileEntity te = TileEntityUtils.getTileEntity(LavaPoolTileEntity.class, world, pos);
 		te.setActive(b);
 	}

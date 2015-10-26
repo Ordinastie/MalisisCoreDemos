@@ -51,7 +51,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);
-		setTextureName(MalisisDemos.modid + ":blocks/blocklistener");
+		setTexture(MalisisDemos.modid + ":blocks/blocklistener");
 	}
 
 	@Override

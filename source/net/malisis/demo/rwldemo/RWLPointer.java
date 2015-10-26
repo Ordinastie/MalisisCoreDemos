@@ -24,10 +24,7 @@
 
 package net.malisis.demo.rwldemo;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.item.MalisisItem;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -44,10 +41,8 @@ public class RWLPointer extends MalisisItem
 	{
 		setName("rwl_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
-
 		//use the wooden sword icon
-		if (MalisisCore.isClient())
-			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.wooden_sword)));
+		setTexture(Items.wooden_sword);
 	}
 
 	@Override

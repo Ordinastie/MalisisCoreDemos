@@ -26,10 +26,7 @@ package net.malisis.demo.fontdemo;
 
 import java.util.List;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.item.MalisisItem;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -48,8 +45,7 @@ public class FontPointer extends MalisisItem
 		setName("font_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//make the pointer use the Iron hoe item icon and model
-		if (MalisisCore.isClient())
-			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.iron_hoe, 0)));
+		setTexture(Items.iron_hoe);
 	}
 
 	@Override

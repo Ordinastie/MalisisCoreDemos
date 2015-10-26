@@ -24,9 +24,8 @@
 
 package net.malisis.demo.stargate;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.core.util.TileEntityUtils;
@@ -43,6 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@MalisisRendered(StargateRenderer.class)
 public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 {
 
@@ -51,10 +51,13 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 		super(Material.iron);
 		setName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
+	}
 
-		//set the icon provider
-		if (MalisisCore.isClient())
-			setIconProvider(new SgIconProvider());
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		iconProvider = new SgIconProvider();
 	}
 
 	@Override
@@ -85,17 +88,9 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 		return false;
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public MalisisRenderer getRenderer()
-	{
-		StargateRenderer sgr = new StargateRenderer();
-		sgr.registerFor(StargateTileEntity.class);
-		return sgr;
-	}
-
 	//the icon provider is custom one that holds the 3 icons that will be needed
 	//the default one will be use for the inventory block
+	@SideOnly(Side.CLIENT)
 	public static class SgIconProvider implements IBlockIconProvider
 	{
 		private MalisisIcon defaultIcon = new MalisisIcon(MalisisDemos.modid + ":blocks/stargate");

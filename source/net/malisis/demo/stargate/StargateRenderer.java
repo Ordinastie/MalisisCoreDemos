@@ -39,7 +39,7 @@ public class StargateRenderer extends MalisisRenderer
 	//model that will hold all the shapes
 	private MalisisModel model;
 
-	private SgIconProvider sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
+	private SgIconProvider sgIconProvider;
 
 	//number of slices the opening animation will use
 	private int slices = 5;
@@ -58,6 +58,11 @@ public class StargateRenderer extends MalisisRenderer
 	private RenderParameters rpFaceArch;
 	private RenderParameters rpTopFace;
 	private RenderParameters rpLavaFace;
+
+	public StargateRenderer()
+	{
+		registerFor(StargateTileEntity.class);
+	}
 
 	@Override
 	protected void initialize()
@@ -80,6 +85,8 @@ public class StargateRenderer extends MalisisRenderer
 		loadAnimations();
 		//store the model current state
 		model.storeState();
+
+		sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
 	}
 
 	// #region Animations
@@ -95,7 +102,7 @@ public class StargateRenderer extends MalisisRenderer
 	private void createOpeningAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
+		rp.icon.set(sgIconProvider.getPlatformSideIcon());
 
 		int ot = openTimer / slices;
 		Shape shape;
@@ -138,7 +145,7 @@ public class StargateRenderer extends MalisisRenderer
 	private void createUnrollingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
+		rp.icon.set(sgIconProvider.getPlatformSideIcon());
 		rp.interpolateUV.set(false);
 		rp.useEnvironmentBrightness.set(false);
 		rp.calculateBrightness.set(false);
@@ -213,7 +220,7 @@ public class StargateRenderer extends MalisisRenderer
 	{
 		RenderParameters rp = new RenderParameters();
 		rp.renderAllFaces.set(true);
-		rp.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformSideIcon()));
+		rp.icon.set(sgIconProvider.getPlatformSideIcon());
 		rp.interpolateUV.set(false);
 
 		// override rendering parameters for bottom face
@@ -304,7 +311,7 @@ public class StargateRenderer extends MalisisRenderer
 		AlphaTransform at = new AlphaTransform(0, 255).forTicks(fadeTimer, deployTimer);
 		rpTopFace = new RenderParameters();
 		rpTopFace.alpha.set(0);
-		rpTopFace.iconProvider.set(new DefaultIconProvider(sgIconProvider.getPlatformIcon()));
+		rpTopFace.icon.set(sgIconProvider.getPlatformIcon());
 		Animation anim = new Animation(rpTopFace, at);
 		ar.addAnimation(anim);
 

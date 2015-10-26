@@ -52,7 +52,7 @@ public class Bank extends MalisisBlock implements ITileEntityProvider
 		setStepSound(soundTypeAnvil);
 		setName("bankdemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTextureName(MalisisDemos.modid + ":blocks/bankdemo");
+		setTexture(MalisisDemos.modid + ":blocks/bankdemo");
 	}
 
 	@Override

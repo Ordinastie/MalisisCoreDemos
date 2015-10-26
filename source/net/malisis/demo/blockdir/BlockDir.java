@@ -24,13 +24,14 @@
 
 package net.malisis.demo.blockdir;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Only thing needed is for the block to implement {@link IBlockDirectional}, granted it extends {@link MalisisBlock}.<br>
@@ -47,16 +48,17 @@ public class BlockDir extends MalisisBlock implements IBlockDirectional
 		super(Material.clay);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockDirDemo");
+	}
 
-		if (MalisisCore.isClient())
-		{
-			String prefix = MalisisDemos.modid + ":blocks/dirblock_";
-			String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
-					prefix + "right", };
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		String prefix = MalisisDemos.modid + ":blocks/dirblock_";
+		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
+				prefix + "right", };
 
-			//create the iconProvider
-			SidesIconProvider provider = new SidesIconProvider(names[0], names);
-			setIconProvider(provider);
-		}
+		//create the iconProvider
+		iconProvider = new SidesIconProvider(names[0], names);
 	}
 }

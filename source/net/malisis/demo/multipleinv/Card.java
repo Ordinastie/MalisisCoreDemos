@@ -24,14 +24,11 @@
 
 package net.malisis.demo.multipleinv;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.item.MalisisItem;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,9 +49,7 @@ public class Card extends MalisisItem implements IInventoryProvider
 	{
 		setName("demoCard");
 		setCreativeTab(MalisisDemos.tabDemos);
-
-		if (MalisisCore.isClient())
-			setIconProvider(new DefaultIconProvider(new VanillaIcon(Items.map)));
+		setTexture(Items.map);
 	}
 
 	@Override

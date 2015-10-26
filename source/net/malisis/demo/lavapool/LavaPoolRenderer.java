@@ -66,9 +66,9 @@ public class LavaPoolRenderer extends MalisisRenderer
 		enableBlending();
 		tileEntity = (LavaPoolTileEntity) super.tileEntity;
 		block = (LavaPoolBlock) super.block;
-		MultiBlock multiBlock = block.getMultiBlock(world, pos, blockState);
+		MultiBlock multiBlock = block.getMultiBlock(world, pos, blockState, null);
 		multiBlock.setRotation(blockState);
-		MultiBlockAccess multiBlockAccess = new MultiBlockAccess(block.getMultiBlock(world, pos, blockState));
+		MultiBlockAccess multiBlockAccess = new MultiBlockAccess(block.getMultiBlock(world, pos, blockState, null));
 		if (tileEntity.startAnim)
 		{
 			ar.setStartTime();

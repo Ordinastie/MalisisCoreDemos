@@ -36,10 +36,13 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -60,9 +63,7 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 
 		if (MalisisCore.isClient())
 		{
-			MegaTextureIconProvider iconProvider = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
-			iconProvider.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
-			setIconProvider(iconProvider);
+
 		}
 
 		//create the multiblock with the AABB
@@ -71,7 +72,16 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 	}
 
 	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state)
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		MegaTextureIconProvider ip = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
+		ip.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
+		this.iconProvider = ip;
+	}
+
+	@Override
+	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
 	{
 		return multiBlock;
 	}

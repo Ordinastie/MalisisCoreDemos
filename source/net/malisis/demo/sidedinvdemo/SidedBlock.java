@@ -24,7 +24,6 @@
 
 package net.malisis.demo.sidedinvdemo;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.inventory.ISidedInventoryProvider;
@@ -43,6 +42,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -59,15 +60,17 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBl
 		setName("sidedBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
-		if (MalisisCore.isClient())
-		{
-			//set the icons to use for the sides
-			SidesIconProvider provider = new SidesIconProvider(MalisisDemos.modid + ":blocks/sidedinv");
-			provider.setSideIcon(EnumFacing.WEST, MalisisDemos.modid + ":blocks/sidedingots");
-			provider.setSideIcon(EnumFacing.EAST, MalisisDemos.modid + ":blocks/sidedstones");
-			provider.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/sidedtriage");
-			setIconProvider(provider);
-		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		SidesIconProvider ip = new SidesIconProvider(MalisisDemos.modid + ":blocks/sidedinv");
+		ip.setSideIcon(EnumFacing.WEST, MalisisDemos.modid + ":blocks/sidedingots");
+		ip.setSideIcon(EnumFacing.EAST, MalisisDemos.modid + ":blocks/sidedstones");
+		ip.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/sidedtriage");
+		iconProvider = ip;
 	}
 
 	@Override

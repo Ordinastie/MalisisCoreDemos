@@ -63,6 +63,11 @@ public class WaveRenderer extends MalisisRenderer
 	//RenderParameters
 	private RenderParameters rp;
 
+	public WaveRenderer()
+	{
+		registerFor(WaveTileEntity.class);
+	}
+
 	@Override
 	protected void initialize()
 	{

@@ -2,9 +2,8 @@ package net.malisis.demo.minty;
 
 import java.util.List;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.IMSerializable;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
@@ -20,6 +19,7 @@ import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@MalisisRendered(MintyOreRenderer.class)
 public class ArmoryOre extends MalisisBlock
 {
 	//Create an enum for the different ore types available
@@ -50,9 +50,13 @@ public class ArmoryOre extends MalisisBlock
 		setResistance(3f);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setStepSound(Block.soundTypeGravel);
+	}
 
-		if (MalisisCore.isClient())
-			setIconProvider(new ArmoryOreIconProvider());
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		iconProvider = new ArmoryOreIconProvider();
 	}
 
 	@Override
@@ -105,12 +109,4 @@ public class ArmoryOre extends MalisisBlock
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public MalisisRenderer getRenderer()
-	{
-		return new MintyOreRenderer();
-	}
-
 }

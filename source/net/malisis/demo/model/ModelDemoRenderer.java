@@ -60,6 +60,11 @@ public class ModelDemoRenderer extends MalisisRenderer
 	private IIconProvider antennaIp;
 	private RenderParameters rp;
 
+	public ModelDemoRenderer()
+	{
+		registerFor(ModelDemoTileEntity.class);
+	}
+
 	@Override
 	protected void initialize()
 	{

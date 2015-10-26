@@ -51,7 +51,7 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 		setStepSound(soundTypeWood);
 		setCreativeTab(MalisisDemos.tabDemos);
 		//set the icons to use
-		setTextureName(MalisisDemos.modid + ":blocks/syncDemo");
+		setTexture(MalisisDemos.modid + ":blocks/syncDemo");
 	}
 
 	@Override

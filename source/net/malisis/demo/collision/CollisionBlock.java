@@ -27,7 +27,7 @@ package net.malisis.demo.collision;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.MalisisRenderer;
+import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.chunkcollision.IChunkCollidable;
 import net.malisis.demo.MalisisDemos;
@@ -36,13 +36,12 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
+@MalisisRendered(CollisionBlockRenderer.class)
 public class CollisionBlock extends MalisisBlock implements IChunkCollidable, IBlockDirectional
 {
 
@@ -55,7 +54,7 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable, IB
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);
-		setTextureName(MalisisDemos.modid + ":blocks/collision");
+		setTexture(MalisisDemos.modid + ":blocks/collision");
 	}
 
 	@Override
@@ -97,12 +96,5 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable, IB
 	{
 		//we will render the stairs translucent
 		return layer == EnumWorldBlockLayer.TRANSLUCENT;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public MalisisRenderer getRenderer()
-	{
-		return new CollisionBlockRenderer();
 	}
 }
