@@ -67,6 +67,8 @@ public class StargateRenderer extends MalisisRenderer
 	@Override
 	protected void initialize()
 	{
+		sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
+
 		//build the basic cube for inventory rendering
 		cube = new Cube();
 		//create the default
@@ -85,8 +87,6 @@ public class StargateRenderer extends MalisisRenderer
 		loadAnimations();
 		//store the model current state
 		model.storeState();
-
-		sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
 	}
 
 	// #region Animations
