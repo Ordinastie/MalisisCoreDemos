@@ -1,7 +1,7 @@
 package net.malisis.demo.guidemo;
 
 import net.malisis.core.client.gui.MalisisGui;
-import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.inventory.IInventoryProvider.IDirectInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GuiTileEntity extends TileEntity implements IInventoryProvider
+public class GuiTileEntity extends TileEntity implements IDirectInventoryProvider
 {
 	private MalisisInventory inventory;
 
@@ -24,7 +24,7 @@ public class GuiTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory getInventory()
 	{
 		return inventory;
 	}

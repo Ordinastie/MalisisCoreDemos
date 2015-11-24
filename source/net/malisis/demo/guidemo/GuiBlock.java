@@ -1,7 +1,6 @@
 package net.malisis.demo.guidemo;
 
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
@@ -33,7 +32,7 @@ public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 		if (world.isRemote)
 			return true;
 
-		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, pos);
+		GuiTileEntity te = TileEntityUtils.getTileEntity(GuiTileEntity.class, world, pos);
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;

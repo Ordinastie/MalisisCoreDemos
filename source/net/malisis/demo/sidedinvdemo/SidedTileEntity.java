@@ -95,7 +95,7 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory getInventory()
 	{
 		return triageInventory;
 	}

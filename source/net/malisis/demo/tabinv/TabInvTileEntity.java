@@ -25,7 +25,7 @@
 package net.malisis.demo.tabinv;
 
 import net.malisis.core.client.gui.MalisisGui;
-import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.inventory.IInventoryProvider.IDirectInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-public class TabInvTileEntity extends TileEntity implements IInventoryProvider, IUpdatePlayerListBox
+public class TabInvTileEntity extends TileEntity implements IDirectInventoryProvider, IUpdatePlayerListBox
 {
 	//inventory in first tab
 	public MalisisInventory inventory;
@@ -157,14 +157,14 @@ public class TabInvTileEntity extends TileEntity implements IInventoryProvider, 
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory getInventory()
 	{
 		//make the default inventory
 		return inventory;
 	}
 
 	@Override
-	public MalisisInventory[] getInventories(Object... data)
+	public MalisisInventory[] getInventories()
 	{
 		//return both inventories, because they will be both added to the container
 		return new MalisisInventory[] { inventory, converter };

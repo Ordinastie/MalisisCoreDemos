@@ -25,7 +25,7 @@
 package net.malisis.demo.multipleinv;
 
 import net.malisis.core.client.gui.MalisisGui;
-import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.inventory.IInventoryProvider.IDeferredInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.item.MalisisItem;
@@ -43,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-public class Card extends MalisisItem implements IInventoryProvider
+public class Card extends MalisisItem implements IDeferredInventoryProvider<ItemStack>
 {
 	public Card()
 	{
@@ -73,18 +73,21 @@ public class Card extends MalisisItem implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory getInventory(ItemStack itemStack)
 	{
-		//make sure an ItemStack was passed for data
-		if (!(data[0] instanceof ItemStack))
-			return null;
-
 		//create the inventory
 		MalisisInventory inventory = new MalisisInventory(this, 27);
 		inventory.setInventoryStackLimit(2);
-		inventory.setItemStackProvider((ItemStack) data[0]);
+		inventory.setItemStackProvider(itemStack);
 
 		return inventory;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public MalisisGui getGui(ItemStack itemStack, MalisisInventoryContainer container)
+	{
+		return new CardGui(container);
 	}
 
 	@Override
@@ -97,13 +100,6 @@ public class Card extends MalisisItem implements IInventoryProvider
 	public int getMaxItemUseDuration(ItemStack itemStack)
 	{
 		return 1;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public MalisisGui getGui(MalisisInventoryContainer container)
-	{
-		return new CardGui(container);
 	}
 
 }

@@ -25,7 +25,6 @@
 package net.malisis.demo.multipleinv;
 
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
@@ -63,7 +62,7 @@ public class Bank extends MalisisBlock implements ITileEntityProvider
 			return true;
 
 		//get the inventory and open it
-		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, pos);
+		BankTileEntity te = TileEntityUtils.getTileEntity(BankTileEntity.class, world, pos);
 		MalisisInventory.open((EntityPlayerMP) player, te);
 
 		return true;

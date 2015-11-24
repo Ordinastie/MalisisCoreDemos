@@ -25,7 +25,7 @@
 package net.malisis.demo.multipleinv;
 
 import net.malisis.core.client.gui.MalisisGui;
-import net.malisis.core.inventory.IInventoryProvider;
+import net.malisis.core.inventory.IInventoryProvider.IDirectInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
@@ -37,7 +37,7 @@ import net.minecraft.tileentity.TileEntity;
  * @author Ordinastie
  *
  */
-public class BankTileEntity extends TileEntity implements IInventoryProvider
+public class BankTileEntity extends TileEntity implements IDirectInventoryProvider
 {
 	MalisisInventory inventory;
 
@@ -48,7 +48,7 @@ public class BankTileEntity extends TileEntity implements IInventoryProvider
 	}
 
 	@Override
-	public MalisisInventory getInventory(Object... data)
+	public MalisisInventory getInventory()
 	{
 		return inventory;
 	}

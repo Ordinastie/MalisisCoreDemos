@@ -31,7 +31,6 @@ import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
-import net.malisis.demo.tabinv.TabInvTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -98,7 +97,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBl
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TabInvTileEntity te = TileEntityUtils.getTileEntity(TabInvTileEntity.class, world, pos);
+		SidedTileEntity te = TileEntityUtils.getTileEntity(SidedTileEntity.class, world, pos);
 		if (te != null)
 			te.breakInventories(world, pos);
 	}
