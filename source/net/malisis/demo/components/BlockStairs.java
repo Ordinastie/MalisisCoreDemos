@@ -24,46 +24,24 @@
 
 package net.malisis.demo.components;
 
-import net.malisis.core.block.component.SlabComponent;
-import net.malisis.demo.IDemo;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.StairComponent;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.material.Material;
 
 /**
- * This demo show how to make a block that can have different directions.
- *
  * @author Ordinastie
  *
  */
-public class ComponentsDemo implements IDemo
+public class BlockStairs extends MalisisBlock
 {
-	private BlockDir blockDir;
-	private BlockColor blockColor;
-	private BlockSlab blockSlab, blockDoubleSlab;
-	private BlockWall blockWall;
-	private BlockStairs blockStairs;
-
-	@Override
-	public void preInit()
+	public BlockStairs()
 	{
-		//create and register the blocks
-		blockDir = new BlockDir();
-		blockDir.register();
+		super(Material.ground);
+		setCreativeTab(MalisisDemos.tabDemos);
+		setName("blockStairs");
+		setTexture(MalisisDemos.modid + ":blocks/stairsBlock");
 
-		blockColor = new BlockColor();
-		blockColor.register();
-
-		blockSlab = new BlockSlab();
-		blockDoubleSlab = new BlockSlab();
-		new SlabComponent(blockSlab, blockDoubleSlab).register();
-
-		blockWall = new BlockWall();
-		blockWall.register();
-
-		blockStairs = new BlockStairs();
-		blockStairs.register();
+		addComponent(new StairComponent());
 	}
-
-	@Override
-	public void init()
-	{}
-
 }
