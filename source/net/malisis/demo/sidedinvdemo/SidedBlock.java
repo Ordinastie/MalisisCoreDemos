@@ -24,8 +24,8 @@
 
 package net.malisis.demo.sidedinvdemo;
 
-import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.inventory.ISidedInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.renderer.icon.provider.SidesIconProvider;
@@ -48,7 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBlockDirectional
+public class SidedBlock extends MalisisBlock implements ITileEntityProvider
 {
 	public SidedBlock()
 	{
@@ -59,6 +59,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider, IBl
 		setName("sidedBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
+		addComponent(new DirectionalComponent());
 	}
 
 	@Override

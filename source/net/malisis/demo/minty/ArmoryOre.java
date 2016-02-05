@@ -13,7 +13,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -60,9 +59,9 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	@Override
-	public Class<? extends ItemBlock> getItemClass()
+	public Item getItem(Block block)
 	{
-		return ItemBlockArmoryOre.class;
+		return new ItemBlockArmoryOre(this);
 	}
 
 	@Override

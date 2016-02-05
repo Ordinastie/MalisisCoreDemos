@@ -22,30 +22,45 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.blockdir;
+package net.malisis.demo.components;
 
-import net.malisis.demo.IDemo;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.DirectionalComponent;
+import net.malisis.core.renderer.icon.provider.SidesIconProvider;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * This demo show how to make a block that can have different directions.
+ * Only thing needed is for the block to add a {@link DirectionalComponent}.<br>
+ * The {@code MalisisBlock} will forward the required {@link Block} calls to the component.
  *
  * @author Ordinastie
  *
  */
-public class BlockDirDemo implements IDemo
+public class BlockDir extends MalisisBlock
 {
-	private BlockDir blockDir;
-
-	@Override
-	public void preInit()
+	public BlockDir()
 	{
-		//create and register the block
-		blockDir = new BlockDir();
-		blockDir.register();
+		//set usual properties
+		super(Material.clay);
+		setCreativeTab(MalisisDemos.tabDemos);
+		setName("blockDirDemo");
+
+		addComponent(new DirectionalComponent());
 	}
 
 	@Override
-	public void init()
-	{}
+	@SideOnly(Side.CLIENT)
+	public void createIconProvider(Object object)
+	{
+		String prefix = MalisisDemos.modid + ":blocks/dirblock_";
+		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
+				prefix + "right", };
 
+		//create the iconProvider
+		iconProvider = new SidesIconProvider(names[0], names);
+	}
 }

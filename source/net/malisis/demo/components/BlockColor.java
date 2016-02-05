@@ -22,43 +22,28 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.blockdir;
+package net.malisis.demo.components;
 
-import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.provider.SidesIconProvider;
+import net.malisis.core.block.component.ColorComponent;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Only thing needed is for the block to implement {@link IBlockDirectional}, granted it extends {@link MalisisBlock}.<br>
- * The {@code MalisisBlock} will forward the required {@link Block} calls to {@code IBlockDirectional} default implementation.
- *
  * @author Ordinastie
  *
  */
-public class BlockDir extends MalisisBlock implements IBlockDirectional
+public class BlockColor extends MalisisBlock
 {
-	public BlockDir()
+	public BlockColor()
 	{
 		//set usual properties
 		super(Material.clay);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setName("blockDirDemo");
-	}
+		setName("blockColorDemo");
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		String prefix = MalisisDemos.modid + ":blocks/dirblock_";
-		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
-				prefix + "right", };
+		setTexture(MalisisDemos.modid + ":blocks/blockColor");
 
-		//create the iconProvider
-		iconProvider = new SidesIconProvider(names[0], names);
+		addComponent(new ColorComponent());
 	}
 }

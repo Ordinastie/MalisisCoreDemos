@@ -25,8 +25,8 @@
 package net.malisis.demo.collision;
 
 import net.malisis.core.block.BoundingBoxType;
-import net.malisis.core.block.IBlockDirectional;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.chunkcollision.IChunkCollidable;
@@ -42,7 +42,7 @@ import net.minecraft.world.IBlockAccess;
  *
  */
 @MalisisRendered(CollisionBlockRenderer.class)
-public class CollisionBlock extends MalisisBlock implements IChunkCollidable, IBlockDirectional
+public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 {
 
 	public CollisionBlock()
@@ -55,6 +55,8 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable, IB
 		setResistance(5.0F);
 		setStepSound(soundTypeWood);
 		setTexture(MalisisDemos.modid + ":blocks/collision");
+
+		addComponent(new DirectionalComponent());
 	}
 
 	@Override

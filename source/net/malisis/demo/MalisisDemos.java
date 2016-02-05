@@ -30,9 +30,9 @@ import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
-import net.malisis.demo.blockdir.BlockDirDemo;
 import net.malisis.demo.blocklistener.BlockListenerDemo;
 import net.malisis.demo.collision.Collision;
+import net.malisis.demo.components.ComponentsDemo;
 import net.malisis.demo.connected.Connected;
 import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
@@ -88,7 +88,7 @@ public class MalisisDemos implements IMalisisMod
 		MalisisCore.registerMod(this);
 
 		demos.add(new Stargate());
-		demos.add(new BlockDirDemo());
+		demos.add(new ComponentsDemo());
 		demos.add(new GuiDemo());
 		demos.add(new Minty());
 		demos.add(new ModelDemo());

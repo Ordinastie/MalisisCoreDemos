@@ -22,60 +22,33 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.rwldemo;
+package net.malisis.demo.components;
 
-import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.block.component.DirectionalComponent;
-import net.malisis.core.util.AABBUtils;
+import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumFacing;
 
 /**
  * @author Ordinastie
  *
  */
-public class RTBlock extends MalisisBlock
+public class BlockSlab extends MalisisBlock
 {
-	public RTBlock()
+	public BlockSlab()
 	{
-		//set usual properties
-		super(Material.iron);
-		setName("rtBlock");
+		super(Material.ground);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTexture(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
-
-		addComponent(new DirectionalComponent());
+		setName("blockSlabDemo");
 	}
 
 	@Override
-	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, BoundingBoxType type)
+	public void createIconProvider(Object object)
 	{
-		//for SELECTION, return a 0->1 box
-		if (type == BoundingBoxType.SELECTION)
-			return AABBUtils.identities();
+		SidesIconProvider iconProvider = new SidesIconProvider(MalisisDemos.modid + ":blocks/slabBlock_side");
+		iconProvider.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/slabBlock");
 
-		//create a stair-like shaped block
-		//note that the rotation is automatically handle by MalisisBlock and IBlockDirectional
-		int n = 4;
-		float f = (float) 1 / n;
-
-		AxisAlignedBB[] aabbs = new AxisAlignedBB[n];
-
-		for (int i = 0; i < n; i++)
-			aabbs[i] = new AxisAlignedBB(0, 1 - i * f, i * f, 1, 1 - (i + 1) * f, (i + 1) * f);
-
-		return aabbs;
-	}
-
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
+		this.iconProvider = iconProvider;
 	}
 }
