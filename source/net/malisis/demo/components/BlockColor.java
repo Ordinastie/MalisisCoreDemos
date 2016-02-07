@@ -44,6 +44,6 @@ public class BlockColor extends MalisisBlock
 
 		setTexture(MalisisDemos.modid + ":blocks/blockColor");
 
-		addComponent(new ColorComponent());
+		addComponent(new ColorComponent(true));
 	}
 }
