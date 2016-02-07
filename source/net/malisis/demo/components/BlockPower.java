@@ -24,50 +24,36 @@
 
 package net.malisis.demo.components;
 
-import net.malisis.core.block.component.SlabComponent;
-import net.malisis.demo.IDemo;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.PowerComponent;
+import net.malisis.core.block.component.PowerComponent.Type;
+import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.provider.FlexibleBlockIconProvider;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.material.Material;
 
 /**
- * This demo show how to make a block that can have different directions.
- *
  * @author Ordinastie
  *
  */
-public class ComponentsDemo implements IDemo
+public class BlockPower extends MalisisBlock
 {
-	private BlockDir blockDir;
-	private BlockColor blockColor;
-	private BlockSlab blockSlab, blockDoubleSlab;
-	private BlockWall blockWall;
-	private BlockStairs blockStairs;
-	private BlockPower blockPower;
-
-	@Override
-	public void preInit()
+	public BlockPower()
 	{
-		//create and register the blocks
-		blockDir = new BlockDir();
-		blockDir.register();
+		//set usual properties
+		super(Material.clay);
+		setCreativeTab(MalisisDemos.tabDemos);
+		setName("blockPower");
 
-		blockColor = new BlockColor();
-		blockColor.register();
-
-		blockSlab = new BlockSlab();
-		blockDoubleSlab = new BlockSlab();
-		new SlabComponent(blockSlab, blockDoubleSlab).register();
-
-		blockWall = new BlockWall();
-		blockWall.register();
-
-		blockStairs = new BlockStairs();
-		blockStairs.register();
-
-		blockPower = new BlockPower();
-		blockPower.register();
+		addComponent(new PowerComponent(Type.RIGHT_CLICK));
 	}
 
 	@Override
-	public void init()
-	{}
+	public void createIconProvider(Object object)
+	{
+		MalisisIcon iconOn = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_on");
+		MalisisIcon iconOff = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_off");
 
+		iconProvider = new FlexibleBlockIconProvider(this, iconOff, (state, side) -> PowerComponent.isPowered(state) ? iconOn : iconOff);
+	}
 }
