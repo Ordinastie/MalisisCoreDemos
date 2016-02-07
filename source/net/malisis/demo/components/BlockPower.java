@@ -25,12 +25,14 @@
 package net.malisis.demo.components;
 
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.block.component.PowerComponent;
 import net.malisis.core.block.component.PowerComponent.Type;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.icon.provider.FlexibleBlockIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.EnumFacing;
 
 /**
  * @author Ordinastie
@@ -45,15 +47,18 @@ public class BlockPower extends MalisisBlock
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockPower");
 
+		addComponent(new DirectionalComponent());
 		addComponent(new PowerComponent(Type.RIGHT_CLICK));
 	}
 
 	@Override
 	public void createIconProvider(Object object)
 	{
+		MalisisIcon icon = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower");
 		MalisisIcon iconOn = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_on");
 		MalisisIcon iconOff = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_off");
 
-		iconProvider = new FlexibleBlockIconProvider(this, iconOff, (state, side) -> PowerComponent.isPowered(state) ? iconOn : iconOff);
+		iconProvider = new FlexibleBlockIconProvider(this, icon,
+				(state, side) -> side == EnumFacing.SOUTH ? (PowerComponent.isPowered(state) ? iconOn : iconOff) : icon);
 	}
 }
