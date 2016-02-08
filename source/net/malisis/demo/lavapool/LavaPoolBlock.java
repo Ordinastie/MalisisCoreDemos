@@ -28,8 +28,7 @@ import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.util.MBlockState;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.core.util.chunklistener.IBlockListener;
-import net.malisis.core.util.multiblock.IMultiBlock;
-import net.malisis.core.util.multiblock.MultiBlock;
+import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.core.util.multiblock.PatternMultiBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
@@ -37,18 +36,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
  * @author Ordinastie
  *
  */
-public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener, IMultiBlock
+public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener
 {
 	PatternMultiBlock multiBlock;
 
@@ -69,12 +66,8 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 		multiBlock.addLayer("ABBBA", "B   B", "B   B", "B   B", "ABBBA");
 		multiBlock.withRef('A', Blocks.obsidian).withRef('B', Blocks.stone).withRef('C', Blocks.iron_bars).withRef('D', Blocks.glass);
 		multiBlock.setOffset(new BlockPos(-2, 0, -2));
-	}
 
-	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
-	{
-		return multiBlock;
+		addComponent(new MultiBlockComponent(multiBlock));
 	}
 
 	public void setActive(World world, BlockPos pos, IBlockState state, MBlockState newState)

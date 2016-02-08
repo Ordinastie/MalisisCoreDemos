@@ -25,8 +25,7 @@
 package net.malisis.demo.multiblock;
 
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.util.multiblock.IMultiBlock;
-import net.malisis.core.util.multiblock.MultiBlock;
+import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.core.util.multiblock.PatternMultiBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.BlockChest;
@@ -35,19 +34,15 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
  *
  */
-public class PatternBlock extends MalisisBlock implements IMultiBlock
+public class PatternBlock extends MalisisBlock
 {
-	public PatternMultiBlock multiBlock;
-
 	public PatternBlock()
 	{
 		//sets the usual properties
@@ -63,16 +58,13 @@ public class PatternBlock extends MalisisBlock implements IMultiBlock
 		IBlockState birchStairs = Blocks.birch_stairs.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH);
 		IBlockState chest = Blocks.chest.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH);
 
-		multiBlock = new PatternMultiBlock();
+		PatternMultiBlock multiBlock = new PatternMultiBlock();
 		multiBlock.addLayer(" A ", "A A", " A ", " B ", " C ").addLayer(" D");
 		multiBlock.withRef('A', Blocks.emerald_block).withRef('B', birchPlanks).withRef('C', birchStairs).withRef('D', chest);
 		multiBlock.setOffset(new BlockPos(-1, 0, -1));
 		multiBlock.setBulkProcess(true, false);
+
+		addComponent(new MultiBlockComponent(multiBlock));
 	}
 
-	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
-	{
-		return multiBlock;
-	}
 }

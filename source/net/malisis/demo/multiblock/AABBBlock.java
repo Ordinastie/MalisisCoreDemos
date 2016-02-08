@@ -24,23 +24,17 @@
 
 package net.malisis.demo.multiblock;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.MegaTextureIconProvider;
 import net.malisis.core.util.multiblock.AABBMultiBlock;
-import net.malisis.core.util.multiblock.IMultiBlock;
-import net.malisis.core.util.multiblock.MultiBlock;
+import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,10 +42,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-public class AABBBlock extends MalisisBlock implements IMultiBlock
+public class AABBBlock extends MalisisBlock
 {
-	AABBMultiBlock multiBlock;
-
 	public AABBBlock()
 	{
 		//sets the usual properties
@@ -61,14 +53,12 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 		setName("aabbMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 
-		if (MalisisCore.isClient())
-		{
-
-		}
-
 		//create the multiblock with the AABB
-		multiBlock = new AABBMultiBlock(this, new AxisAlignedBB(-1, 0, 0, 3, 4, 1));
+		AABBMultiBlock multiBlock = new AABBMultiBlock(this, new AxisAlignedBB(-1, 0, 0, 3, 4, 1));
 		multiBlock.setBulkProcess(true, true);
+
+		//add the component
+		addComponent(new MultiBlockComponent(multiBlock));
 	}
 
 	@Override
@@ -78,11 +68,5 @@ public class AABBBlock extends MalisisBlock implements IMultiBlock
 		MegaTextureIconProvider ip = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
 		ip.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
 		this.iconProvider = ip;
-	}
-
-	@Override
-	public MultiBlock getMultiBlock(IBlockAccess world, BlockPos pos, IBlockState state, ItemStack itemStack)
-	{
-		return multiBlock;
 	}
 }

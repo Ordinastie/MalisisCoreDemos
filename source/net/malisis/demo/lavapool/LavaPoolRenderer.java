@@ -33,6 +33,7 @@ import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.util.MBlockState;
 import net.malisis.core.util.multiblock.MultiBlock;
 import net.malisis.core.util.multiblock.MultiBlockAccess;
+import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -66,9 +67,9 @@ public class LavaPoolRenderer extends MalisisRenderer
 		enableBlending();
 		tileEntity = (LavaPoolTileEntity) super.tileEntity;
 		block = (LavaPoolBlock) super.block;
-		MultiBlock multiBlock = block.getMultiBlock(world, pos, blockState, null);
+		MultiBlock multiBlock = MultiBlockComponent.getMultiBlock(world, pos, blockState, itemStack);
 		multiBlock.setRotation(blockState);
-		MultiBlockAccess multiBlockAccess = new MultiBlockAccess(block.getMultiBlock(world, pos, blockState, null));
+		MultiBlockAccess multiBlockAccess = new MultiBlockAccess(multiBlock);
 		if (tileEntity.startAnim)
 		{
 			ar.setStartTime();
