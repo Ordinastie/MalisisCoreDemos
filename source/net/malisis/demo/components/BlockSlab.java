@@ -29,6 +29,8 @@ import net.malisis.core.renderer.icon.provider.SidesIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -44,6 +46,7 @@ public class BlockSlab extends MalisisBlock
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void createIconProvider(Object object)
 	{
 		SidesIconProvider iconProvider = new SidesIconProvider(MalisisDemos.modid + ":blocks/slabBlock_side");

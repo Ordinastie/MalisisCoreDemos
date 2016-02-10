@@ -33,6 +33,8 @@ import net.malisis.core.renderer.icon.provider.FlexibleBlockIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -52,6 +54,7 @@ public class BlockPower extends MalisisBlock
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void createIconProvider(Object object)
 	{
 		MalisisIcon icon = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower");
