@@ -19,6 +19,7 @@ import net.malisis.core.client.gui.component.control.UIScrollBar;
 import net.malisis.core.client.gui.component.control.UISlimScrollbar;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UILabel;
+import net.malisis.core.client.gui.component.decoration.UIProgressBar;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.component.interaction.UIButton;
 import net.malisis.core.client.gui.component.interaction.UICheckBox;
@@ -54,6 +55,7 @@ public class Gui extends MalisisGui
 	private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
 	private UIPanel panel;
 	private UITab tab1;
+	private UIProgressBar bar;
 	private UIButton btnL, btnR, btnHorizontal;
 	private UIRadioButton rbMC, rbBS, rbH;
 	private UICheckBox cb;
@@ -91,7 +93,7 @@ public class Gui extends MalisisGui
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
 
-		tabGroup.setActiveTab(tab2);
+		tabGroup.setActiveTab(tab1);
 		tabGroup.setSpacing(0);
 		tabGroup.attachTo(panel, true);
 
@@ -149,6 +151,11 @@ public class Gui extends MalisisGui
 		select.select(2);
 		//select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, 0x664444, false);
 
+		//progress bar
+		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, new VanillaIcon(Items.iron_sword), new VanillaIcon(Items.diamond_sword));
+		bar.setPosition(-30, 40, Anchor.RIGHT);
+		bar.setVertical();
+
 		//3 Buttons
 		btnHorizontal = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
 		btnL = new UIButton(this, "O").setPosition(-49, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
@@ -167,6 +174,7 @@ public class Gui extends MalisisGui
 
 		tabCont1.add(tf);
 		tabCont1.add(select);
+		tabCont1.add(bar);
 
 		tabCont1.add(btnHorizontal);
 		tabCont1.add(btnL);
@@ -277,5 +285,12 @@ public class Gui extends MalisisGui
 		int b = 255;
 		//MalisisCore.message(r + " > " + Integer.toHexString(r << 16 | 0x00FFFF));
 		tab1.setBgColor(r << 16 | g << 8 | b);
+	}
+
+	@Override
+	public void updateScreen()
+	{
+		float t = (System.currentTimeMillis() % 2000) / 2000f;
+		bar.setProgress(t);
 	}
 }
