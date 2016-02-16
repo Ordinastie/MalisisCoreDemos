@@ -33,8 +33,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-public class TabInvTileEntity extends TileEntity implements IDirectInventoryProvider, IUpdatePlayerListBox
+public class TabInvTileEntity extends TileEntity implements IDirectInventoryProvider, ITickable
 {
 	//inventory in first tab
 	public MalisisInventory inventory;

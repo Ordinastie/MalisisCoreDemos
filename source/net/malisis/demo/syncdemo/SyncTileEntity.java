@@ -27,8 +27,8 @@ package net.malisis.demo.syncdemo;
 import net.malisis.core.util.syncer.Sync;
 import net.malisis.core.util.syncer.Syncable;
 import net.malisis.core.util.syncer.Syncer;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
 /**
  * @author Ordinastie
@@ -38,7 +38,7 @@ import net.minecraft.tileentity.TileEntity;
 //TileEntity is the identifier of the handler that will handler the synchronization. TileEntity handler is builtin MalisisCore.
 //You can register you own handlers for your own objects.
 @Syncable("TileEntity")
-public class SyncTileEntity extends TileEntity implements IUpdatePlayerListBox
+public class SyncTileEntity extends TileEntity implements ITickable
 {
 	//define a field that will be sync with @Sync annotation and define an identifier of your choosing
 	//only primitives, String, and ISyncableData can be annotated with @Sync

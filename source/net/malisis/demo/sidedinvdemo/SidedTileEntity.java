@@ -33,9 +33,9 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
 /**
  * This tile entity will handle 3 different inventories :<br>
@@ -48,7 +48,7 @@ import net.minecraft.util.EnumFacing;
  * @author Ordinastie
  *
  */
-public class SidedTileEntity extends TileEntity implements ISidedInventoryProvider, IUpdatePlayerListBox
+public class SidedTileEntity extends TileEntity implements ISidedInventoryProvider, ITickable
 {
 	//the 3 different inventories
 	public MalisisInventory triageInventory;

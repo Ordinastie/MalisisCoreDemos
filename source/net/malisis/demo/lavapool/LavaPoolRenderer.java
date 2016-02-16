@@ -78,7 +78,7 @@ public class LavaPoolRenderer extends MalisisRenderer
 		}
 
 		BlockRendererDispatcher blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		wr.setVertexFormat(DefaultVertexFormats.BLOCK);
+		vertexFormat = DefaultVertexFormats.BLOCK;
 		AlphaTransform at = new AlphaTransform(a, 0).forTicks(40, 40);
 		ar.animate(rp, at);
 		rp.interpolateUV.set(false);
