@@ -73,7 +73,7 @@ public class FontDemoRenderer extends MalisisRenderer
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
 		//render only if not further away than 64 blocks away from origin of the world
-		return Minecraft.getMinecraft().thePlayer.getPosition().distanceSq(0, 0, 0) < 4096;
+		return Minecraft.getMinecraft().thePlayer.getPosition().distanceSq(0, 0, 0) < 1024;
 	}
 
 	private void loadFont()
