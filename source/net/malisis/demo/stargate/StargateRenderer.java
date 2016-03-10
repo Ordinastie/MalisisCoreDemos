@@ -27,7 +27,7 @@ import net.malisis.demo.stargate.StargateBlock.SgIconProvider;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
-public class StargateRenderer extends MalisisRenderer
+public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 {
 	//the animation renderer handle the timer and elapsed time for animations
 	//it's also a container for animations
@@ -106,8 +106,8 @@ public class StargateRenderer extends MalisisRenderer
 
 		int ot = openTimer / slices;
 		Shape shape;
-		Transformation trans;
-		Animation anim;
+		ParallelTransformation trans;
+		Animation<?> anim;
 		for (int i = 1; i < slices; i++)
 		{
 			int t = ot * i;
@@ -121,7 +121,7 @@ public class StargateRenderer extends MalisisRenderer
 					new Translation(0F, -sliceHeight * i, 0F).forTicks(t, ot)
 			);
 			//@formatter:on0
-			anim = new Animation(shape, trans);
+			anim = new Animation<>(shape, trans);
 			anim.setRender(true, true);
 			ar.addAnimation(anim);
 
@@ -136,7 +136,7 @@ public class StargateRenderer extends MalisisRenderer
 					new Translation(0F, -sliceHeight * i, 0F).forTicks(t, ot)
 			);
 			//@formatter:on
-			anim = new Animation(shape, trans);
+			anim = new Animation<>(shape, trans);
 			anim.setRender(true, true);
 			ar.addAnimation(anim);
 		}
@@ -175,7 +175,7 @@ public class StargateRenderer extends MalisisRenderer
 		//model.addShapes(shapeNorth, shapeSouth);
 
 		//make the animations
-		Animation anim;
+		Animation<?> anim;
 		ParallelTransformation north;
 		ParallelTransformation south;
 		for (int row = 0; row < 4; row++)
@@ -206,11 +206,11 @@ public class StargateRenderer extends MalisisRenderer
 			Shape ss = new Shape(shapeSouth);
 			model.addShapes(sn, ss);
 
-			anim = new Animation(sn, north);
+			anim = new Animation<>(sn, north);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 
-			anim = new Animation(ss, south);
+			anim = new Animation<>(ss, south);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 		}
@@ -245,8 +245,8 @@ public class StargateRenderer extends MalisisRenderer
 		//at = 20;
 
 		Shape shape;
-		Transformation trans;
-		Animation anim;
+		ParallelTransformation trans;
+		Animation<?> anim;
 		for (int i = 0; i < totalArch; i++)
 		{
 			float archAngle = angle * (totalArch - i) - angle / 2;
@@ -266,7 +266,7 @@ public class StargateRenderer extends MalisisRenderer
 					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(st, sd)
 					).delay(openTimer + rotationTimer / 2);
 			//@formatter:on
-			anim = new Animation(shape, trans);
+			anim = new Animation<>(shape, trans);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 
@@ -276,7 +276,7 @@ public class StargateRenderer extends MalisisRenderer
 					new BrightnessTransform(240, 32).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL)
 					).delay(deployTimer  + rt).loop(-1);
 			//@formatter:on
-			anim = new Animation(shape.getFace("top").getParameters(), ct);
+			anim = new Animation<>(shape.getFace("top").getParameters(), ct);
 			ar.addAnimation(anim);
 
 			// rotation then scaling of the eastern blocks of the arch
@@ -291,7 +291,7 @@ public class StargateRenderer extends MalisisRenderer
 					new Scale(0.5F, 0.3F, 0.2F, 0.5F, 0.5F, 0.3F).forTicks(st, sd)
 					).delay(openTimer + rotationTimer / 2);
 			//@formatter:on
-			anim = new Animation(shape, trans);
+			anim = new Animation<>(shape, trans);
 			anim.setRender(false, true);
 			ar.addAnimation(anim);
 
@@ -301,7 +301,7 @@ public class StargateRenderer extends MalisisRenderer
 					new BrightnessTransform(240, 32).forTicks(fadeTimer).movement(Transformation.SINUSOIDAL)
 					).delay(deployTimer + fadeTimer- rt).loop(-1);
 			//@formatter:on
-			anim = new Animation(shape.getFace("top").getParameters(), ct);
+			anim = new Animation<>(shape.getFace("top").getParameters(), ct);
 			ar.addAnimation(anim);
 		}
 	}
@@ -312,7 +312,7 @@ public class StargateRenderer extends MalisisRenderer
 		rpTopFace = new RenderParameters();
 		rpTopFace.alpha.set(0);
 		rpTopFace.icon.set(sgIconProvider.getPlatformIcon());
-		Animation anim = new Animation(rpTopFace, at);
+		Animation<?> anim = new Animation<>(rpTopFace, at);
 		ar.addAnimation(anim);
 
 		//@formatter:off
@@ -326,7 +326,7 @@ public class StargateRenderer extends MalisisRenderer
 		rpLavaFace.useEnvironmentBrightness.set(false);
 		rpLavaFace.alpha.set(0);
 		rpLavaFace.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.lava)));
-		anim = new Animation(rpLavaFace, pt);
+		anim = new Animation<>(rpLavaFace, pt);
 		ar.addAnimation(anim);
 	}
 
@@ -372,7 +372,7 @@ public class StargateRenderer extends MalisisRenderer
 	private void renderStargateTileEntity()
 	{
 		//set the timer for the animimation renderer. It calculates the elpasedTime
-		ar.setStartTick(((StargateTileEntity) tileEntity).placedTimer);
+		ar.setStartTick(tileEntity.placedTimer);
 
 		//enable blending because we have fading for the TopFace
 		enableBlending();

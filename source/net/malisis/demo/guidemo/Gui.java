@@ -74,9 +74,9 @@ public class Gui extends MalisisGui
 		window.setClipContent(false);
 
 		//get the first container
-		UIContainer tabCont1 = panel1();
+		UIContainer<?> tabCont1 = panel1();
 		//get the second container
-		UIContainer tabCont2 = panel2();
+		UIContainer<?> tabCont2 = panel2();
 
 		//create a panel to hold the containers
 		panel = new UIPanel(this, UIComponent.INHERITED, 140);
@@ -118,7 +118,7 @@ public class Gui extends MalisisGui
 
 	}
 
-	private UIContainer panel1()
+	private UIContainer<?> panel1()
 	{
 		//CheckBox
 		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this,
@@ -143,12 +143,12 @@ public class Gui extends MalisisGui
 		//tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		//Select
-		UISelect select = new UISelect(this, 100, Arrays.asList("Option 1", "Option 2", "Very ultra longer option 3", "Shorty",
+		UISelect<String> select = new UISelect<>(this, 100, Arrays.asList("Option 1", "Option 2", "Very ultra longer option 3", "Shorty",
 				"Moar options", "Even more", "Even Steven", "And a potato too"));
 		select.setPosition(0, 70);
 		select.setMaxExpandedWidth(120);
 		//select.maxDisplayedOptions(5);
-		select.select(2);
+		select.select("Option 2");
 		//select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, 0x664444, false);
 
 		//progress bar
@@ -165,7 +165,7 @@ public class Gui extends MalisisGui
 		btnR.setOffset(1, 0);
 
 		//Add all elements
-		UIContainer tabCont1 = new UIContainer(this);
+		UIContainer<?> tabCont1 = new UIContainer<>(this);
 		tabCont1.add(cb);
 		tabCont1.add(rbMC);
 		tabCont1.add(rbBS);
@@ -193,7 +193,7 @@ public class Gui extends MalisisGui
 		return tabCont1;
 	}
 
-	private UIContainer panel2()
+	private UIContainer<?> panel2()
 	{
 		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.diamond_axe)).setPosition(0, 0);
 		//Colored Label
@@ -253,7 +253,7 @@ public class Gui extends MalisisGui
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
 		//Add all elements
-		UIContainer tabCont2 = new UIContainer(this);
+		UIContainer<?> tabCont2 = new UIContainer<>(this);
 		tabCont2.add(img);
 		tabCont2.add(label1);
 		tabCont2.add(label2);
@@ -274,7 +274,7 @@ public class Gui extends MalisisGui
 	}
 
 	@Subscribe
-	public void onSliderChanged(ValueChange<UIComponent, Float> event)
+	public void onSliderChanged(ValueChange<?, Float> event)
 	{
 		if (!(event.getComponent() instanceof UISlider))
 			return;

@@ -32,13 +32,14 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 /**
  * @author Ordinastie
  *
  */
-public class CollisionBlockRenderer extends MalisisRenderer
+public class CollisionBlockRenderer extends MalisisRenderer<TileEntity>
 {
 	private Shape shape = new Cube();
 	private RenderParameters rp = new RenderParameters();

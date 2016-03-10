@@ -46,15 +46,15 @@ import net.minecraft.init.Blocks;
  * @author Ordinastie
  *
  */
-public class WaveRenderer extends MalisisRenderer
+public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 {
 	//Create the animation renderer
 	private AnimationRenderer ar = new AnimationRenderer();
 
 	//the transform that handles the movement of the vertexes
-	private Transformation mvt;
+	private ChainedTransformation mvt;
 	//the transform that handle the brightness of the vertexes
-	private Transformation br;
+	private ChainedTransformation br;
 
 	//shape used for the TESR
 	private Shape wave;

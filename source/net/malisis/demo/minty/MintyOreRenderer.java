@@ -6,10 +6,11 @@ import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.demo.minty.ArmoryOre.OreType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class MintyOreRenderer extends MalisisRenderer
+public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 {
 	private Shape shape;
 	private RenderParameters rp;

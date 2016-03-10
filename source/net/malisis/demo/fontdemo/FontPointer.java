@@ -62,7 +62,7 @@ public class FontPointer extends MalisisItem
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced)
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
 	{
 		tooltip.add("Right click to start font shape animation.");
 	}

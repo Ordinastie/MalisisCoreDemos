@@ -32,7 +32,7 @@ import net.malisis.core.renderer.font.MalisisFont;
  * @author Ordinastie
  *
  */
-public class SyncTeRenderer extends MalisisRenderer
+public class SyncTeRenderer extends MalisisRenderer<SyncTileEntity>
 {
 	@Override
 	public void render()
@@ -45,9 +45,9 @@ public class SyncTeRenderer extends MalisisRenderer
 		fro.fontScale = 0.25F;
 
 		//get the values from the TE
-		String label = ((SyncTileEntity) tileEntity).label;
-		int counter = ((SyncTileEntity) tileEntity).counter;
-		int color = ((SyncTileEntity) tileEntity).color;
+		String label = tileEntity.label;
+		int counter = tileEntity.counter;
+		int color = tileEntity.color;
 
 		//display the text with updated values on the client
 		String str = label + " : " + counter + " (#" + Integer.toHexString(color) + ")";

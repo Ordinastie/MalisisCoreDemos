@@ -51,7 +51,7 @@ public class CardGui extends MalisisGui
 		//add padding to width
 		UIWindow window = new UIWindow(this, UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT * 2);
 
-		UIContainer invCont = new UIContainer<>(this, "Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
+		UIContainer<?> invCont = new UIContainer<>(this, "Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
 		invCont.setPosition(0, 0, Anchor.CENTER);
 		MalisisInventory inv = inventoryContainer.getInventory(1);
 		for (int i = 0; i < inv.getSizeInventory(); i++)

@@ -50,7 +50,7 @@ import org.lwjgl.opengl.GL11;
  * @author Ordinastie
  *
  */
-public class ModelDemoRenderer extends MalisisRenderer
+public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 {
 	private AnimationRenderer ar = new AnimationRenderer();
 	private Shape cube;
@@ -103,7 +103,7 @@ public class ModelDemoRenderer extends MalisisRenderer
 		ParallelTransformation p = new ParallelTransformation(r, c).loop(-1);
 
 		//Add the animation to the animation renderer
-		ar.addAnimation(new Animation(antenna, p));
+		ar.addAnimation(new Animation<>(antenna, p));
 	}
 
 	@Override

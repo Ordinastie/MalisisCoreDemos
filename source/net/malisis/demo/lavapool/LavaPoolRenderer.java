@@ -45,7 +45,7 @@ import org.lwjgl.opengl.GL14;
  * @author Ordinastie
  *
  */
-public class LavaPoolRenderer extends MalisisRenderer
+public class LavaPoolRenderer extends MalisisRenderer<LavaPoolTileEntity>
 {
 	LavaPoolBlock block;
 	LavaPoolTileEntity tileEntity;
@@ -65,7 +65,7 @@ public class LavaPoolRenderer extends MalisisRenderer
 	{
 		int a = 155;
 		enableBlending();
-		tileEntity = (LavaPoolTileEntity) super.tileEntity;
+		tileEntity = super.tileEntity;
 		block = (LavaPoolBlock) super.block;
 		MultiBlock multiBlock = MultiBlockComponent.getMultiBlock(world, pos, blockState, itemStack);
 		multiBlock.setRotation(blockState);

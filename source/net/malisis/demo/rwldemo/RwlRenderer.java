@@ -40,6 +40,7 @@ import net.malisis.core.util.raytrace.RaytraceWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -53,7 +54,7 @@ import org.lwjgl.opengl.GL11;
  * @author Ordinastie
  *
  */
-public class RwlRenderer extends MalisisRenderer
+public class RwlRenderer extends MalisisRenderer<TileEntity>
 {
 	//current display mode : 0
 	private boolean rayTraceMode = false;

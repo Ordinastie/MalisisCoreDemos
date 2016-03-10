@@ -38,7 +38,7 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	//create the property from the enum
-	public static PropertyEnum ORE_TYPE = PropertyEnum.create("oreType", OreType.class);
+	public static PropertyEnum<OreType> ORE_TYPE = PropertyEnum.create("oreType", OreType.class);
 
 	public ArmoryOre()
 	{
@@ -75,7 +75,7 @@ public class ArmoryOre extends MalisisBlock
 	public int getMetaFromState(IBlockState state)
 	{
 		//meta -> state conversion : we use the enum value ordinal
-		return ((OreType) state.getValue(ORE_TYPE)).ordinal();
+		return state.getValue(ORE_TYPE).ordinal();
 	}
 
 	@Override

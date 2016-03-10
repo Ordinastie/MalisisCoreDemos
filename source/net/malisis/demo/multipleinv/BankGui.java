@@ -48,7 +48,7 @@ import com.google.common.eventbus.Subscribe;
  */
 public class BankGui extends MalisisGui
 {
-	private HashMap<CardSlot, UIContainer> slotCont = new HashMap<>();
+	private HashMap<CardSlot, UIContainer<?>> slotCont = new HashMap<>();
 
 	public BankGui(MalisisInventoryContainer container)
 	{
@@ -68,7 +68,7 @@ public class BankGui extends MalisisGui
 			UIPanel panel = new UIPanel(this, UIPlayerInventory.INVENTORY_WIDTH + 29, 62);
 			panel.setPosition(0, 10 + i++ * 65);
 
-			UIContainer uicont = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH, UIComponent.INHERITED);
+			UIContainer<?> uicont = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH, UIComponent.INHERITED);
 			uicont.setPosition(0, 0, Anchor.RIGHT);
 
 			UISlot uislot = new UISlot(this, slot);
@@ -94,7 +94,7 @@ public class BankGui extends MalisisGui
 	public void slotChanged(InventoryEvent.SlotChanged event)
 	{
 		CardSlot slot = (CardSlot) event.getSlot();
-		UIContainer uicont = slotCont.get(slot);
+		UIContainer<?> uicont = slotCont.get(slot);
 		uicont.removeAll();
 		MalisisInventory inv = slot.getCardInventory();
 		if (inv != null)

@@ -39,6 +39,7 @@ import net.malisis.core.util.EntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -49,7 +50,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
  * @author Ordinastie
  *
  */
-public class FontDemoRenderer extends MalisisRenderer
+public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 {
 	//The font that will be used
 	MalisisFont font;
@@ -107,7 +108,7 @@ public class FontDemoRenderer extends MalisisRenderer
 			ChainedTransformation chain = new ChainedTransformation(t, t2).delay(delay++ * 2);
 
 			//make the animation for the face (letter) and add it to the AnimationRenderer
-			ar.addAnimation(new Animation(f, chain));
+			ar.addAnimation(new Animation<>(f, chain));
 		}
 
 	}
