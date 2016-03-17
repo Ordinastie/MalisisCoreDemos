@@ -24,54 +24,30 @@
 
 package net.malisis.demo.components;
 
-import net.malisis.core.block.component.SlabComponent;
-import net.malisis.demo.IDemo;
+import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.DirectionalComponent;
+import net.malisis.core.block.component.PaneComponent;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
 /**
- * This demo show how to make a block that can have different directions.
+ * Only thing needed is for the block to add a {@link DirectionalComponent}.<br>
+ * The {@code MalisisBlock} will forward the required {@link Block} calls to the component.
  *
  * @author Ordinastie
  *
  */
-public class ComponentsDemo implements IDemo
+public class BlockPane extends MalisisBlock
 {
-	private BlockDir blockDir;
-	private BlockColor blockColor;
-	private BlockSlab blockSlab, blockDoubleSlab;
-	private BlockWall blockWall;
-	private BlockStairs blockStairs;
-	private BlockPower blockPower;
-	private BlockPane blockPane;
-
-	@Override
-	public void preInit()
+	public BlockPane()
 	{
-		//create and register the blocks
-		blockDir = new BlockDir();
-		blockDir.register();
+		//set usual properties
+		super(Material.wood);
+		setCreativeTab(MalisisDemos.tabDemos);
+		setName("blockPaneDemo");
+		setTexture(MalisisDemos.modid + ":blocks/paneBlock");
 
-		blockColor = new BlockColor();
-		blockColor.register();
-
-		blockSlab = new BlockSlab();
-		blockDoubleSlab = new BlockSlab();
-		new SlabComponent(blockSlab, blockDoubleSlab).register();
-
-		blockWall = new BlockWall();
-		blockWall.register();
-
-		blockStairs = new BlockStairs();
-		blockStairs.register();
-
-		blockPower = new BlockPower();
-		blockPower.register();
-
-		blockPane = new BlockPane();
-		blockPane.register();
+		addComponent(new PaneComponent());
 	}
-
-	@Override
-	public void init()
-	{}
-
 }
