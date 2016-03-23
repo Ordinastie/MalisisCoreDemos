@@ -25,6 +25,7 @@
 package net.malisis.demo.stargate;
 
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
@@ -37,12 +38,12 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@MalisisRendered(StargateRenderer.class)
+@MalisisRendered(block = StargateRenderer.class, item = DefaultRenderer.Block.class)
 public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 {
 
@@ -77,13 +78,13 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean isNormalCube()
+	public boolean isNormalCube(IBlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}

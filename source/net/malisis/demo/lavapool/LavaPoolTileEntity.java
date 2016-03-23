@@ -31,16 +31,17 @@ import java.util.Random;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.BlockPosUtils;
 import net.malisis.core.util.MBlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @author Ordinastie
@@ -61,7 +62,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 	{
 		this.active = active;
 		this.empty = !active;
-		worldObj.markBlockForUpdate(pos);;
+		IBlockState state = worldObj.getBlockState(pos);
+		worldObj.notifyBlockUpdate(pos, state, state, 3);
 	}
 
 	public boolean isActive()
@@ -128,7 +130,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		if (emptyable.size() == 0)
 		{
 			empty = false;
-			worldObj.markBlockForUpdate(pos);
+			IBlockState state = worldObj.getBlockState(pos);
+			worldObj.notifyBlockUpdate(pos, state, state, 3);
 			return;
 		}
 
@@ -136,7 +139,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		MBlockState state = new MBlockState(worldObj, pos);
 		lava.setAmount(worldObj, state, lava.getAmount(state) / 2);
 		lastPos = pos;
-		worldObj.markBlockForUpdate(pos);
+		IBlockState teState = worldObj.getBlockState(pos);
+		worldObj.notifyBlockUpdate(pos, teState, teState, 3);
 	}
 
 	public void fillAll()
@@ -145,7 +149,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		if (fillable.size() == 0)
 		{
 			active = false;
-			worldObj.markBlockForUpdate(pos);
+			IBlockState state = worldObj.getBlockState(pos);
+			worldObj.notifyBlockUpdate(pos, state, state, 3);
 			return;
 		}
 
@@ -182,11 +187,11 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new S35PacketUpdateTileEntity(pos, 0, nbt);
+		return new SPacketUpdateTileEntity(pos, 0, nbt);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
 	{
 		this.readFromNBT(packet.getNbtCompound());
 	}

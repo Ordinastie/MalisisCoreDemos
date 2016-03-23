@@ -95,7 +95,7 @@ public class LavaPoolRenderer extends MalisisRenderer<LavaPoolTileEntity>
 				GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 				GL14.glBlendColor(0, 0, 0, rp.alpha.get() / 255F);
 
-				blockRenderer.renderBlock(state.getBlockState(), state.getPos(), multiBlockAccess, wr);
+				blockRenderer.renderBlock(state.getBlockState(), state.getPos(), multiBlockAccess, buffer);
 
 				GL11.glPopMatrix();
 			}

@@ -1,7 +1,7 @@
 package net.malisis.demo.stargate;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class StargateTileEntity extends TileEntity
 {

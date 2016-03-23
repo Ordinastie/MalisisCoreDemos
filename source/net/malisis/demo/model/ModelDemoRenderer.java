@@ -35,7 +35,6 @@ import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.icon.IIconProvider;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
@@ -53,7 +52,6 @@ import org.lwjgl.opengl.GL11;
 public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 {
 	private AnimationRenderer ar = new AnimationRenderer();
-	private Shape cube;
 	private Shape socle;
 	private Shape antenna;
 	private IIconProvider socleIp;
@@ -75,8 +73,6 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 		//the identifiers are the one used in the model editor for the different groups or objects
 		socle = model.getShape("Socle");
 		antenna = model.getShape("Antenna");
-		//create the cube used for the item
-		cube = new Cube();
 
 		//create IIconProviders for the two parts
 		socleIp = new DefaultIconProvider(new VanillaIcon(Blocks.coal_block));
@@ -109,13 +105,6 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 	@Override
 	public void render()
 	{
-		if (renderType == RenderType.ITEM)
-		{
-			//draw
-			drawShape(cube);
-			return;
-		}
-
 		if (renderType == RenderType.BLOCK)
 		{
 			ar.setStartTime();
@@ -124,8 +113,6 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 
 		if (renderType == RenderType.TILE_ENTITY)
 		{
-			ar.animate();
-
 			//if the model is not made with quads only, draw polygons otherwise,
 			//the non animated part can (and should) be draw for BLOCK renderType
 			next(GL11.GL_POLYGON);
@@ -137,6 +124,7 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 
 			//draw the antenna with corresponding icon
 			antenna.resetState();
+			ar.animate();
 			rp.iconProvider.set(antennaIp);
 			drawShape(antenna, rp);
 		}

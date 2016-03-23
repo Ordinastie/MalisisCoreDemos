@@ -28,9 +28,10 @@ import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.util.MBlockState;
 import net.malisis.core.util.chunklistener.IBlockListener;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -50,7 +51,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 		setName("blockListener");
 		setHardness(2.0F);
 		setResistance(5.0F);
-		setStepSound(soundTypeWood);
+		setSoundType(SoundType.WOOD);
 		setTexture(MalisisDemos.modid + ":blocks/blocklistener");
 	}
 

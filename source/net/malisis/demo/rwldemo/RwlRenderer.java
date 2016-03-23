@@ -42,9 +42,9 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
@@ -80,8 +80,8 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 	{
 		//set necessary data for rayTracing
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-		Vec3 look = player.getLook(partialTick);
-		Vec3 pos = player.getPositionEyes(partialTick);
+		Vec3d look = player.getLook(partialTick);
+		Vec3d pos = player.getPositionEyes(partialTick);
 		start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
 
 		Ray ray = new Ray(start, new Vector(look));
@@ -91,11 +91,11 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 		end = rayTrace.getDestination();
 
 		//do the actual rayTracing
-		MovingObjectPosition mop = rayTrace.trace();
+		RayTraceResult result = rayTrace.trace();
 
 		//set the hit point if necessary
-		if (mop.typeOfHit == MovingObjectType.BLOCK)
-			hit = new Point(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord);
+		if (result.typeOfHit == RayTraceResult.Type.BLOCK)
+			hit = new Point(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
 		else
 			hit = null;
 
@@ -105,7 +105,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
 		//only render if the pointer is currently equipped
-		return EntityUtils.isEquipped(Minecraft.getMinecraft().thePlayer, RWLDemo.rwlPointer);
+		return EntityUtils.isEquipped(Minecraft.getMinecraft().thePlayer, RWLDemo.rwlPointer, EnumHand.MAIN_HAND);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 	private void renderBlockHighlight()
 	{
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-		MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+		RayTraceResult mop = Minecraft.getMinecraft().objectMouseOver;
 		pos = mop.getBlockPos();
 		blockState = world.getBlockState(pos);
 		set(world, blockState.getBlock(), pos, blockState);

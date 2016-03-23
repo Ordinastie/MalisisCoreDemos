@@ -25,10 +25,12 @@
 package net.malisis.demo.model;
 
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -36,7 +38,7 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-@MalisisRendered(ModelDemoRenderer.class)
+@MalisisRendered(block = ModelDemoRenderer.class, item = DefaultRenderer.Block.class)
 public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 {
 	protected ModelDemoBlock()
@@ -56,13 +58,13 @@ public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube()
+	public boolean isNormalCube(IBlockState state)
 	{
 		return false;
 	}

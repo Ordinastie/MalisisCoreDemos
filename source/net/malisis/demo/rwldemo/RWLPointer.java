@@ -29,6 +29,9 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 /**
@@ -46,15 +49,15 @@ public class RWLPointer extends MalisisItem
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
 	{
 		//renderer not accessible server-side
 		if (!world.isRemote)
-			return itemStack;
+			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
 
 		//switch between block information and RayTracing modes
 		RWLDemo.renderer.changeMode();
 
-		return itemStack;
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
 	}
 }

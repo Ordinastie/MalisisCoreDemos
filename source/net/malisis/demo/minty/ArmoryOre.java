@@ -7,14 +7,15 @@ import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.IMSerializable;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,7 +39,7 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	//create the property from the enum
-	public static PropertyEnum<OreType> ORE_TYPE = PropertyEnum.create("oreType", OreType.class);
+	public static PropertyEnum<OreType> ORE_TYPE = PropertyEnum.create("oretype", OreType.class);
 
 	public ArmoryOre()
 	{
@@ -48,7 +49,7 @@ public class ArmoryOre extends MalisisBlock
 		setHardness(1f);
 		setResistance(3f);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setStepSound(Block.soundTypeGravel);
+		setSoundType(SoundType.GROUND);
 	}
 
 	@Override
@@ -65,10 +66,10 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	@Override
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
 		//default blockstate has one property
-		return new BlockState(this, ORE_TYPE);
+		return new BlockStateContainer(this, ORE_TYPE);
 	}
 
 	@Override
@@ -86,16 +87,16 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canRenderInLayer(EnumWorldBlockLayer layer)
+	public boolean canRenderInLayer(BlockRenderLayer layer)
 	{
 		//the block has 2 layers : the overlay has transparent parts to it needs to be drawn on the CUTOUT layer
-		return layer == EnumWorldBlockLayer.SOLID || layer == EnumWorldBlockLayer.CUTOUT;
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

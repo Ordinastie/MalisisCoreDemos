@@ -27,10 +27,12 @@ package net.malisis.demo.connected;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.icon.provider.ConnectedIconsProvider;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,7 +48,7 @@ public class ConnectedBlock extends MalisisBlock
 		//set the usual properties
 		super(Material.glass);
 		setHardness(0.6F);
-		setStepSound(soundTypeGlass);
+		setSoundType(SoundType.GLASS);
 		setName("connected_block");
 		setCreativeTab(MalisisDemos.tabDemos);
 	}
@@ -62,7 +64,7 @@ public class ConnectedBlock extends MalisisBlock
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		//Block is glass, so make it non opaque
 		return false;
@@ -70,22 +72,22 @@ public class ConnectedBlock extends MalisisBlock
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumWorldBlockLayer getBlockLayer()
+	public BlockRenderLayer getBlockLayer()
 	{
-		return EnumWorldBlockLayer.CUTOUT;
+		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
-	public boolean isFullCube()
+	public boolean isFullCube(IBlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side)
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
 		//block is non opaque but we still want to hide faces between two of this block
-		return world.getBlockState(pos).getBlock() != world.getBlockState(pos.offset(side.getOpposite())).getBlock();
+		IBlockState neighbor = world.getBlockState(pos.offset(side));
+		return neighbor.getBlock() == this ? false : super.shouldSideBeRendered(state, world, pos, side);
 	}
 }

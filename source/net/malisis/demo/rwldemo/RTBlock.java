@@ -31,9 +31,10 @@ import net.malisis.core.util.AABBUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
@@ -54,7 +55,7 @@ public class RTBlock extends MalisisBlock
 	}
 
 	@Override
-	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, BoundingBoxType type)
+	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, IBlockState state, BoundingBoxType type)
 	{
 		//for SELECTION, return a 0->1 box
 		if (type == BoundingBoxType.SELECTION)
@@ -74,7 +75,7 @@ public class RTBlock extends MalisisBlock
 	}
 
 	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}

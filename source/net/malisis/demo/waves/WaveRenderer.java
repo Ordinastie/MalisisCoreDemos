@@ -37,7 +37,6 @@ import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
-import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
 import net.minecraft.init.Blocks;
@@ -58,8 +57,6 @@ public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 
 	//shape used for the TESR
 	private Shape wave;
-	//shape used for inventory
-	private Shape cube;
 	//RenderParameters
 	private RenderParameters rp;
 
@@ -71,9 +68,8 @@ public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 	@Override
 	protected void initialize()
 	{
-		//creates the shapes
+		//creates the shape
 		wave = new Shape(new TopFace());
-		cube = new Cube();
 		//enable the mergedVertexes so we can easily manipulate them with the animations
 		wave.enableMergedVertexes();
 
@@ -103,13 +99,6 @@ public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 	@Override
 	public void render()
 	{
-		if (renderType == RenderType.ITEM)
-		{
-			//draw a simple cube for the item
-			drawShape(cube);
-			return;
-		}
-
 		if (renderType == RenderType.BLOCK)
 		{
 			ar.setStartTime();

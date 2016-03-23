@@ -361,12 +361,6 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 			//recall initialize() (for debug purpose)
 			initialize();
 		}
-		else if (renderType == RenderType.ITEM)
-		{
-			//draw standard cube with default renderparameters
-			cube.resetState();
-			drawShape(new Cube());
-		}
 	}
 
 	private void renderStargateTileEntity()

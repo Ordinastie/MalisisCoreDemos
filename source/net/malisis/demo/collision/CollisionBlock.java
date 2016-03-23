@@ -27,21 +27,24 @@ package net.malisis.demo.collision;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
+import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.chunkcollision.IChunkCollidable;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
  * @author Ordinastie
  *
  */
-@MalisisRendered(CollisionBlockRenderer.class)
+@MalisisRendered(block = CollisionBlockRenderer.class, item = DefaultRenderer.Block.class)
 public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 {
 
@@ -53,14 +56,14 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 		setName("collisionBlock");
 		setHardness(2.0F);
 		setResistance(5.0F);
-		setStepSound(soundTypeWood);
+		setSoundType(SoundType.WOOD);
 		setTexture(MalisisDemos.modid + ":blocks/collision");
 
 		addComponent(new DirectionalComponent());
 	}
 
 	@Override
-	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, BoundingBoxType type)
+	public AxisAlignedBB[] getBoundingBoxes(IBlockAccess world, BlockPos pos, IBlockState state, BoundingBoxType type)
 	{
 		//make the selection box encompass the whole stairs
 		if (type == BoundingBoxType.SELECTION)
@@ -94,9 +97,9 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	}
 
 	@Override
-	public boolean canRenderInLayer(EnumWorldBlockLayer layer)
+	public boolean canRenderInLayer(BlockRenderLayer layer)
 	{
 		//we will render the stairs translucent
-		return layer == EnumWorldBlockLayer.TRANSLUCENT;
+		return layer == BlockRenderLayer.TRANSLUCENT;
 	}
 }

@@ -32,13 +32,16 @@ import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.core.util.multiblock.PatternMultiBlock;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -55,7 +58,7 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 
 		setName("lavapool");
 		setHardness(2F);
-		setStepSound(soundTypeGlass);
+		setSoundType(SoundType.GLASS);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(Blocks.command_block);
 
@@ -84,7 +87,7 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		LavaPoolTileEntity te = TileEntityUtils.getTileEntity(LavaPoolTileEntity.class, world, pos);
 		te.startAnim = true;

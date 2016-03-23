@@ -65,7 +65,7 @@ public class SidedGui extends MalisisGui
 		UIInventory contStone = new UIInventory(this, tileEntity.stoneInventory, 4).setPosition(0, 40, Anchor.RIGHT);
 
 		//create the progress bar
-		progressBar = new ProgressBar(this).setPosition(0, 30, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
+		progressBar = new ProgressBar(this).setPosition(0, 32, Anchor.CENTER).setSize(contTriage.getWidth(), 5);
 
 		//create the player inventory container
 		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
@@ -113,7 +113,7 @@ public class SidedGui extends MalisisGui
 		{
 			//draw a wire frame square that will be the contour for the component
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			renderer.next(GL11.GL_LINE_STRIP);
+			renderer.next(GL11.GL_LINE_LOOP);
 			rp.colorMultiplier.set(0x444444);
 			renderer.drawShape(shape, rp);
 			renderer.next(GL11.GL_QUADS);

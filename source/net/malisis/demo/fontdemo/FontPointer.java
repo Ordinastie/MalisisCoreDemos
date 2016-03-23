@@ -31,6 +31,9 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 /**
@@ -49,16 +52,16 @@ public class FontPointer extends MalisisItem
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
 	{
 		//renderer not accessible server-side
 		if (!world.isRemote)
-			return itemStack;
+			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
 
 		//tell the renderer to start the animation for the shape rendered text
 		FontDemo.renderer.animate();
 
-		return itemStack;
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
 	}
 
 	@Override

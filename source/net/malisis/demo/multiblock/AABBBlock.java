@@ -31,10 +31,11 @@ import net.malisis.core.renderer.icon.provider.MegaTextureIconProvider;
 import net.malisis.core.util.multiblock.AABBMultiBlock;
 import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,7 +50,7 @@ public class AABBBlock extends MalisisBlock
 		//sets the usual properties
 		super(Material.wood);
 		setHardness(1.0F);
-		setStepSound(soundTypeWood);
+		setSoundType(SoundType.WOOD);
 		setName("aabbMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 

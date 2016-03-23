@@ -40,8 +40,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -121,8 +121,8 @@ public class Gui extends MalisisGui
 	private UIContainer<?> panel1()
 	{
 		//CheckBox
-		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this,
-				EnumChatFormatting.AQUA + "with delayed a tooltip!", 5));
+		cb = new UICheckBox(this, "CheckBox with label")
+				.setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
@@ -197,8 +197,8 @@ public class Gui extends MalisisGui
 	{
 		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.diamond_axe)).setPosition(0, 0);
 		//Colored Label
-		UILabel label1 = new UILabel(this, EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + "Colored label!")
-				.setPosition(20, 0);
+		UILabel label1 = new UILabel(this, TextFormatting.UNDERLINE.toString() + TextFormatting.YELLOW + "Colored label!").setPosition(20,
+				0);
 
 		//Smaller label with FontRenderOptions
 		FontRenderOptions fro = new FontRenderOptions();
@@ -233,21 +233,21 @@ public class Gui extends MalisisGui
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
 		ipsum.setSize(150, 0);
 		ipsum.setText("Contrairement à une opinion répandue, "
-				+ EnumChatFormatting.DARK_GREEN
+				+ TextFormatting.DARK_GREEN
 				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
-				+ EnumChatFormatting.RESET
+				+ TextFormatting.RESET
 				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
-				+ EnumChatFormatting.AQUA
+				+ TextFormatting.AQUA
 				+ " datant de 45 av. J.-C., le rendant"
-				+ EnumChatFormatting.RESET
+				+ TextFormatting.RESET
 				+ " vieux de 2000 ans."
-				+ EnumChatFormatting.BLUE
+				+ TextFormatting.BLUE
 				+ "Un professeur du "
-				+ EnumChatFormatting.ITALIC
+				+ TextFormatting.ITALIC
 				+ "Hampden-Sydney College"
-				+ EnumChatFormatting.BLUE
+				+ TextFormatting.BLUE
 				+ ", en Virginie, s'est intéressé"
-				+ EnumChatFormatting.RESET
+				+ TextFormatting.RESET
 				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 		ipsum.setFontRenderOptions(fro);
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);

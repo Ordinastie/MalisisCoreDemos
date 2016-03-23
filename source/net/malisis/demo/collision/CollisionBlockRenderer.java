@@ -33,7 +33,7 @@ import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author Ordinastie

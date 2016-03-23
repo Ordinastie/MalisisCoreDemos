@@ -29,13 +29,16 @@ import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -48,14 +51,14 @@ public class Bank extends MalisisBlock implements ITileEntityProvider
 	{
 		super(Material.iron);
 		setHardness(1);
-		setStepSound(soundTypeAnvil);
+		setSoundType(SoundType.ANVIL);
 		setName("bankdemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(MalisisDemos.modid + ":blocks/bankdemo");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		//don't do anything on the client
 		if (world.isRemote)
@@ -69,7 +72,7 @@ public class Bank extends MalisisBlock implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new BankTileEntity();
 	}

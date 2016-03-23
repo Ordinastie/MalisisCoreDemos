@@ -1,13 +1,17 @@
 package net.malisis.demo.minty;
 
+import javax.vecmath.Matrix4f;
+
+import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.demo.minty.ArmoryOre.OreType;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class MintyOreRenderer extends MalisisRenderer<TileEntity>
@@ -25,6 +29,12 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 	}
 
 	@Override
+	public Matrix4f getTransform(TransformType tranformType)
+	{
+		return DefaultRenderer.block.getTransform(tranformType);
+	}
+
+	@Override
 	public void render()
 	{
 		//when reaching this method, everything is already set up for rendering :
@@ -36,13 +46,13 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 		if (renderType == RenderType.ITEM)
 			oreType = ((ItemBlockArmoryOre) itemStack.getItem()).getOreType(itemStack);
 		if (renderType == RenderType.BLOCK)
-			oreType = (OreType) blockState.getValue(ArmoryOre.ORE_TYPE);
+			oreType = blockState.getValue(ArmoryOre.ORE_TYPE);
 
 		//Note : rp is RenderParameters and hold all the parameters available to tweak the rendering
 		//reset the parameters so you don't use unwanted bleeding data
 		rp.reset();
 
-		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID)
+		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.SOLID)
 		{
 			((ArmoryOreIconProvider) block.getIconProvider()).setOverlay(false);
 			//titanium doesn't have its own brightness
@@ -61,7 +71,7 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 			drawShape(shape, rp);
 		}
 
-		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.CUTOUT)
+		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT)
 		{
 			//reset the state to its original state because rendering may alter the shape
 			shape.resetState();

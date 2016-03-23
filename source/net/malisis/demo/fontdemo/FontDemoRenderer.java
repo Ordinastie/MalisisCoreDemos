@@ -40,9 +40,9 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
@@ -74,7 +74,8 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
 		//render only if not further away than 64 blocks away from origin of the world
-		return Minecraft.getMinecraft().thePlayer.getPosition().distanceSq(0, 0, 0) < 4096;
+		//return Minecraft.getMinecraft().thePlayer.getPosition().distanceSq(0, 0, 0) < 4096;
+		return false;
 	}
 
 	private void loadFont()
@@ -145,9 +146,9 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		float fy = 3.5F;
 		float fz = 0;
 
-		//some text with EnumChatFormatting inside
-		String str = "Just an " + EnumChatFormatting.GOLD + "example with " + EnumChatFormatting.RED + "custom color"
-				+ EnumChatFormatting.RESET + " and reset after";
+		//some text with TextFormatting inside
+		String str = "Just an " + TextFormatting.GOLD + "example with " + TextFormatting.RED + "custom color" + TextFormatting.RESET
+				+ " and reset after";
 		//render the text at the position with the options
 		font.render(this, str, fx, fy, fz, fro);
 
@@ -161,12 +162,12 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		//some "dynamic text"
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		BlockPos p = player.getPosition();
-		str = "Player position : " + EnumChatFormatting.DARK_AQUA + p.getX() + ", " + p.getY() + ", " + p.getZ();
+		str = "Player position : " + TextFormatting.DARK_AQUA + p.getX() + ", " + p.getY() + ", " + p.getZ();
 		//render the text at the position with the options
 		font.render(this, str, fx, fy, fz, fro);
 		fy -= 0.3F;
-		str = "Facing : " + EnumChatFormatting.DARK_AQUA + EntityUtils.getEntityFacing(player) + " ("
-				+ EntityUtils.getEntityRotation(player) + ")";
+		str = "Facing : " + TextFormatting.DARK_AQUA + EntityUtils.getEntityFacing(player) + " (" + EntityUtils.getEntityRotation(player)
+				+ ")";
 		font.render(this, str, fx, fy, fz, fro);
 
 	}

@@ -31,11 +31,12 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @author Ordinastie
@@ -48,7 +49,7 @@ public class PatternBlock extends MalisisBlock
 		//sets the usual properties
 		super(Material.wood);
 		setHardness(1.0F);
-		setStepSound(soundTypeWood);
+		setSoundType(SoundType.WOOD);
 		setName("patternMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		setTexture(Blocks.gold_block);
