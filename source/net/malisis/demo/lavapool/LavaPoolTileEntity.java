@@ -31,7 +31,7 @@ import java.util.Random;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.BlockPosUtils;
 import net.malisis.core.util.MBlockState;
-import net.minecraft.block.state.IBlockState;
+import net.malisis.core.util.TileEntityUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -62,8 +62,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 	{
 		this.active = active;
 		this.empty = !active;
-		IBlockState state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
+		TileEntityUtils.notifyUpdate(this);
 	}
 
 	public boolean isActive()
@@ -130,8 +129,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		if (emptyable.size() == 0)
 		{
 			empty = false;
-			IBlockState state = worldObj.getBlockState(pos);
-			worldObj.notifyBlockUpdate(pos, state, state, 3);
+			TileEntityUtils.notifyUpdate(this);
 			return;
 		}
 
@@ -139,8 +137,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		MBlockState state = new MBlockState(worldObj, pos);
 		lava.setAmount(worldObj, state, lava.getAmount(state) / 2);
 		lastPos = pos;
-		IBlockState teState = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, teState, teState, 3);
+		TileEntityUtils.notifyUpdate(this);
 	}
 
 	public void fillAll()
@@ -149,8 +146,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		if (fillable.size() == 0)
 		{
 			active = false;
-			IBlockState state = worldObj.getBlockState(pos);
-			worldObj.notifyBlockUpdate(pos, state, state, 3);
+			TileEntityUtils.notifyUpdate(this);
 			return;
 		}
 
