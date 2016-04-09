@@ -65,4 +65,10 @@ public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.Or
 
 		return super.getIcon(oreType);
 	}
+
+	public static ArmoryOreIconProvider get()
+	{
+		return new ArmoryOreIconProvider();
+
+	}
 }

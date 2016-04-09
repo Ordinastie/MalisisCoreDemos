@@ -2,6 +2,7 @@ package net.malisis.demo.minty;
 
 import java.util.List;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.MalisisRendered;
 import net.malisis.core.util.IMSerializable;
@@ -50,13 +51,9 @@ public class ArmoryOre extends MalisisBlock
 		setResistance(3f);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setSoundType(SoundType.GROUND);
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		iconProvider = new ArmoryOreIconProvider();
+		if (MalisisCore.isClient())
+			addComponent(ArmoryOreIconProvider.get());
 	}
 
 	@Override

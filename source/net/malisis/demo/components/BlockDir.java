@@ -24,14 +24,16 @@
 
 package net.malisis.demo.components;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
-import net.malisis.core.renderer.icon.provider.SidesIconProvider;
+import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.provider.IIconProvider;
+import net.malisis.core.renderer.icon.provider.IconProviderBuilder;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Only thing needed is for the block to add a {@link DirectionalComponent}.<br>
@@ -50,17 +52,18 @@ public class BlockDir extends MalisisBlock
 		setName("blockDirDemo");
 
 		addComponent(new DirectionalComponent());
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		String prefix = MalisisDemos.modid + ":blocks/dirblock_";
-		String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
-				prefix + "right", };
+		if (MalisisCore.isClient())
+		{
 
-		//create the iconProvider
-		iconProvider = new SidesIconProvider(names[0], names);
+			String prefix = MalisisDemos.modid + ":blocks/dirblock_";
+			String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
+					prefix + "right", };
+			IconProviderBuilder builder = IIconProvider.create(MalisisIcon.from(names[1]));
+			for (int i = 0; i < 6; i++)
+				builder.withSide(EnumFacing.getFront(i), MalisisIcon.from(names[i]));
+			//create the iconProvider
+			addComponent(builder.build());
+		}
 	}
 }

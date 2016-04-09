@@ -24,6 +24,7 @@
 
 package net.malisis.demo.stargate;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRendered;
@@ -34,10 +35,10 @@ import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,13 +53,9 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 		super(Material.iron);
 		setName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		iconProvider = new SgIconProvider();
+		if (MalisisCore.isClient())
+			addComponent(SgIconProvider.get());
 	}
 
 	@Override
@@ -94,9 +91,15 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	public static class SgIconProvider implements IBlockIconProvider
 	{
-		private MalisisIcon defaultIcon = new MalisisIcon(MalisisDemos.modid + ":blocks/stargate");
-		private MalisisIcon platform = new MalisisIcon(MalisisDemos.modid + ":blocks/sgplatform");
-		private MalisisIcon platformSide = new MalisisIcon(MalisisDemos.modid + ":blocks/sgplatformside");
+		private MalisisIcon defaultIcon = MalisisIcon.from(MalisisDemos.modid + ":blocks/stargate");
+		private MalisisIcon platform = MalisisIcon.from(MalisisDemos.modid + ":blocks/sgplatform");
+		private MalisisIcon platformSide = MalisisIcon.from(MalisisDemos.modid + ":blocks/sgplatformside");
+
+		@Override
+		public MalisisIcon getIcon(IBlockState state, EnumFacing side)
+		{
+			return defaultIcon;
+		}
 
 		@Override
 		public MalisisIcon getIcon()
@@ -114,12 +117,9 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 			return platformSide;
 		}
 
-		@Override
-		public void registerIcons(TextureMap map)
+		public static SgIconProvider get()
 		{
-			defaultIcon.register(map);
-			platform.register(map);
-			platformSide.register(map);
+			return new SgIconProvider();
 		}
 	}
 

@@ -24,17 +24,16 @@
 
 package net.malisis.demo.components;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.block.component.PowerComponent;
 import net.malisis.core.block.component.PowerComponent.Type;
 import net.malisis.core.renderer.icon.MalisisIcon;
-import net.malisis.core.renderer.icon.provider.FlexibleBlockIconProvider;
+import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -51,17 +50,14 @@ public class BlockPower extends MalisisBlock
 
 		addComponent(new DirectionalComponent());
 		addComponent(new PowerComponent(Type.RIGHT_CLICK));
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		MalisisIcon icon = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower");
-		MalisisIcon iconOn = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_on");
-		MalisisIcon iconOff = new MalisisIcon(MalisisDemos.modid + ":blocks/blockPower_off");
+		if (MalisisCore.isClient())
+		{
+			MalisisIcon icon = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower");
+			MalisisIcon iconOn = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower_on");
+			MalisisIcon iconOff = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower_off");
 
-		iconProvider = new FlexibleBlockIconProvider(this, icon,
-				(state, side) -> side == EnumFacing.SOUTH ? (PowerComponent.isPowered(state) ? iconOn : iconOff) : icon);
+			addComponent((IBlockIconProvider) (state, side) -> side == EnumFacing.SOUTH ? (PowerComponent.isPowered(state) ? iconOn : iconOff) : icon);
+		}
 	}
 }

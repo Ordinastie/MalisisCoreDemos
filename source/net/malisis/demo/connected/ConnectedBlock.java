@@ -24,8 +24,10 @@
 
 package net.malisis.demo.connected;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.provider.ConnectedIconsProvider;
+import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -51,16 +53,12 @@ public class ConnectedBlock extends MalisisBlock
 		setSoundType(SoundType.GLASS);
 		setName("connected_block");
 		setCreativeTab(MalisisDemos.tabDemos);
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
 		//we just need to create a ConnectedIconsProvider
 		//the textures, however, need to have a predefined pattern split into 2 files.
 		//Both files will be automatically registered and stitched on the block texture sheet.
-		iconProvider = new ConnectedIconsProvider(MalisisDemos.modid + ":blocks/demo_glass_connected");
+		if (MalisisCore.isClient())
+			addComponent(IIconProvider.create(MalisisIcon.from(MalisisDemos.modid + ":blocks/demo_glass_connected")).connected().build());
 	}
 
 	@Override

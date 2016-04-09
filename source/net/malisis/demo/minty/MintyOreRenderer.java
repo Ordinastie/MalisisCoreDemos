@@ -2,6 +2,7 @@ package net.malisis.demo.minty;
 
 import javax.vecmath.Matrix4f;
 
+import net.malisis.core.block.IComponent;
 import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
@@ -52,9 +53,10 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 		//reset the parameters so you don't use unwanted bleeding data
 		rp.reset();
 
+		ArmoryOreIconProvider provider = IComponent.getComponent(ArmoryOreIconProvider.class, block);
 		if (renderType == RenderType.ITEM || MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.SOLID)
 		{
-			((ArmoryOreIconProvider) block.getIconProvider()).setOverlay(false);
+			provider.setOverlay(false);
 			//titanium doesn't have its own brightness
 			if (oreType != OreType.Titanium)
 			{
@@ -78,7 +80,7 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 			//reset parameters to their defaults so the brightness of this layer will be calculated
 			rp.reset();
 			//set the icon provider to use overlays (taken from directy from the OreType)
-			((ArmoryOreIconProvider) block.getIconProvider()).setOverlay(true);
+			provider.setOverlay(true);
 			//draw second layer
 			drawShape(shape, rp);
 		}

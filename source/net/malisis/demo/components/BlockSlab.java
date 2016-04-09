@@ -24,13 +24,13 @@
 
 package net.malisis.demo.components;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.provider.SidesIconProvider;
+import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -43,15 +43,12 @@ public class BlockSlab extends MalisisBlock
 		super(Material.ground);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockSlabDemo");
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		SidesIconProvider iconProvider = new SidesIconProvider(MalisisDemos.modid + ":blocks/slabBlock_side");
-		iconProvider.setSideIcon(EnumFacing.UP, MalisisDemos.modid + ":blocks/slabBlock");
-
-		this.iconProvider = iconProvider;
+		if (MalisisCore.isClient())
+		{
+			MalisisIcon icon = MalisisIcon.from(MalisisDemos.modid + ":blocks/slabBlock");
+			MalisisIcon sides = MalisisIcon.from(MalisisDemos.modid + ":blocks/slabBlock_side");
+			addComponent(IIconProvider.create(sides).withSide(EnumFacing.UP, icon).build());
+		}
 	}
 }

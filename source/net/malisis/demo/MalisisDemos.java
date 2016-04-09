@@ -46,6 +46,7 @@ import net.malisis.demo.sidedinvdemo.SidedInvDemo;
 import net.malisis.demo.stargate.Stargate;
 import net.malisis.demo.syncdemo.SyncDemo;
 import net.malisis.demo.tabinv.TabInv;
+import net.malisis.demo.test.TestDemo;
 import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -104,6 +105,8 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new FontDemo());
 		demos.add(new LavaPoolDemo());
 		demos.add(new SyncDemo());
+
+		demos.add(new TestDemo());
 	}
 
 	//#region IMalisisMod

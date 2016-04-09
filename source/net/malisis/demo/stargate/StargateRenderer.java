@@ -2,6 +2,7 @@ package net.malisis.demo.stargate;
 
 import java.util.List;
 
+import net.malisis.core.block.IComponent;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
@@ -20,8 +21,7 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.DefaultIconProvider;
+import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.stargate.StargateBlock.SgIconProvider;
 import net.minecraft.init.Blocks;
@@ -67,7 +67,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 	@Override
 	protected void initialize()
 	{
-		sgIconProvider = (SgIconProvider) Stargate.sgBlock.getIconProvider();
+		sgIconProvider = IComponent.getComponent(SgIconProvider.class, Stargate.sgBlock);
 
 		//build the basic cube for inventory rendering
 		cube = new Cube();
@@ -229,7 +229,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 		rpFaceArch.calculateBrightness.set(false);
 		rpFaceArch.useEnvironmentBrightness.set(false);
 		rpFaceArch.brightness.set(32);
-		rpFaceArch.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.diamond_block)));
+		rpFaceArch.icon.set(MalisisIcon.from(Blocks.diamond_block));
 
 		// create the shape
 		Shape base = new Cube();
@@ -325,7 +325,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 		rpLavaFace.calculateBrightness.set(false);
 		rpLavaFace.useEnvironmentBrightness.set(false);
 		rpLavaFace.alpha.set(0);
-		rpLavaFace.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.lava)));
+		rpLavaFace.icon.set(MalisisIcon.from(Blocks.lava));
 		anim = new Animation<>(rpLavaFace, pt);
 		ar.addAnimation(anim);
 	}
@@ -334,7 +334,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 	private void createFloatingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rpFaceArch.iconProvider.set(new DefaultIconProvider(new VanillaIcon(Blocks.gold_block)));
+		rpFaceArch.icon.set(MalisisIcon.from(Blocks.gold_block));
 		rp.useEnvironmentBrightness.set(false);
 		rp.brightness.set(Vertex.BRIGHTNESS_MAX);
 		rp.alpha.set(175);

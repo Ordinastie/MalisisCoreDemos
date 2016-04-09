@@ -24,20 +24,14 @@
 
 package net.malisis.demo.multiblock;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.MalisisIcon;
-import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.core.renderer.icon.provider.MegaTextureIconProvider;
 import net.malisis.core.util.multiblock.AABBMultiBlock;
 import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
@@ -60,14 +54,12 @@ public class AABBBlock extends MalisisBlock
 
 		//add the component
 		addComponent(new MultiBlockComponent(multiBlock));
-	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void createIconProvider(Object object)
-	{
-		MegaTextureIconProvider ip = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
-		ip.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
-		this.iconProvider = ip;
+		if (MalisisCore.isClient())
+		{
+			//			MegaTextureIconProvider ip = new MegaTextureIconProvider(new VanillaIcon(Blocks.obsidian));
+			//			ip.setMegaTexture(EnumFacing.SOUTH, new MalisisIcon(MalisisDemos.modid + ":blocks/mb"), 4);
+			//			addComponent(ip);
+		}
 	}
 }
