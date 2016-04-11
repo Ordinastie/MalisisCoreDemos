@@ -47,7 +47,7 @@ public class BlockDir extends MalisisBlock
 	public BlockDir()
 	{
 		//set usual properties
-		super(Material.clay);
+		super(Material.CLAY);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockDirDemo");
 

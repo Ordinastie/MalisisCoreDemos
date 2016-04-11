@@ -48,7 +48,7 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 	public SyncBlock()
 	{
 		//set usual properties
-		super(Material.wood);
+		super(Material.WOOD);
 		setName("syncblock");
 		setHardness(2F);
 		setSoundType(SoundType.WOOD);

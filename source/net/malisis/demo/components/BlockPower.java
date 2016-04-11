@@ -44,7 +44,7 @@ public class BlockPower extends MalisisBlock
 	public BlockPower()
 	{
 		//set usual properties
-		super(Material.clay);
+		super(Material.CLAY);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockPower");
 

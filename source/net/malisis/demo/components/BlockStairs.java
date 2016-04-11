@@ -37,7 +37,7 @@ public class BlockStairs extends MalisisBlock
 {
 	public BlockStairs()
 	{
-		super(Material.ground);
+		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockStairs");
 		setTexture(MalisisDemos.modid + ":blocks/stairsBlock");

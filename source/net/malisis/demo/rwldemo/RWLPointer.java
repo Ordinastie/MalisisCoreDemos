@@ -45,7 +45,7 @@ public class RWLPointer extends MalisisItem
 		setName("rwl_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//use the wooden sword icon
-		setTexture(Items.wooden_sword);
+		setTexture(Items.WOODEN_SWORD);
 	}
 
 	@Override

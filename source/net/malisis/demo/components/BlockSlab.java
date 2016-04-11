@@ -40,7 +40,7 @@ public class BlockSlab extends MalisisBlock
 {
 	public BlockSlab()
 	{
-		super(Material.ground);
+		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockSlabDemo");
 

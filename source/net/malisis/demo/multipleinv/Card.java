@@ -52,7 +52,7 @@ public class Card extends MalisisItem implements IDeferredInventoryProvider<Item
 	{
 		setName("demoCard");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTexture(Items.map);
+		setTexture(Items.MAP);
 	}
 
 	@Override

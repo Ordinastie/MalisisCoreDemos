@@ -34,6 +34,7 @@ import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
@@ -121,8 +122,7 @@ public class Gui extends MalisisGui
 	private UIContainer<?> panel1()
 	{
 		//CheckBox
-		cb = new UICheckBox(this, "CheckBox with label")
-				.setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
+		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
@@ -143,8 +143,14 @@ public class Gui extends MalisisGui
 		//tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		//Select
-		UISelect<String> select = new UISelect<>(this, 100, Arrays.asList("Option 1", "Option 2", "Very ultra longer option 3", "Shorty",
-				"Moar options", "Even more", "Even Steven", "And a potato too"));
+		UISelect<String> select = new UISelect<>(this, 100, Arrays.asList("Option 1",
+				"Option 2",
+				"Very ultra longer option 3",
+				"Shorty",
+				"Moar options",
+				"Even more",
+				"Even Steven",
+				"And a potato too"));
 		select.setPosition(0, 70);
 		select.setMaxExpandedWidth(120);
 		//select.maxDisplayedOptions(5);
@@ -152,7 +158,7 @@ public class Gui extends MalisisGui
 		//select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, 0x664444, false);
 
 		//progress bar
-		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, new VanillaIcon(Items.iron_sword), new VanillaIcon(Items.diamond_sword));
+		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, Icon.from(Items.IRON_SWORD), Icon.from(Items.DIAMOND_PICKAXE));
 		bar.setPosition(-30, 40, Anchor.RIGHT);
 		bar.setVertical();
 
@@ -182,8 +188,8 @@ public class Gui extends MalisisGui
 
 		//Create 5 buttons with itemStack as images
 		int i = 0;
-		for (Item item : new Item[] { Items.cooked_porkchop, Items.cooked_beef, Items.cooked_chicken, Items.baked_potato,
-				Item.getItemFromBlock(Blocks.glass_pane) })
+		for (Item item : new Item[] { Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_MUTTON, Items.COOKED_CHICKEN,
+				Item.getItemFromBlock(Blocks.GLASS_PANE) })
 		{
 			UIImage img = new UIImage(this, new ItemStack(item));
 			UIButton btnImage = new UIButton(this, img).setPosition(0, i++ * 19, Anchor.RIGHT);
@@ -195,7 +201,7 @@ public class Gui extends MalisisGui
 
 	private UIContainer<?> panel2()
 	{
-		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.diamond_axe)).setPosition(0, 0);
+		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.DIAMOND_HORSE_ARMOR)).setPosition(0, 0);
 		//Colored Label
 		UILabel label1 = new UILabel(this, TextFormatting.UNDERLINE.toString() + TextFormatting.YELLOW + "Colored label!").setPosition(20,
 				0);

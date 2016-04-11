@@ -48,7 +48,7 @@ public class ConnectedBlock extends MalisisBlock
 	public ConnectedBlock()
 	{
 		//set the usual properties
-		super(Material.glass);
+		super(Material.GLASS);
 		setHardness(0.6F);
 		setSoundType(SoundType.GLASS);
 		setName("connected_block");

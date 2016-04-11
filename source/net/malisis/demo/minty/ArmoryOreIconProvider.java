@@ -40,7 +40,7 @@ import net.minecraft.init.Blocks;
  */
 public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.OreType>
 {
-	private VanillaIcon lavaIcon = new VanillaIcon(Blocks.lava);
+	private VanillaIcon lavaIcon = new VanillaIcon(Blocks.LAVA);
 	private boolean isOverlay;
 
 	public ArmoryOreIconProvider()

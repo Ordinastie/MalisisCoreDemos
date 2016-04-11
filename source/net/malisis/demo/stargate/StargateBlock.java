@@ -50,7 +50,7 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 
 	protected StargateBlock()
 	{
-		super(Material.iron);
+		super(Material.IRON);
 		setName("sgBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
 

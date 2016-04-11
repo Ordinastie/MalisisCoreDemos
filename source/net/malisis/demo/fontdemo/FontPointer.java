@@ -48,7 +48,7 @@ public class FontPointer extends MalisisItem
 		setName("font_pointer");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//make the pointer use the Iron hoe item icon and model
-		setTexture(Items.iron_hoe);
+		setTexture(Items.IRON_HOE);
 	}
 
 	@Override

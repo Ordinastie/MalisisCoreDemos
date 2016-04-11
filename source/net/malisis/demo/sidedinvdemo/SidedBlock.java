@@ -55,7 +55,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider
 	public SidedBlock()
 	{
 		//set usual properties
-		super(Material.wood);
+		super(Material.WOOD);
 		setHardness(1.0F);
 		setSoundType(SoundType.WOOD);
 		setName("sidedBlockDemo");

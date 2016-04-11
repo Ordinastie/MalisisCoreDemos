@@ -70,7 +70,7 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 			public boolean itemValidForSlot(MalisisSlot slot, ItemStack itemStack)
 			{
 				//accept only gold or iron ingots
-				return itemStack != null && (itemStack.getItem() == Items.gold_ingot || itemStack.getItem() == Items.iron_ingot);
+				return itemStack != null && (itemStack.getItem() == Items.GOLD_INGOT || itemStack.getItem() == Items.IRON_INGOT);
 			};
 		};
 		//16 slots for stone
@@ -84,7 +84,7 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 
 				//accept only stone or stone bricks
 				Block block = Block.getBlockFromItem(itemStack.getItem());
-				return block != null && (block == Blocks.stone || block == Blocks.stonebrick);
+				return block != null && (block == Blocks.STONE || block == Blocks.STONEBRICK);
 			}
 		};
 
@@ -144,12 +144,12 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 
 			ItemStack itemStack = slot.getItemStack();
 			//transfer into triage if gold or iron ingot
-			if (itemStack != null && (itemStack.getItem() == Items.gold_ingot || itemStack.getItem() == Items.iron_ingot))
+			if (itemStack != null && (itemStack.getItem() == Items.GOLD_INGOT || itemStack.getItem() == Items.IRON_INGOT))
 				itemStack = ingotsInventory.transferInto(itemStack);
 			else
 			{
 				Block block = Block.getBlockFromItem(itemStack.getItem());
-				if (block != null && (block == Blocks.stone || block == Blocks.stonebrick))
+				if (block != null && (block == Blocks.STONE || block == Blocks.STONEBRICK))
 					itemStack = stoneInventory.transferInto(itemStack);
 			}
 			//itemStack hold the result of the transfer : if the target inventory was full and could not

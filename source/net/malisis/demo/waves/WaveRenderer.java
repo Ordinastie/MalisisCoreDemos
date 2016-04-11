@@ -74,7 +74,7 @@ public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 
 		//create the params
 		rp = new RenderParameters();
-		rp.icon.set(Icon.from(Blocks.water));
+		rp.icon.set(Icon.from(Blocks.WATER));
 
 		//load the animations
 		loadAnimations();

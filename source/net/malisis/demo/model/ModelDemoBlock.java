@@ -44,7 +44,7 @@ public class ModelDemoBlock extends MalisisBlock implements ITileEntityProvider
 	protected ModelDemoBlock()
 	{
 		//set the default stuff
-		super(Material.wood);
+		super(Material.WOOD);
 		setName("modelDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//texture only used for the item

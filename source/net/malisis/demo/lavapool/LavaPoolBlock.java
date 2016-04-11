@@ -54,20 +54,20 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 
 	public LavaPoolBlock()
 	{
-		super(Material.anvil);
+		super(Material.ANVIL);
 
 		setName("lavapool");
 		setHardness(2F);
 		setSoundType(SoundType.GLASS);
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTexture(Blocks.command_block);
+		setTexture(Blocks.DIAMOND_BLOCK);
 
 		multiBlock = new PatternMultiBlock();
 		multiBlock.addLayer("ABBBA", "B   B", "B   B", "B   B", "ABBBA");
 		multiBlock.addLayer("ACCCA", "C   C", "C   C", "C   C", "ADDDA");
 		multiBlock.addLayer("ACCCA", "C   C", "C   C", "C   C", "ADDDA");
 		multiBlock.addLayer("ABBBA", "B   B", "B   B", "B   B", "ABBBA");
-		multiBlock.withRef('A', Blocks.obsidian).withRef('B', Blocks.stone).withRef('C', Blocks.iron_bars).withRef('D', Blocks.glass);
+		multiBlock.withRef('A', Blocks.OBSIDIAN).withRef('B', Blocks.STONE).withRef('C', Blocks.IRON_BARS).withRef('D', Blocks.GLASS);
 		multiBlock.setOffset(new BlockPos(-2, 0, -2));
 
 		addComponent(new MultiBlockComponent(multiBlock));
@@ -116,7 +116,7 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	@Override
 	public boolean onBlockRemoved(World world, BlockPos pos, BlockPos blockPos)
 	{
-		setActive(world, pos, world.getBlockState(pos), new MBlockState(Blocks.air));
+		setActive(world, pos, world.getBlockState(pos), new MBlockState(Blocks.AIR));
 		return true;
 	}
 

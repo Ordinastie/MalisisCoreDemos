@@ -51,7 +51,7 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	public CollisionBlock()
 	{
 		//set the usual stuff
-		super(Material.wood);
+		super(Material.WOOD);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("collisionBlock");
 		setHardness(2.0F);

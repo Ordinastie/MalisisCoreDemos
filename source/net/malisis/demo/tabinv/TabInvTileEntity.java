@@ -72,8 +72,8 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 		inventory.setInventoryStackLimit(4);
 
 		//manually create converter slots
-		slotIron = new FilterSlot(0, Items.iron_ingot);
-		slotGold = new FilterSlot(1, Items.gold_ingot);
+		slotIron = new FilterSlot(0, Items.IRON_INGOT);
+		slotGold = new FilterSlot(1, Items.GOLD_INGOT);
 		//output slot means player can't interact with it, so no need to make a special slot
 		slotDiamond = new MalisisSlot(2);
 		slotDiamond.setOutputSlot();
@@ -136,7 +136,7 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 			//remove 2 gold from slot
 			slotGold.extract(2);
 			//put 1 diamond in slot
-			slotDiamond.insert(new ItemStack(Items.diamond));
+			slotDiamond.insert(new ItemStack(Items.DIAMOND));
 		}
 
 		//time to extract

@@ -229,7 +229,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 		rpFaceArch.calculateBrightness.set(false);
 		rpFaceArch.useEnvironmentBrightness.set(false);
 		rpFaceArch.brightness.set(32);
-		rpFaceArch.icon.set(Icon.from(Blocks.diamond_block));
+		rpFaceArch.icon.set(Icon.from(Blocks.DIAMOND_BLOCK));
 
 		// create the shape
 		Shape base = new Cube();
@@ -325,7 +325,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 		rpLavaFace.calculateBrightness.set(false);
 		rpLavaFace.useEnvironmentBrightness.set(false);
 		rpLavaFace.alpha.set(0);
-		rpLavaFace.icon.set(Icon.from(Blocks.lava));
+		rpLavaFace.icon.set(Icon.from(Blocks.LAVA));
 		anim = new Animation<>(rpLavaFace, pt);
 		ar.addAnimation(anim);
 	}
@@ -334,7 +334,7 @@ public class StargateRenderer extends MalisisRenderer<StargateTileEntity>
 	private void createFloatingAnimation()
 	{
 		RenderParameters rp = new RenderParameters();
-		rpFaceArch.icon.set(Icon.from(Blocks.gold_block));
+		rpFaceArch.icon.set(Icon.from(Blocks.GOLD_BLOCK));
 		rp.useEnvironmentBrightness.set(false);
 		rp.brightness.set(Vertex.BRIGHTNESS_MAX);
 		rp.alpha.set(175);

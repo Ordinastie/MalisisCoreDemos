@@ -43,7 +43,7 @@ public class BlockPane extends MalisisBlock
 	public BlockPane()
 	{
 		//set usual properties
-		super(Material.wood);
+		super(Material.WOOD);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockPaneDemo");
 		setTexture(MalisisDemos.modid + ":blocks/paneBlock");

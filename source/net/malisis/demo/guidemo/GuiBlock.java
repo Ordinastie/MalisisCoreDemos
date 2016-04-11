@@ -20,7 +20,7 @@ public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 {
 	public GuiBlock()
 	{
-		super(Material.ground);
+		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setLightLevel(0.9375F);
 		setName("guiDemo");

@@ -47,21 +47,21 @@ public class PatternBlock extends MalisisBlock
 	public PatternBlock()
 	{
 		//sets the usual properties
-		super(Material.wood);
+		super(Material.WOOD);
 		setHardness(1.0F);
 		setSoundType(SoundType.WOOD);
 		setName("patternMultiBlockDemo");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTexture(Blocks.gold_block);
+		setTexture(Blocks.GOLD_BLOCK);
 
 		//create the multiBlock
-		IBlockState birchPlanks = Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		IBlockState birchStairs = Blocks.birch_stairs.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH);
-		IBlockState chest = Blocks.chest.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH);
+		IBlockState birchPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		IBlockState birchStairs = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH);
+		IBlockState chest = Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.SOUTH);
 
 		PatternMultiBlock multiBlock = new PatternMultiBlock();
 		multiBlock.addLayer(" A ", "A A", " A ", " B ", " C ").addLayer(" D");
-		multiBlock.withRef('A', Blocks.emerald_block).withRef('B', birchPlanks).withRef('C', birchStairs).withRef('D', chest);
+		multiBlock.withRef('A', Blocks.EMERALD_BLOCK).withRef('B', birchPlanks).withRef('C', birchStairs).withRef('D', chest);
 		multiBlock.setOffset(new BlockPos(-1, 0, -1));
 		multiBlock.setBulkProcess(true, false);
 

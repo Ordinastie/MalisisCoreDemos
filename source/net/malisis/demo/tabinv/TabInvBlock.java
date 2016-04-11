@@ -51,7 +51,7 @@ public class TabInvBlock extends MalisisBlock implements ITileEntityProvider
 	protected TabInvBlock()
 	{
 		//set the usual stuff
-		super(Material.wood);
+		super(Material.WOOD);
 		setHardness(1.0F);
 		setSoundType(SoundType.WOOD);
 		setName("tabInv");

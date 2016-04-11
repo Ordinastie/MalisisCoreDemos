@@ -46,10 +46,10 @@ public class RTBlock extends MalisisBlock
 	public RTBlock()
 	{
 		//set usual properties
-		super(Material.iron);
+		super(Material.IRON);
 		setName("rtBlock");
 		setCreativeTab(MalisisDemos.tabDemos);
-		setTexture(Blocks.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
+		setTexture(Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
 
 		addComponent(new DirectionalComponent());
 	}

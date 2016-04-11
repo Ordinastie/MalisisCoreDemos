@@ -38,7 +38,7 @@ public class BlockColor extends MalisisBlock
 	public BlockColor()
 	{
 		//set usual properties
-		super(Material.clay);
+		super(Material.CLAY);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockColorDemo");
 

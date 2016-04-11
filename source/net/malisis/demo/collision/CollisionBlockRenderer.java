@@ -72,7 +72,7 @@ public class CollisionBlockRenderer extends MalisisRenderer<TileEntity>
 		rp.alpha.set(150);
 		rp.interpolateUV.set(false);
 		//use the planks icon
-		rp.icon.set(new VanillaIcon(Blocks.planks));
+		rp.icon.set(new VanillaIcon(Blocks.PLANKS));
 
 		//draw each aabb making the stairs except the first one
 		for (int i = 1; i < aabbs.length; i++)

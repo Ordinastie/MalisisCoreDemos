@@ -73,8 +73,8 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 		antenna = model.getShape("Antenna");
 
 		//create IIconProviders for the two parts
-		socleIcon = Icon.from(Blocks.coal_block);
-		antennaIcon = Icon.from(Blocks.diamond_block);
+		socleIcon = Icon.from(Blocks.COAL_BLOCK);
+		antennaIcon = Icon.from(Blocks.DIAMOND_BLOCK);
 
 		//create the params
 		rp = new RenderParameters();

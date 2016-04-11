@@ -49,7 +49,7 @@ public class Bank extends MalisisBlock implements ITileEntityProvider
 {
 	public Bank()
 	{
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(1);
 		setSoundType(SoundType.ANVIL);
 		setName("bankdemo");

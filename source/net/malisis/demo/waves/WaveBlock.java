@@ -44,7 +44,7 @@ public class WaveBlock extends MalisisBlock implements ITileEntityProvider
 	protected WaveBlock()
 	{
 		//set the usual stuff
-		super(Material.water);
+		super(Material.WATER);
 		setName("waveblock");
 		setCreativeTab(MalisisDemos.tabDemos);
 		//set the texture to be used (only used for item)

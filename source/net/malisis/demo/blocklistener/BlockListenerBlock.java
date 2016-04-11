@@ -46,7 +46,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 	public BlockListenerBlock()
 	{
 		//set usual caracteristics
-		super(Material.wood);
+		super(Material.WOOD);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockListener");
 		setHardness(2.0F);
@@ -77,7 +77,7 @@ public class BlockListenerBlock extends MalisisBlock implements IBlockListener
 			b = Math.abs(pos.getX() - blockState.getX()) <= 3;
 
 		//if at least aligned on two axis and close enough, and block is a torch, then cancel the placement
-		if (b && blockState.getBlock() != Blocks.torch)
+		if (b && blockState.getBlock() != Blocks.TORCH)
 			return false;
 
 		return true;

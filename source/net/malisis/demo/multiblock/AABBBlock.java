@@ -42,7 +42,7 @@ public class AABBBlock extends MalisisBlock
 	public AABBBlock()
 	{
 		//sets the usual properties
-		super(Material.wood);
+		super(Material.WOOD);
 		setHardness(1.0F);
 		setSoundType(SoundType.WOOD);
 		setName("aabbMultiBlockDemo");

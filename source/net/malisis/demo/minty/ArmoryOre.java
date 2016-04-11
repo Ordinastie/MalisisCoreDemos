@@ -45,7 +45,7 @@ public class ArmoryOre extends MalisisBlock
 	public ArmoryOre()
 	{
 		//set the usual properties
-		super(Material.rock);
+		super(Material.ROCK);
 		setName("ArmoryOre");
 		setHardness(1f);
 		setResistance(3f);
