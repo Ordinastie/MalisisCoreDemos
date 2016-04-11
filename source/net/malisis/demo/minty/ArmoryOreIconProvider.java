@@ -24,7 +24,7 @@
 
 package net.malisis.demo.minty;
 
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.PropertyEnumIconProvider;
 import net.malisis.demo.MalisisDemos;
@@ -47,7 +47,7 @@ public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.Or
 	{
 		super(ArmoryOre.ORE_TYPE, ArmoryOre.OreType.class, MalisisDemos.modid + ":blocks/ArmoryOre_Ore_Glitter");
 		for (OreType oreType : OreType.values())
-			setIcon(oreType, new MalisisIcon(MalisisDemos.modid + ":blocks/ArmoryOre_" + oreType.name() + "_Overlay"));
+			setIcon(oreType, new Icon(MalisisDemos.modid + ":blocks/ArmoryOre_" + oreType.name() + "_Overlay"));
 	}
 
 	public void setOverlay(boolean isOverlay)
@@ -56,7 +56,7 @@ public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.Or
 	}
 
 	@Override
-	public MalisisIcon getIcon(OreType oreType)
+	public Icon getIcon(OreType oreType)
 	{
 		//if base icon : use current default icon (glitter)
 		//special case for Lava where it uses regular lava

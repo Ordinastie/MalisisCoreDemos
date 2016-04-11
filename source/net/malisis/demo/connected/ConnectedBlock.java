@@ -26,7 +26,7 @@ package net.malisis.demo.connected;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.SoundType;
@@ -58,7 +58,7 @@ public class ConnectedBlock extends MalisisBlock
 		//the textures, however, need to have a predefined pattern split into 2 files.
 		//Both files will be automatically registered and stitched on the block texture sheet.
 		if (MalisisCore.isClient())
-			addComponent(IIconProvider.create(MalisisIcon.from(MalisisDemos.modid + ":blocks/demo_glass_connected")).connected().build());
+			addComponent(IIconProvider.create(Icon.from(MalisisDemos.modid + ":blocks/demo_glass_connected")).connected().build());
 	}
 
 	@Override

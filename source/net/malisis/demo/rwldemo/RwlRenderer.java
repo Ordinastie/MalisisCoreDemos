@@ -43,6 +43,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -123,6 +124,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		RayTraceResult mop = Minecraft.getMinecraft().objectMouseOver;
 		pos = mop.getBlockPos();
+		pos = new BlockPos(14, 6, 4);
 		blockState = world.getBlockState(pos);
 		set(world, blockState.getBlock(), pos, blockState);
 

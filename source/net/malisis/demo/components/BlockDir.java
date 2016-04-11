@@ -27,7 +27,7 @@ package net.malisis.demo.components;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.renderer.icon.provider.IconProviderBuilder;
 import net.malisis.demo.MalisisDemos;
@@ -59,9 +59,9 @@ public class BlockDir extends MalisisBlock
 			String prefix = MalisisDemos.modid + ":blocks/dirblock_";
 			String[] names = new String[] { prefix + "bottom", prefix + "top", prefix + "back", prefix + "front", prefix + "left",
 					prefix + "right", };
-			IconProviderBuilder builder = IIconProvider.create(MalisisIcon.from(names[1]));
+			IconProviderBuilder builder = IIconProvider.create(Icon.from(names[1]));
 			for (int i = 0; i < 6; i++)
-				builder.withSide(EnumFacing.getFront(i), MalisisIcon.from(names[i]));
+				builder.withSide(EnumFacing.getFront(i), Icon.from(names[i]));
 			//create the iconProvider
 			addComponent(builder.build());
 		}

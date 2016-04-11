@@ -26,7 +26,7 @@ package net.malisis.demo.components;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
@@ -46,8 +46,8 @@ public class BlockSlab extends MalisisBlock
 
 		if (MalisisCore.isClient())
 		{
-			MalisisIcon icon = MalisisIcon.from(MalisisDemos.modid + ":blocks/slabBlock");
-			MalisisIcon sides = MalisisIcon.from(MalisisDemos.modid + ":blocks/slabBlock_side");
+			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/slabBlock");
+			Icon sides = Icon.from(MalisisDemos.modid + ":blocks/slabBlock_side");
 			addComponent(IIconProvider.create(sides).withSide(EnumFacing.UP, icon).build());
 		}
 	}

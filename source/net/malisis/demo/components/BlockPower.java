@@ -29,7 +29,7 @@ import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.block.component.PowerComponent;
 import net.malisis.core.block.component.PowerComponent.Type;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.material.Material;
@@ -53,9 +53,9 @@ public class BlockPower extends MalisisBlock
 
 		if (MalisisCore.isClient())
 		{
-			MalisisIcon icon = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower");
-			MalisisIcon iconOn = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower_on");
-			MalisisIcon iconOff = MalisisIcon.from(MalisisDemos.modid + ":blocks/blockPower_off");
+			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/blockPower");
+			Icon iconOn = Icon.from(MalisisDemos.modid + ":blocks/blockPower_on");
+			Icon iconOff = Icon.from(MalisisDemos.modid + ":blocks/blockPower_off");
 
 			addComponent((IBlockIconProvider) (state, side) -> side == EnumFacing.SOUTH ? (PowerComponent.isPowered(state) ? iconOn : iconOff) : icon);
 		}

@@ -37,7 +37,7 @@ import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.MergedVertex;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.TopFace;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.minecraft.init.Blocks;
 
 /**
@@ -74,7 +74,7 @@ public class WaveRenderer extends MalisisRenderer<WaveTileEntity>
 
 		//create the params
 		rp = new RenderParameters();
-		rp.icon.set(MalisisIcon.from(Blocks.water));
+		rp.icon.set(Icon.from(Blocks.water));
 
 		//load the animations
 		loadAnimations();

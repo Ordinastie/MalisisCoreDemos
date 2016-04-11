@@ -35,7 +35,7 @@ import net.malisis.core.renderer.animation.transformation.Rotation;
 import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
@@ -52,8 +52,8 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 	private AnimationRenderer ar = new AnimationRenderer();
 	private Shape socle;
 	private Shape antenna;
-	private MalisisIcon socleIcon;
-	private MalisisIcon antennaIcon;
+	private Icon socleIcon;
+	private Icon antennaIcon;
 	private RenderParameters rp;
 
 	public ModelDemoRenderer()
@@ -73,8 +73,8 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 		antenna = model.getShape("Antenna");
 
 		//create IIconProviders for the two parts
-		socleIcon = MalisisIcon.from(Blocks.coal_block);
-		antennaIcon = MalisisIcon.from(Blocks.diamond_block);
+		socleIcon = Icon.from(Blocks.coal_block);
+		antennaIcon = Icon.from(Blocks.diamond_block);
 
 		//create the params
 		rp = new RenderParameters();

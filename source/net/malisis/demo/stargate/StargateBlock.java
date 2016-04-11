@@ -28,7 +28,7 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.DefaultRenderer;
 import net.malisis.core.renderer.MalisisRendered;
-import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
@@ -91,28 +91,28 @@ public class StargateBlock extends MalisisBlock implements ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	public static class SgIconProvider implements IBlockIconProvider
 	{
-		private MalisisIcon defaultIcon = MalisisIcon.from(MalisisDemos.modid + ":blocks/stargate");
-		private MalisisIcon platform = MalisisIcon.from(MalisisDemos.modid + ":blocks/sgplatform");
-		private MalisisIcon platformSide = MalisisIcon.from(MalisisDemos.modid + ":blocks/sgplatformside");
+		private Icon defaultIcon = Icon.from(MalisisDemos.modid + ":blocks/stargate");
+		private Icon platform = Icon.from(MalisisDemos.modid + ":blocks/sgplatform");
+		private Icon platformSide = Icon.from(MalisisDemos.modid + ":blocks/sgplatformside");
 
 		@Override
-		public MalisisIcon getIcon(IBlockState state, EnumFacing side)
+		public Icon getIcon(IBlockState state, EnumFacing side)
 		{
 			return defaultIcon;
 		}
 
 		@Override
-		public MalisisIcon getIcon()
+		public Icon getIcon()
 		{
 			return defaultIcon;
 		}
 
-		public MalisisIcon getPlatformIcon()
+		public Icon getPlatformIcon()
 		{
 			return platform;
 		}
 
-		public MalisisIcon getPlatformSideIcon()
+		public Icon getPlatformSideIcon()
 		{
 			return platformSide;
 		}
