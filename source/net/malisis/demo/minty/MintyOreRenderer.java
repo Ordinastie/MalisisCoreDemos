@@ -11,6 +11,7 @@ import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.demo.minty.ArmoryOre.OreType;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -30,9 +31,9 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 	}
 
 	@Override
-	public Matrix4f getTransform(TransformType tranformType)
+	public Matrix4f getTransform(Item item, TransformType tranformType)
 	{
-		return DefaultRenderer.block.getTransform(tranformType);
+		return DefaultRenderer.block.getTransform(item, tranformType);
 	}
 
 	@Override
