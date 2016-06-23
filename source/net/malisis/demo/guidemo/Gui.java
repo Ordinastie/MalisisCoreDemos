@@ -74,6 +74,13 @@ public class Gui extends MalisisGui
 		//allow contents to be drawn outside of the window's borders
 		window.setClipContent(false);
 
+		boolean debug = false;
+		if (debug)
+		{
+			addToScreen(debug());
+			return;
+		}
+
 		//get the first container
 		UIContainer<?> tabCont1 = panel1();
 		//get the second container
@@ -94,7 +101,7 @@ public class Gui extends MalisisGui
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
 
-		tabGroup.setActiveTab(tab1);
+		tabGroup.setActiveTab(tab2);
 		tabGroup.setSpacing(0);
 		tabGroup.attachTo(panel, true);
 
@@ -239,7 +246,7 @@ public class Gui extends MalisisGui
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
 		ipsum.setSize(150, 0);
 		ipsum.setText("Contrairement à une opinion répandue, "
-				+ TextFormatting.DARK_GREEN
+				+ TextFormatting.BOLD
 				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
 				+ TextFormatting.RESET
 				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
@@ -249,12 +256,13 @@ public class Gui extends MalisisGui
 				+ " vieux de 2000 ans."
 				+ TextFormatting.BLUE
 				+ "Un professeur du "
-				+ TextFormatting.ITALIC
+				+ TextFormatting.RESET
 				+ "Hampden-Sydney College"
 				+ TextFormatting.BLUE
 				+ ", en Virginie, s'est intéressé"
 				+ TextFormatting.RESET
 				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+		fro.fontScale = 2 / 3f;
 		ipsum.setFontRenderOptions(fro);
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
@@ -279,6 +287,45 @@ public class Gui extends MalisisGui
 		return tabCont2;
 	}
 
+	private UIComponent<?> debug()
+	{
+		UIPanel panel = new UIPanel(this, 250, 150);
+		panel.setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
+		FontRenderOptions fro = new FontRenderOptions();
+		UILabel ipsum = new UILabel(this, true);
+		ipsum.setPosition(0, 0);
+		//ipsum.setSize(180, 0);
+		ipsum.setText("Contrairement à une opinion répandue, "
+				+ TextFormatting.BOLD
+				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
+				+ TextFormatting.RESET
+				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
+				+ TextFormatting.AQUA
+				+ " datant de 45 av. J.-C., le rendant"
+				+ TextFormatting.RESET
+				+ " vieux de 2000 ans."
+				+ TextFormatting.BLUE
+				+ "Un professeur du "
+				+ TextFormatting.BOLD
+				+ "Hampden-Sydney College"
+				+ TextFormatting.BLUE
+				+ ", en Virginie, s'est intéressé"
+				+ TextFormatting.RESET
+				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+
+		//		ipsum.setText(TextFormatting.DARK_BLUE
+		//				+ "Testing some more longer text for the width of the label. Waterpicker has quit (Read error: Connection reset by peer)\r\n"
+		//				+ "Topic for #malisis is: General Discussion about MalisisCore, MalisisDoors, Do It Yourself Decorative Blocks.");
+		fro.fontScale = 2 / 3f;
+		ipsum.setFontRenderOptions(fro);
+		UIScrollBar sc = new UIScrollBar(this, ipsum, UIScrollBar.Type.VERTICAL);
+		sc.setAutoHide(false);
+		sc.setVisible(true);
+
+		panel.add(ipsum);
+		return panel;
+	}
+
 	@Subscribe
 	public void onSliderChanged(ValueChange<?, Float> event)
 	{
@@ -296,6 +343,8 @@ public class Gui extends MalisisGui
 	@Override
 	public void updateScreen()
 	{
+		if (bar == null)
+			return;
 		float t = (System.currentTimeMillis() % 2000) / 2000f;
 		bar.setProgress(t);
 	}

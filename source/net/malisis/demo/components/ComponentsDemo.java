@@ -42,6 +42,9 @@ public class ComponentsDemo implements IDemo
 	private BlockStairs blockStairs;
 	private BlockPower blockPower;
 	private BlockPane blockPane;
+	private BlockShape slopeShape;
+	private BlockShape cornerShape;
+	private BlockShape slopedCornerShape;
 
 	@Override
 	public void preInit()
@@ -68,6 +71,15 @@ public class ComponentsDemo implements IDemo
 
 		blockPane = new BlockPane();
 		blockPane.register();
+
+		slopeShape = new BlockShape("slope");
+		slopeShape.register();
+
+		cornerShape = new BlockShape("corner");
+		cornerShape.register();
+
+		slopedCornerShape = new BlockShape("slopedCorner");
+		slopedCornerShape.register();
 	}
 
 	@Override
