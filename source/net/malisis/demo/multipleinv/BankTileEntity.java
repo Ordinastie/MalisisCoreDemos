@@ -61,10 +61,11 @@ public class BankTileEntity extends TileEntity implements IDirectInventoryProvid
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
 	{
 		super.writeToNBT(tagCompound);
 		inventory.writeToNBT(tagCompound);
+		return tagCompound;
 	}
 
 	@Override

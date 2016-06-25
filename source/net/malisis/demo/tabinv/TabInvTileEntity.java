@@ -187,7 +187,7 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
 		//write both inventories in their own tag
@@ -198,6 +198,8 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 		NBTTagCompound converterTag = new NBTTagCompound();
 		converter.writeToNBT(converterTag);
 		tag.setTag("converter", converterTag);
+
+		return tag;
 	}
 
 	//special slot just to store what kind of filter we need for the slot

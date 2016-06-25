@@ -34,8 +34,6 @@ import net.malisis.core.util.MBlockState;
 import net.malisis.core.util.TileEntityUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
@@ -165,7 +163,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
 		nbt.setBoolean("active", active);
@@ -176,10 +174,12 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 			nbt.setInteger("ly", lastPos.getY());
 			nbt.setInteger("lz", lastPos.getZ());
 		}
+
+		return nbt;
 	}
 
 	@Override
-	public Packet<INetHandlerPlayClient> getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
