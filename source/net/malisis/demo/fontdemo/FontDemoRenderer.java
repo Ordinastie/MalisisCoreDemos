@@ -33,7 +33,7 @@ import net.malisis.core.renderer.animation.transformation.Transformation;
 import net.malisis.core.renderer.animation.transformation.Translation;
 import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
-import net.malisis.core.renderer.font.FontRenderOptions;
+import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.demo.MalisisDemos;
@@ -135,11 +135,7 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		next();
 
 		//for direct rendering, you can specify options
-		FontRenderOptions fro = new FontRenderOptions();
-		fro.color = 0x339966;
-		fro.fontScale = 0.25f;
-		fro.shadow = true;
-		fro.underline = true;
+		FontOptions fontOptions = FontOptions.builder().scale(0.25F).color(0x339966).shadow().underline().build();
 
 		//hard coded position
 		float fx = -11;
@@ -150,13 +146,10 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		String str = "Just an " + TextFormatting.GOLD + "example with " + TextFormatting.RED + "custom color" + TextFormatting.RESET
 				+ " and reset after";
 		//render the text at the position with the options
-		font.render(this, str, fx, fy, fz, fro);
+		font.render(this, str, fx, fy, fz, fontOptions);
 
 		//change options
-		fro.color = 0x666666;
-		fro.underline = false;
-		//default need to be saved again if the same object is to be reused with different options
-		fro.saveDefault();
+		fontOptions = FontOptions.builder().color(0x666666).underline().build();
 		//set the position lower
 		fy -= 0.4F;
 		//some "dynamic text"
@@ -164,11 +157,10 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		BlockPos p = player.getPosition();
 		str = "Player position : " + TextFormatting.DARK_AQUA + p.getX() + ", " + p.getY() + ", " + p.getZ();
 		//render the text at the position with the options
-		font.render(this, str, fx, fy, fz, fro);
+		font.render(this, str, fx, fy, fz, fontOptions);
 		fy -= 0.3F;
 		str = "Facing : " + TextFormatting.DARK_AQUA + EntityUtils.getEntityFacing(player) + " (" + EntityUtils.getEntityRotation(player)
 				+ ")";
-		font.render(this, str, fx, fy, fz, fro);
-
+		font.render(this, str, fx, fy, fz, fontOptions);
 	}
 }

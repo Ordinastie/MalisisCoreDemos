@@ -30,11 +30,12 @@ import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.shape.Cube;
-import net.malisis.core.renderer.font.FontRenderOptions;
+import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Point;
 import net.malisis.core.util.Ray;
+import net.malisis.core.util.Utils;
 import net.malisis.core.util.Vector;
 import net.malisis.core.util.raytrace.RaytraceWorld;
 import net.minecraft.client.Minecraft;
@@ -43,7 +44,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -86,7 +86,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 		start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
 
 		Ray ray = new Ray(start, new Vector(look));
-		rayTrace = new RaytraceWorld(ray);
+		rayTrace = new RaytraceWorld(Utils.getClientWorld(), ray);
 		//limit distance to 10 blocks
 		rayTrace.setLength(10);
 		end = rayTrace.getDestination();
@@ -124,7 +124,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		RayTraceResult mop = Minecraft.getMinecraft().objectMouseOver;
 		pos = mop.getBlockPos();
-		pos = new BlockPos(14, 6, 4);
+		//pos = new BlockPos(14, 6, 4);
 		blockState = world.getBlockState(pos);
 		set(world, blockState.getBlock(), pos, blockState);
 
@@ -191,10 +191,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 
 		//set the font and options to use for the text
 		MalisisFont font = MalisisFont.minecraftFont;
-		FontRenderOptions fro = new FontRenderOptions();
-		fro.shadow = true;
-		fro.fontScale = 0.1F;
-		fro.color = 0x9999CC;
+		FontOptions fro = FontOptions.builder().scale(0.1F).color(0x9999CC).shadow().build();
 
 		//set the texts to display
 		String[] texts = { pos.getX() + ", " + pos.getY() + ", " + pos.getZ(), blockState.toString(), "Side " + mop.sideHit,
@@ -203,7 +200,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 		//draw the lines of text
 		int i = 1;
 		for (String str : texts)
-			drawText(font, str, ox, oy - i++ * fro.fontScale, oz, fro);
+			drawText(font, str, ox, oy - i++ * fro.getFontScale(), oz, fro);
 
 		//reset OGL states
 		next();

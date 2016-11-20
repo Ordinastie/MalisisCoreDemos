@@ -22,37 +22,51 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.model;
+package net.malisis.demo.almura;
 
+import net.malisis.core.block.MalisisBlock;
 import net.malisis.demo.IDemo;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
- * This demo show how to load and render a model, with parts animated.
- *
  * @author Ordinastie
  *
  */
-public class ModelDemo implements IDemo
+public class Almura implements IDemo
 {
-	ModelDemoBlock modelBlock;
-	Chest chestBlock;
+	MalisisBlock almuraBlock = new MalisisBlock(Material.CLAY)
+	{
+		@Override
+		public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+		{
+			new DynamicAboutMenu(null).display();
+			return true;
+		}
+	};
+
+	Item seedItem;
 
 	@Override
 	public void preInit()
 	{
-		//create and register the block
-		modelBlock = new ModelDemoBlock();
-		modelBlock.register();
-		//register the tileEntity associated
-		GameRegistry.registerTileEntity(ModelDemoTileEntity.class, "modelDemoTileEntity");
-
-		chestBlock = new Chest();
-		chestBlock.register();
-
+		almuraBlock.setTexture(Blocks.CLAY);
+		almuraBlock.setName("almuraBlock");
+		almuraBlock.register();
 	}
 
 	@Override
 	public void init()
-	{}
+	{
+
+	}
+
 }

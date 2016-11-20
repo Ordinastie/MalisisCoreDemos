@@ -22,66 +22,68 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.blocklistener;
+package net.malisis.demo.model;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.util.chunklistener.IBlockListener;
+import net.malisis.core.block.component.BooleanComponent;
+import net.malisis.core.renderer.component.AnimatedModelComponent;
+import net.malisis.core.util.Timer;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * This block allows only torches to be placed within 3 blocks inside its alignment
- *
  * @author Ordinastie
  *
  */
-public class BlockListenerBlock extends MalisisBlock implements IBlockListener.Pre
+public class Chest extends MalisisBlock
 {
-	public BlockListenerBlock()
+	private BooleanComponent opened = new BooleanComponent("opened");
+
+	public Chest()
 	{
-		//set usual caracteristics
 		super(Material.WOOD);
-		setCreativeTab(MalisisDemos.tabDemos);
-		setName("blockListener");
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setSoundType(SoundType.WOOD);
-		setTexture(MalisisDemos.modid + ":blocks/blocklistener");
+		setName("demoChest");
+		setTexture(Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH));
+		setCreativeTab(MalisisDemos.tabDemos);
+
+		addComponent(opened);
+
+		if (MalisisCore.isClient())
+		{
+			AnimatedModelComponent amc = new AnimatedModelComponent(MalisisDemos.modid + ":models/chest.obj");
+			amc.onFirstRender(this::stateCheck);
+			addComponent(amc);
+		}
 	}
 
 	@Override
-	public int blockRange()
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		//this block gets notified if another is placed or broken within 3 blocks of its position
-		return 3;
-	}
-
-	@Override
-	public boolean onBlockSet(World world, BlockPos listener, BlockPos modified, IBlockState oldState, IBlockState newState)
-	{
-		if (newState.getBlock() == Blocks.AIR)
-			return true;
-
-		boolean isAligned = false;
-		//if aligned on the X and Y, check Z distance
-		if (listener.getX() == modified.getX() && listener.getY() == modified.getY())
-			isAligned = Math.abs(listener.getZ() - modified.getZ()) <= 3;
-		//if aligned on the X and Z, check Y distance
-		if (listener.getX() == modified.getX() && listener.getZ() == modified.getZ())
-			isAligned = Math.abs(listener.getY() - modified.getY()) <= 3;
-		//if aligned on the Y and Z, check X distance
-		if (listener.getY() == modified.getY() && listener.getZ() == modified.getZ())
-			isAligned = Math.abs(listener.getX() - modified.getX()) <= 3;
-
-		//if at least aligned on two axis and close enough, and block is a torch, then cancel the placement
-		if (isAligned && newState.getBlock() != Blocks.TORCH)
-			return false;
-
+		boolean isOpened = opened.invert(world, pos);
+		if (world.isRemote)
+			AnimatedModelComponent.get(this).link(pos, isOpened ? "close" : "open", isOpened ? "open" : "close");
 		return true;
 	}
+
+	public void stateCheck(IBlockAccess world, BlockPos pos, IBlockState state, AnimatedModelComponent amc)
+	{
+		if (opened.get(state) && !amc.isAnimating(pos, "open"))
+			amc.start(pos, "open", new Timer(Integer.MIN_VALUE));
+	}
+
 }

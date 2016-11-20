@@ -25,7 +25,7 @@
 package net.malisis.demo.syncdemo;
 
 import net.malisis.core.renderer.MalisisRenderer;
-import net.malisis.core.renderer.font.FontRenderOptions;
+import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 
 /**
@@ -40,10 +40,6 @@ public class SyncTeRenderer extends MalisisRenderer<SyncTileEntity>
 		//make it so the text always face the player
 		setBillboard(0.5F, 1.2F, 0.5F);
 
-		FontRenderOptions fro = new FontRenderOptions();
-		//reduce the size of the text
-		fro.fontScale = 0.25F;
-
 		//get the values from the TE
 		String label = tileEntity.label;
 		int counter = tileEntity.counter;
@@ -51,11 +47,13 @@ public class SyncTeRenderer extends MalisisRenderer<SyncTileEntity>
 
 		//display the text with updated values on the client
 		String str = label + " : " + counter + " (#" + Integer.toHexString(color) + ")";
-		fro.color = color;
+
+		//reduce the size of the text and set the color
+		FontOptions fontOptions = FontOptions.builder().scale(0.25F).color(color).build();
 
 		//make it centered on the block
-		float width = MalisisFont.minecraftFont.getStringWidth(str, fro);
-		MalisisFont.minecraftFont.render(this, str, -width / 18F, 0, 0, fro);
+		float width = MalisisFont.minecraftFont.getStringWidth(str, fontOptions);
+		MalisisFont.minecraftFont.render(this, str, -width / 18F, 0, 0, fontOptions);
 
 		//clear billboarding
 		endBillboard();

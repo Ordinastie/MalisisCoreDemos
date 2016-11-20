@@ -26,12 +26,15 @@ package net.malisis.demo.rwldemo;
 
 import net.malisis.core.item.MalisisItem;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -59,5 +62,16 @@ public class RWLPointer extends MalisisItem
 		RWLDemo.renderer.changeMode();
 
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+	}
+
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if (world.isRemote)
+			return EnumActionResult.FAIL;
+
+		world.spawnEntityInWorld(new EntityXPOrb(world, pos.getX(), pos.getY(), pos.getZ(), 5));
+
+		return EnumActionResult.SUCCESS;
 	}
 }

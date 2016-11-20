@@ -48,7 +48,7 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener
+public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, IBlockListener.Post
 {
 	PatternMultiBlock multiBlock;
 
@@ -107,17 +107,8 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	}
 
 	@Override
-	public boolean onBlockSet(World world, BlockPos pos, MBlockState blockSet)
+	public void onBlockSet(World world, BlockPos listener, BlockPos modified, IBlockState oldState, IBlockState newState)
 	{
-		setActive(world, pos, world.getBlockState(pos), blockSet);
-		return true;
+		setActive(world, listener, world.getBlockState(listener), new MBlockState(modified, newState));
 	}
-
-	@Override
-	public boolean onBlockRemoved(World world, BlockPos pos, BlockPos blockPos)
-	{
-		setActive(world, pos, world.getBlockState(pos), new MBlockState(Blocks.AIR));
-		return true;
-	}
-
 }

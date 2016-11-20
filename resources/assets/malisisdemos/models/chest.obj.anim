@@ -1,0 +1,79 @@
+{
+	"transforms" :
+	{
+		"up" : 
+		{
+			"type" : "translation",
+			"to" : [0, 0.5, 0],
+			"ticks" : 20
+		},
+		"north_east" : 
+		{
+			"type" : "translation",
+			"to" : [0.5, 0, -0.5],
+			"ticks": 10
+		},
+		"south_east" : 
+		{
+			"type" : "translation",
+			"to" : [0.5, 0, 0.5],
+			"ticks": 10
+		},
+		"north_west" : 
+		{
+			"type" : "translation",
+			"to" : [-0.5, 0, -0.5],
+			"ticks": 10
+		},
+		"south_west" : 
+		{
+			"type" : "translation",
+			"to" : [-0.5, 0, 0.5],
+			"ticks": 10
+		},
+		
+		"open_ne": 
+		{
+			"type": "chained",
+			"transforms": ["up", "north_east"]
+		},
+		
+		"open_se": 
+		{
+			"type": "chained",
+			"transforms": ["up", "south_east"]
+		},
+		
+		"open_nw": 
+		{
+			"type": "chained",
+			"transforms": ["up", "north_west"]
+		},
+		"open_sw": 
+		{
+			"type": "chained",
+			"transforms": ["up", "south_west"]
+		}
+	},
+	
+	"anims" : 
+	{
+		"open" : 
+		[
+			{ "group" : "topne", "transform": "open_ne" },
+			{ "group" : "topse", "transform": "open_se" },
+			{ "group" : "topnw", "transform": "open_nw" },
+			{ "group" : "topsw", "transform": "open_sw" }			
+		],
+		"close" : 
+		[
+			{ "group" : "topne", "transform": "open_ne", "reversed" : true, "persist":false },
+			{ "group" : "topse", "transform": "open_se","reversed" : true, "persist":false},
+			{ "group" : "topnw", "transform": "open_nw", "reversed" : true, "persist":false},
+			{ "group" : "topsw", "transform": "open_sw", "reversed" : true, "persist":false }			
+		]
+	}
+}
+	
+	
+	

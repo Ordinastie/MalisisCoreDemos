@@ -96,8 +96,15 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 		//complete transformation
 		ParallelTransformation p = new ParallelTransformation(r, c).loop(-1);
 
+		Translation tr = new Translation(0, 0.5F, 0).forTicks(20);
+		Translation tr2 = new Translation(0.5F, 0, 0).forTicks(20, 20);
+
+		ParallelTransformation pt = new ParallelTransformation(tr, tr2);
+
+		pt.reversed(true);
+
 		//Add the animation to the animation renderer
-		ar.addAnimation(new Animation<>(antenna, p));
+		ar.addAnimation(new Animation<>(antenna, pt));
 	}
 
 	@Override
@@ -105,6 +112,8 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 	{
 		if (renderType == RenderType.BLOCK)
 		{
+			ar.clearAnimations();
+			loadAnimation();
 			ar.setStartTime();
 			return;
 		}

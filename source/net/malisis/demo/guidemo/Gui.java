@@ -7,6 +7,7 @@ import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
+import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
@@ -32,7 +33,7 @@ import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
-import net.malisis.core.renderer.font.FontRenderOptions;
+import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.VanillaIcon;
@@ -147,6 +148,7 @@ public class Gui extends MalisisGui
 		tf.setSize(200, 0);
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
+		new UIResizeHandle(this, tf);
 		//tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		//Select
@@ -165,12 +167,14 @@ public class Gui extends MalisisGui
 		//select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, 0x664444, false);
 
 		//progress bar
-		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, Icon.from(Items.IRON_SWORD), Icon.from(Items.DIAMOND_PICKAXE));
+		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, Icon.from(Items.IRON_PICKAXE), Icon.from(Items.DIAMOND_PICKAXE));
 		bar.setPosition(-30, 40, Anchor.RIGHT);
 		bar.setVertical();
 
 		//3 Buttons
 		btnHorizontal = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
+		btnHorizontal.setDisabled(true);
+		btnHorizontal.setTooltip("Button horizontal");
 		btnL = new UIButton(this, "O").setPosition(-49, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
 		btnR = new UIButton(this, "O").setPosition(50, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
 
@@ -214,16 +218,12 @@ public class Gui extends MalisisGui
 				0);
 
 		//Smaller label with FontRenderOptions
-		FontRenderOptions fro = new FontRenderOptions();
-		fro.color = 0x660066;
-		fro.fontScale = 2 / 3F;
-		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 10).setFontRenderOptions(fro);
+		FontOptions fro = FontOptions.builder().scale(2F / 3F).color(0x660066).build();
+		UILabel label2 = new UILabel(this, "Smaller label!").setPosition(20, 10).setFontOptions(fro);
 		//label2.setFontScale(2F / 3F);
 
 		//Multiline Textfield with FontRendererOptions
-		fro = new FontRenderOptions();
-		fro.fontScale = 2 / 3F;
-		fro.color = 0x006600;
+		fro = FontOptions.builder().scale(2F / 3F).color(0x006600).build();
 
 		UITextField mltf = new UITextField(this, true);
 		mltf.setSize(125, 50);
@@ -237,9 +237,10 @@ public class Gui extends MalisisGui
 				+ "In commodo finibus urna, eu consectetur quam commodo dapibus. Pellentesque metus ligula, ullamcorper non lorem a, dapibus elementum quam. Praesent iaculis pellentesque dui eget pellentesque. Nunc vel varius dui. Aliquam sit amet ex feugiat, aliquet ipsum nec, sollicitudin dolor. Ut ac rhoncus enim. Quisque maximus diam nec neque placerat, euismod blandit purus congue. Integer finibus tellus ligula, eget pretium magna luctus vel. Pellentesque gravida pretium nisl sit amet fermentum. Quisque odio nunc, tristique vitae pretium ut, imperdiet a nunc. Sed eu purus ultricies, tincidunt sapien et, condimentum nunc. Duis luctus augue ac congue luctus. Integer ut commodo turpis, vitae hendrerit quam. Vivamus vulputate efficitur est nec dignissim. Praesent convallis posuere lacus ut suscipit. Aliquam at odio viverra, cursus nulla eget, maximus purus.\r\n"
 				+ "\r\n"
 				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
-		mltf.setText("Some §5colored test");
-		mltf.setFontRenderOptions(fro);
+		//mltf.setText("Some §5colored test");
+		mltf.setFontOptions(fro);
 		mltf.getScrollbar().setAutoHide(true);
+		new UIResizeHandle(this, mltf);
 
 		//Multiline label
 		UILabel ipsum = new UILabel(this, true);
@@ -262,8 +263,7 @@ public class Gui extends MalisisGui
 				+ ", en Virginie, s'est intéressé"
 				+ TextFormatting.RESET
 				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
-		fro.fontScale = 2 / 3f;
-		ipsum.setFontRenderOptions(fro);
+		ipsum.setFontOptions(fro);
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
 		//Add all elements
@@ -289,41 +289,24 @@ public class Gui extends MalisisGui
 
 	private UIComponent<?> debug()
 	{
-		UIPanel panel = new UIPanel(this, 250, 150);
-		panel.setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
-		FontRenderOptions fro = new FontRenderOptions();
-		UILabel ipsum = new UILabel(this, true);
-		ipsum.setPosition(0, 0);
-		//ipsum.setSize(180, 0);
-		ipsum.setText("Contrairement à une opinion répandue, "
-				+ TextFormatting.BOLD
-				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
-				+ TextFormatting.RESET
-				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
-				+ TextFormatting.AQUA
-				+ " datant de 45 av. J.-C., le rendant"
-				+ TextFormatting.RESET
-				+ " vieux de 2000 ans."
-				+ TextFormatting.BLUE
-				+ "Un professeur du "
-				+ TextFormatting.BOLD
-				+ "Hampden-Sydney College"
-				+ TextFormatting.BLUE
-				+ ", en Virginie, s'est intéressé"
-				+ TextFormatting.RESET
-				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+		UIBackgroundContainer cont = new UIBackgroundContainer(this, "test", 300, 200);
+		cont.setAnchor(Anchor.MIDDLE | Anchor.CENTER);
+		cont.setBottomColor(0x666699);
+		cont.setPadding(4, 4);
+		cont.setBorder(0, 2, 255);
 
-		//		ipsum.setText(TextFormatting.DARK_BLUE
-		//				+ "Testing some more longer text for the width of the label. Waterpicker has quit (Read error: Connection reset by peer)\r\n"
-		//				+ "Topic for #malisis is: General Discussion about MalisisCore, MalisisDoors, Do It Yourself Decorative Blocks.");
-		fro.fontScale = 2 / 3f;
-		ipsum.setFontRenderOptions(fro);
-		UIScrollBar sc = new UIScrollBar(this, ipsum, UIScrollBar.Type.VERTICAL);
-		sc.setAutoHide(false);
-		sc.setVisible(true);
+		UIBackgroundContainer inner = new UIBackgroundContainer(this, "inner", 100, 100);
+		inner.setAnchor(Anchor.MIDDLE | Anchor.CENTER);
+		inner.setLeftColor(0xAA6633);
+		inner.setBorder(0x990000, 1, 255);
 
-		panel.add(ipsum);
-		return panel;
+		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, Icon.from(Items.EMERALD));
+		img.setPosition(20, 20);
+		img.setSize(32, 32);
+		inner.add(img);
+
+		cont.add(inner);
+		return cont;
 	}
 
 	@Subscribe
