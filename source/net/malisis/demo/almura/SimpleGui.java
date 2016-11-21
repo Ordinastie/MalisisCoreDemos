@@ -10,6 +10,7 @@ import net.malisis.core.client.gui.GuiTexture;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.renderer.icon.GuiIcon;
+import net.malisis.core.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -160,10 +161,8 @@ public abstract class SimpleGui extends MalisisGui
 	public final void close()
 	{
 		Keyboard.enableRepeatEvents(false);
-		if (mc.thePlayer != null)
-		{
-			mc.thePlayer.closeScreen();
-		}
+		if (Utils.getClientPlayer() != null)
+			Utils.getClientPlayer().closeScreen();
 
 		onClose();
 

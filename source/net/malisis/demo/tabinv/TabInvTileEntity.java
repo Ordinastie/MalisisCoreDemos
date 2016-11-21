@@ -114,7 +114,7 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 	@Override
 	public void update()
 	{
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 
 		timerConvert++;

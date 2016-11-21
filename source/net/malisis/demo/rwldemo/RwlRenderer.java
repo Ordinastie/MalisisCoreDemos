@@ -80,7 +80,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 	public void rayTrace()
 	{
 		//set necessary data for rayTracing
-		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP player = Utils.getClientPlayer();
 		Vec3d look = player.getLook(partialTick);
 		Vec3d pos = player.getPositionEyes(partialTick);
 		start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
@@ -106,7 +106,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
 		//only render if the pointer is currently equipped
-		return EntityUtils.isEquipped(Minecraft.getMinecraft().thePlayer, RWLDemo.rwlPointer, EnumHand.MAIN_HAND);
+		return EntityUtils.isEquipped(Utils.getClientPlayer(), RWLDemo.rwlPointer, EnumHand.MAIN_HAND);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 
 	private void renderBlockHighlight()
 	{
-		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP player = Utils.getClientPlayer();
 		RayTraceResult mop = Minecraft.getMinecraft().objectMouseOver;
 		pos = mop.getBlockPos();
 		//pos = new BlockPos(14, 6, 4);

@@ -70,7 +70,7 @@ public class RWLPointer extends MalisisItem
 		if (world.isRemote)
 			return EnumActionResult.FAIL;
 
-		world.spawnEntityInWorld(new EntityXPOrb(world, pos.getX(), pos.getY(), pos.getZ(), 5));
+		world.spawnEntity(new EntityXPOrb(world, pos.getX(), pos.getY(), pos.getZ(), 5));
 
 		return EnumActionResult.SUCCESS;
 	}

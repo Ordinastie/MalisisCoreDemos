@@ -58,7 +58,7 @@ public class SyncTileEntity extends TileEntity implements ITickable
 		//set the new label
 		label = labels[labelIndex++ % labels.length];
 		//set the new color to a random value
-		color = worldObj.rand.nextInt(0xFFFFFF);
+		color = world.rand.nextInt(0xFFFFFF);
 		//Synchronize the fields with the identifiers label and color
 		Syncer.sync(this, "label", "color");
 	}
@@ -67,10 +67,10 @@ public class SyncTileEntity extends TileEntity implements ITickable
 	public void update()
 	{
 		//only update on the server
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 		//only increment once per second
-		if ((worldObj.getTotalWorldTime() % 20) != 0)
+		if ((world.getTotalWorldTime() % 20) != 0)
 			return;
 
 		//increment counter

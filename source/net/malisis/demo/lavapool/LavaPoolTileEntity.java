@@ -73,7 +73,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		fillable.clear();
 		for (BlockPos p : BlockPosUtils.getAllInBox(AABBUtils.offset(pos, new AxisAlignedBB(-1, 0, -1, 2, 1, 2))))
 		{
-			MBlockState state = new MBlockState(worldObj, p);
+			MBlockState state = new MBlockState(world, p);
 			int a = lava.getAmount(state);
 			if (a != -1 && a != 15)
 				fillable.add(p);
@@ -85,7 +85,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		emptyable.clear();
 		for (BlockPos p : BlockPosUtils.getAllInBox(AABBUtils.offset(pos, new AxisAlignedBB(-1, 0, -1, 2, 1, 2))))
 		{
-			MBlockState state = new MBlockState(worldObj, p);
+			MBlockState state = new MBlockState(world, p);
 			int a = lava.getAmount(state);
 			if (a > 0)
 				emptyable.add(p);
@@ -96,8 +96,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 	public void update()
 	{
 		//	MalisisCore.message(active + " > " + empty);
-		Random rand = worldObj.rand;
-		if (worldObj.isRemote)
+		Random rand = world.rand;
+		if (world.isRemote)
 		{
 			int x = pos.getX(), z = pos.getZ();
 			if (lastPos != null && !active)
@@ -106,23 +106,23 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 				z = lastPos.getZ();
 			}
 			if (active || empty)
-				worldObj.spawnParticle(empty ? EnumParticleTypes.CRIT : EnumParticleTypes.FLAME, x + rand.nextFloat(), pos.getY() + 1.1F, z
+				world.spawnParticle(empty ? EnumParticleTypes.CRIT : EnumParticleTypes.FLAME, x + rand.nextFloat(), pos.getY() + 1.1F, z
 						+ rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 
-		if (!worldObj.isRemote)
+		if (!world.isRemote)
 		{
-			if (empty && (worldObj.getTotalWorldTime() % 10) == 0)
+			if (empty && (world.getTotalWorldTime() % 10) == 0)
 				empty();
 
-			if (active && (worldObj.getTotalWorldTime() % 10) == 0)
+			if (active && (world.getTotalWorldTime() % 10) == 0)
 				fillAll();
 		}
 	}
 
 	public void empty()
 	{
-		Random rand = worldObj.rand;
+		Random rand = world.rand;
 		getEmptyable();
 		if (emptyable.size() == 0)
 		{
@@ -132,8 +132,8 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		}
 
 		BlockPos pos = emptyable.get(rand.nextInt(emptyable.size()));
-		MBlockState state = new MBlockState(worldObj, pos);
-		lava.setAmount(worldObj, state, lava.getAmount(state) / 2);
+		MBlockState state = new MBlockState(world, pos);
+		lava.setAmount(world, state, lava.getAmount(state) / 2);
 		lastPos = pos;
 		TileEntityUtils.notifyUpdate(this);
 	}
@@ -149,7 +149,7 @@ public class LavaPoolTileEntity extends TileEntity implements ITickable
 		}
 
 		for (BlockPos p : fillable)
-			lava.addAmount(worldObj, new MBlockState(worldObj, p), 1);
+			lava.addAmount(world, new MBlockState(world, p), 1);
 	}
 
 	@Override
