@@ -28,7 +28,8 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.block.component.PowerComponent;
-import net.malisis.core.block.component.PowerComponent.Type;
+import net.malisis.core.block.component.PowerComponent.ComponentType;
+import net.malisis.core.block.component.PowerComponent.InteractionType;
 import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IBlockIconProvider;
 import net.malisis.demo.MalisisDemos;
@@ -49,7 +50,7 @@ public class BlockPower extends MalisisBlock
 		setName("blockPower");
 
 		addComponent(new DirectionalComponent());
-		addComponent(new PowerComponent(Type.RIGHT_CLICK));
+		addComponent(new PowerComponent(InteractionType.RIGHT_CLICK, ComponentType.PROVIDER));
 
 		if (MalisisCore.isClient())
 		{
