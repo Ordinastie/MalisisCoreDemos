@@ -38,7 +38,7 @@ import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Utils;
 import net.malisis.demo.MalisisDemos;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -153,7 +153,7 @@ public class FontDemoRenderer extends MalisisRenderer<TileEntity>
 		//set the position lower
 		fy -= 0.4F;
 		//some "dynamic text"
-		EntityPlayerSP player = Utils.getClientPlayer();
+		EntityPlayer player = Utils.getClientPlayer();
 		BlockPos p = player.getPosition();
 		str = "Player position : " + TextFormatting.DARK_AQUA + p.getX() + ", " + p.getY() + ", " + p.getZ();
 		//render the text at the position with the options

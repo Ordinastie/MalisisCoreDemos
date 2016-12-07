@@ -66,7 +66,7 @@ public class Chest extends MalisisBlock
 		if (MalisisCore.isClient())
 		{
 			AnimatedModelComponent amc = new AnimatedModelComponent(MalisisDemos.modid + ":models/chest.obj");
-			amc.onFirstRender(this::stateCheck);
+			amc.onRender(this::stateCheck);
 			addComponent(amc);
 		}
 	}

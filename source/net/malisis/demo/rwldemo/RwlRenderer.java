@@ -34,21 +34,19 @@ import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Point;
-import net.malisis.core.util.Ray;
 import net.malisis.core.util.Utils;
-import net.malisis.core.util.Vector;
-import net.malisis.core.util.raytrace.RaytraceWorld;
+import net.malisis.demo.rwldemo.RWLPointer.Mode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -57,71 +55,46 @@ import org.lwjgl.opengl.GL11;
  */
 public class RwlRenderer extends MalisisRenderer<TileEntity>
 {
-	//current display mode : 0
-	private boolean rayTraceMode = false;
-	//start of rayTracing
-	private Point start;
-	//end of rayTracing
-	private Point end;
-	//eventual hit of rayTracing
-	private Point hit;
-	//RayTraceWorld instance
-	private RaytraceWorld rayTrace;
-
-	public void changeMode()
-	{
-		//switch between modes
-		rayTraceMode = !rayTraceMode;
-		//do the rayTrace when switching to that mode
-		if (rayTraceMode)
-			rayTrace();
-	}
-
-	public void rayTrace()
-	{
-		//set necessary data for rayTracing
-		EntityPlayerSP player = Utils.getClientPlayer();
-		Vec3d look = player.getLook(partialTick);
-		Vec3d pos = player.getPositionEyes(partialTick);
-		start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
-
-		Ray ray = new Ray(start, new Vector(look));
-		rayTrace = new RaytraceWorld(Utils.getClientWorld(), ray);
-		//limit distance to 10 blocks
-		rayTrace.setLength(10);
-		end = rayTrace.getDestination();
-
-		//do the actual rayTracing
-		RayTraceResult result = rayTrace.trace();
-
-		//set the hit point if necessary
-		if (result.typeOfHit == RayTraceResult.Type.BLOCK)
-			hit = new Point(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
-		else
-			hit = null;
-
-	}
 
 	@Override
 	public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world)
 	{
-		//only render if the pointer is currently equipped
-		return EntityUtils.isEquipped(Utils.getClientPlayer(), RWLDemo.rwlPointer, EnumHand.MAIN_HAND);
+		//only render if the pointer is currently equipped with correct mode
+		if (!EntityUtils.isEquipped(Utils.getClientPlayer(), RWLDemo.rwlPointer, EnumHand.MAIN_HAND))
+			return false;
+
+		Mode mode = RWLDemo.rwlPointer.getCurrentMode();
+		//if mode is BLOCKHIGHLIGHT, always render
+		if (mode == Mode.BLOCKHIGHLIGHT)
+			return true;
+
+		//if mode is RAYTRACE only render if raytrace has been done first
+		if (mode == Mode.RAYTRACE)
+			return RWLDemo.rwlPointer.getRaytraceInfos() != null;
+
+		//mode is FLOODFILL
+		return false;
 	}
 
 	@Override
 	public void render()
 	{
 		//render based on current mode
-		if (rayTraceMode)
-			renderRayTrace();
-		else
-			renderBlockHighlight();
+		switch (RWLDemo.rwlPointer.getCurrentMode())
+		{
+			case BLOCKHIGHLIGHT:
+				renderBlockHighlight();
+				break;
+			case RAYTRACE:
+				renderRayTrace();
+				break;
+			default:
+		}
 	}
 
 	private void renderBlockHighlight()
 	{
-		EntityPlayerSP player = Utils.getClientPlayer();
+		EntityPlayer player = Utils.getClientPlayer();
 		RayTraceResult mop = Minecraft.getMinecraft().objectMouseOver;
 		pos = mop.getBlockPos();
 		//pos = new BlockPos(14, 6, 4);
@@ -219,6 +192,11 @@ public class RwlRenderer extends MalisisRenderer<TileEntity>
 
 		//create the vertexes for start and end of the line
 		int color = 0x339933;
+		Triple<Point, Point, Point> infos = RWLDemo.rwlPointer.getRaytraceInfos();
+		Point start = infos.getLeft();
+		Point end = infos.getMiddle();
+		Point hit = infos.getRight();
+
 		Vertex vstart = new Vertex(start.x, start.y, start.z);
 		vstart.setColor(color);
 		Vertex vend = new Vertex(end.x, end.y, end.z);
