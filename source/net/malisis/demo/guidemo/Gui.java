@@ -1,6 +1,11 @@
 package net.malisis.demo.guidemo;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Arrays;
+
+import com.google.common.base.Converter;
+import com.google.common.eventbus.Subscribe;
 
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
@@ -45,8 +50,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
-import com.google.common.eventbus.Subscribe;
-
 /**
  * This class show most of the available components for GUI and how to use them.<br>
  */
@@ -56,7 +59,7 @@ public class Gui extends MalisisGui
 	private static MalisisFont fontBS = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf"));
 	private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
 	private UIPanel panel;
-	private UITab tab1;
+	private UITab tabSlider;
 	private UIProgressBar bar;
 	private UIButton btnL, btnR, btnHorizontal;
 	private UIRadioButton rbMC, rbBS, rbH;
@@ -86,23 +89,27 @@ public class Gui extends MalisisGui
 		UIContainer<?> tabCont1 = panel1();
 		//get the second container
 		UIContainer<?> tabCont2 = panel2();
+		//get the slider demo tab
+		UIContainer<?> tabSliderPanel = sliderPanel();
 
 		//create a panel to hold the containers
 		panel = new UIPanel(this, UIComponent.INHERITED, 140);
 		panel.add(tabCont1);
 		panel.add(tabCont2);
+		panel.add(tabSliderPanel);
 
 		//create the tabs for the containers
-		tab1 = new UITab(this, "Tab 1");
-		UITab tab2 = new UITab(this, "Tab 2");
-		tab2.setBgColor(0xCCCCFF);
+		UITab tab1 = new UITab(this, "Tab 1");
+		UITab tab2 = new UITab(this, "Tab 2").setBgColor(0xCCCCFF);
+		tabSlider = new UITab(this, "Slider tab");
 
 		//create the group containing the tabs and their corresponding containers
 		UITabGroup tabGroup = new UITabGroup(this, ComponentPosition.TOP);
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
+		tabGroup.addTab(tabSlider, tabSliderPanel);
 
-		tabGroup.setActiveTab(tab2);
+		tabGroup.setActiveTab(tabSlider);
 		tabGroup.setSpacing(0);
 		tabGroup.attachTo(panel, true);
 
@@ -130,7 +137,9 @@ public class Gui extends MalisisGui
 	private UIContainer<?> panel1()
 	{
 		//CheckBox
-		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
+		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(	this,
+																					TextFormatting.AQUA + "with delayed a tooltip!",
+																					5));
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
@@ -139,9 +148,6 @@ public class Gui extends MalisisGui
 		rbBS.setFont(fontBS);
 		rbH = new UIRadioButton(this, "newRb", "Hobo").setPosition(rbMC.getWidth() + rbBS.getWidth() + 20, 14);
 		rbH.setFont(fontH);
-
-		//Slider with event caught to change the panel background color
-		UISlider slider = new UISlider(this, 150, 0, 100, "Slider value : %.0f").setPosition(0, 26).register(this);
 
 		//Textfield
 		UITextField tf = new UITextField(this, "This is a textfield. You can type in it.");
@@ -152,14 +158,16 @@ public class Gui extends MalisisGui
 		//tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		//Select
-		UISelect<String> select = new UISelect<>(this, 100, Arrays.asList("Option 1",
-				"Option 2",
-				"Very ultra longer option 3",
-				"Shorty",
-				"Moar options",
-				"Even more",
-				"Even Steven",
-				"And a potato too"));
+		UISelect<String> select = new UISelect<>(	this,
+													100,
+													Arrays.asList(	"Option 1",
+																	"Option 2",
+																	"Very ultra longer option 3",
+																	"Shorty",
+																	"Moar options",
+																	"Even more",
+																	"Even Steven",
+																	"And a potato too"));
 		select.setPosition(0, 70);
 		select.setMaxExpandedWidth(120);
 		//select.maxDisplayedOptions(5);
@@ -187,7 +195,6 @@ public class Gui extends MalisisGui
 		tabCont1.add(rbMC);
 		tabCont1.add(rbBS);
 		tabCont1.add(rbH);
-		tabCont1.add(slider);
 
 		tabCont1.add(tf);
 		tabCont1.add(select);
@@ -214,8 +221,8 @@ public class Gui extends MalisisGui
 	{
 		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.DIAMOND_HORSE_ARMOR)).setPosition(0, 0);
 		//Colored Label
-		UILabel label1 = new UILabel(this, TextFormatting.UNDERLINE.toString() + TextFormatting.YELLOW + "Colored label!").setPosition(20,
-				0);
+		UILabel label1 = new UILabel(this, TextFormatting.UNDERLINE.toString() + TextFormatting.YELLOW + "Colored label!").setPosition(	20,
+																																		0);
 
 		//Smaller label with FontRenderOptions
 		FontOptions fro = FontOptions.builder().scale(2F / 3F).color(0x660066).build();
@@ -246,22 +253,12 @@ public class Gui extends MalisisGui
 		UILabel ipsum = new UILabel(this, true);
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
 		ipsum.setSize(150, 0);
-		ipsum.setText("Contrairement à une opinion répandue, "
-				+ TextFormatting.BOLD
-				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire"
-				+ TextFormatting.RESET
-				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique"
-				+ TextFormatting.AQUA
-				+ " datant de 45 av. J.-C., le rendant"
-				+ TextFormatting.RESET
-				+ " vieux de 2000 ans."
-				+ TextFormatting.BLUE
-				+ "Un professeur du "
-				+ TextFormatting.RESET
-				+ "Hampden-Sydney College"
-				+ TextFormatting.BLUE
-				+ ", en Virginie, s'est intéressé"
-				+ TextFormatting.RESET
+		ipsum.setText("Contrairement à une opinion répandue, " + TextFormatting.BOLD
+				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire" + TextFormatting.RESET
+				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique" + TextFormatting.AQUA
+				+ " datant de 45 av. J.-C., le rendant" + TextFormatting.RESET + " vieux de 2000 ans." + TextFormatting.BLUE
+				+ "Un professeur du " + TextFormatting.RESET + "Hampden-Sydney College" + TextFormatting.BLUE
+				+ ", en Virginie, s'est intéressé" + TextFormatting.RESET
 				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 		ipsum.setFontOptions(fro);
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
@@ -276,7 +273,7 @@ public class Gui extends MalisisGui
 
 		//Add the block's inventory's slots directly into the container
 		tabCont2.add(new UILabel(this, "Block's inventory").setPosition(12, 84));
-		MalisisInventory inv = inventoryContainer.getInventory(1);
+		MalisisInventory inv = inventoryContainer.getInventory(0);
 		int i = 0;
 		for (MalisisSlot slot : inv.getSlots())
 		{
@@ -285,6 +282,73 @@ public class Gui extends MalisisGui
 		}
 
 		return tabCont2;
+	}
+
+	UISlider<Integer> sliderRed;
+	UISlider<Integer> sliderGreen;
+	UISlider<Integer> sliderBlue;
+	UILabel sliderColorLabel;
+
+	private UIContainer<?> sliderPanel()
+	{
+		//Sliders with event caught to change the panel background color
+		Converter<Float, Integer> colorConv = Converter.from(f -> (int) (f * 255), i -> (float) i / 255);
+		sliderRed = new UISlider<>(this, 150, colorConv, "Red : %d").setPosition(0, 0).setValue(255).setScrollStep(1 / 255F).register(this);
+		sliderGreen = new UISlider<>(this, 150, colorConv, "Green : %d").setPosition(0, 21)
+																		.setValue(255)
+																		.setScrollStep(1 / 255F)
+																		.register(this);
+		sliderBlue = new UISlider<>(this, 150, colorConv, "Blue : %d")	.setPosition(0, 42)
+																		.setValue(255)
+																		.setScrollStep(1 / 255F)
+																		.register(this);
+		sliderColorLabel = new UILabel(this, "Color : 0xFFFFFF").setPosition(160, 25);
+
+		//Slider with custom values with days of the week
+		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[(int) (f * 6)], d -> (float) d.ordinal() / 6);
+		UISlider<DayOfWeek> sliderDay = new UISlider<>(this, 70, dayConv, "%s")	.setPosition(0, 84, Anchor.CENTER)
+																				.setValue(LocalDate.now().getDayOfWeek())
+																				.setScrollStep(1 / 6F);
+
+		UIContainer<?> sliderPanel = new UIContainer<>(this);
+		sliderPanel.add(sliderRed);
+		sliderPanel.add(sliderGreen);
+		sliderPanel.add(sliderBlue);
+		sliderPanel.add(sliderColorLabel);
+		sliderPanel.add(sliderDay);
+
+		return sliderPanel;
+	}
+
+	@Subscribe
+	public void onSliderChanged(ValueChange<UISlider<Integer>, Integer> event)
+	{
+		if (!(event.getComponent() instanceof UISlider))
+			return;
+
+		//get the different values
+		int r = sliderRed.getValue();
+		int g = sliderGreen.getValue();
+		int b = sliderBlue.getValue();
+		//use the updated value
+		if (event.getComponent() == sliderRed)
+			r = event.getNewValue();
+		if (event.getComponent() == sliderGreen)
+			g = event.getNewValue();
+		if (event.getComponent() == sliderBlue)
+			b = event.getNewValue();
+
+		int color = r << 16 | g << 8 | b;
+
+		//no black color
+		if (color == 0)
+		{
+			event.cancel();
+			return;
+		}
+
+		sliderColorLabel.setText(String.format("Color : 0x%06X", color));
+		tabSlider.setBgColor(color);
 	}
 
 	private UIComponent<?> debug()
@@ -307,20 +371,6 @@ public class Gui extends MalisisGui
 
 		cont.add(inner);
 		return cont;
-	}
-
-	@Subscribe
-	public void onSliderChanged(ValueChange<?, Float> event)
-	{
-		if (!(event.getComponent() instanceof UISlider))
-			return;
-
-		int v = (int) (event.getNewValue() / 100 * 255);
-		int g = 255 - v;
-		int r = 255 - v;
-		int b = 255;
-		//MalisisCore.message(r + " > " + Integer.toHexString(r << 16 | 0x00FFFF));
-		tab1.setBgColor(r << 16 | g << 8 | b);
 	}
 
 	@Override
