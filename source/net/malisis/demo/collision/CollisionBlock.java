@@ -97,7 +97,7 @@ public class CollisionBlock extends MalisisBlock implements IChunkCollidable
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
 	{
 		//we will render the stairs translucent
 		return layer == BlockRenderLayer.TRANSLUCENT;

@@ -49,7 +49,7 @@ import net.malisis.demo.syncdemo.SyncDemo;
 import net.malisis.demo.tabinv.TabInv;
 import net.malisis.demo.waves.Waves;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -76,9 +76,9 @@ public class MalisisDemos implements IMalisisMod
 	{
 		@Override
 		@SideOnly(Side.CLIENT)
-		public Item getTabIconItem()
+		public ItemStack getTabIconItem()
 		{
-			return Item.getItemFromBlock(GuiDemo.guiBlock);
+			return new ItemStack(GuiDemo.guiBlock);
 		}
 	};
 

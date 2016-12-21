@@ -72,14 +72,14 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 		inventory.setInventoryStackLimit(4);
 
 		//manually create converter slots
-		slotIron = new FilterSlot(0, Items.IRON_INGOT);
-		slotGold = new FilterSlot(1, Items.GOLD_INGOT);
+		slotIron = new FilterSlot(Items.IRON_INGOT);
+		slotGold = new FilterSlot(Items.GOLD_INGOT);
 		//output slot means player can't interact with it, so no need to make a special slot
-		slotDiamond = new MalisisSlot(2);
+		slotDiamond = new MalisisSlot();
 		slotDiamond.setOutputSlot();
 
 		//converter inventory with stack limit 32 (FilterSlot overrides that value)
-		converter = new MalisisInventory(this, new MalisisSlot[] { slotIron, slotGold, slotDiamond });
+		converter = new MalisisInventory(this, slotIron, slotGold, slotDiamond);
 		converter.setInventoryStackLimit(32);
 
 		setTab(1);
@@ -128,7 +128,7 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 			if (slotIron.isEmpty() || slotGold.isEmpty() || slotDiamond.isFull())
 				return;
 			//not enough iron and gold, abort
-			if (slotIron.getItemStack().stackSize < 2 || slotGold.getItemStack().stackSize < 2)
+			if (slotIron.getItemStack().getCount() < 2 || slotGold.getItemStack().getCount() < 2)
 				return;
 
 			//remove 2 iron from slot
@@ -208,9 +208,8 @@ public class TabInvTileEntity extends TileEntity implements IDirectInventoryProv
 	{
 		private Item filter;
 
-		public FilterSlot(int index, Item filter)
+		public FilterSlot(Item filter)
 		{
-			super(index);
 			this.filter = filter;
 		}
 

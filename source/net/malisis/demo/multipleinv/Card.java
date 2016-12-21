@@ -56,8 +56,9 @@ public class Card extends MalisisItem implements IDeferredInventoryProvider<Item
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
+		ItemStack itemStack = player.getHeldItem(hand);
 		//don't do anything on the client
 		if (world.isRemote)
 			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
@@ -80,7 +81,7 @@ public class Card extends MalisisItem implements IDeferredInventoryProvider<Item
 	{
 		//create the inventory
 		MalisisInventory inventory = new MalisisInventory(this, 27);
-		inventory.setInventoryStackLimit(2);
+		inventory.setInventoryStackLimit(64);
 		inventory.setItemStackProvider(itemStack);
 
 		return inventory;

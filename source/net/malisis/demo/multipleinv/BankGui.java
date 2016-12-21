@@ -26,6 +26,8 @@ package net.malisis.demo.multipleinv;
 
 import java.util.HashMap;
 
+import com.google.common.eventbus.Subscribe;
+
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
@@ -39,8 +41,6 @@ import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.demo.multipleinv.BankTileEntity.CardSlot;
-
-import com.google.common.eventbus.Subscribe;
 
 /**
  * @author Ordinastie
@@ -59,8 +59,10 @@ public class BankGui extends MalisisGui
 	public void construct()
 	{
 
-		UIWindow window = new UIWindow(this, "Bank", UIPlayerInventory.INVENTORY_WIDTH + 39,
-				62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
+		UIWindow window = new UIWindow(	this,
+										"Bank",
+										UIPlayerInventory.INVENTORY_WIDTH + 39,
+										62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
 
 		int i = 0;
 		for (MalisisSlot slot : inventoryContainer.getInventory(1).getSlots())
@@ -97,13 +99,15 @@ public class BankGui extends MalisisGui
 		UIContainer<?> uicont = slotCont.get(slot);
 		uicont.removeAll();
 		MalisisInventory inv = slot.getCardInventory();
-		if (inv != null)
-			for (int i = 0; i < inv.getSizeInventory(); i++)
-			{
-				UISlot uislot = new UISlot(this, inv.getSlot(i));
-				uislot.setPosition((i % 9) * 18, (i / 9) * 18);
-				uicont.add(uislot);
-			}
+		if (inv == null)
+			return;
+
+		for (int i = 0; i < inv.getSize(); i++)
+		{
+			UISlot uislot = new UISlot(this, inv.getSlot(i));
+			uislot.setPosition((i % 9) * 18, (i / 9) * 18);
+			uicont.add(uislot);
+		}
 	}
 
 }

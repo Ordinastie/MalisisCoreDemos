@@ -32,7 +32,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -54,11 +53,11 @@ public class SyncBlock extends MalisisBlock implements ITileEntityProvider
 		setSoundType(SoundType.WOOD);
 		setCreativeTab(MalisisDemos.tabDemos);
 		//set the icons to use
-		setTexture(MalisisDemos.modid + ":blocks/syncDemo");
+		setTexture(MalisisDemos.modid + ":blocks/syncdemo");
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		//the action is done server side only
 		if (world.isRemote)

@@ -24,6 +24,8 @@
 
 package net.malisis.demo.model;
 
+import org.lwjgl.opengl.GL11;
+
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
@@ -40,8 +42,6 @@ import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
@@ -96,15 +96,8 @@ public class ModelDemoRenderer extends MalisisRenderer<ModelDemoTileEntity>
 		//complete transformation
 		ParallelTransformation p = new ParallelTransformation(r, c).loop(-1);
 
-		Translation tr = new Translation(0, 0.5F, 0).forTicks(20);
-		Translation tr2 = new Translation(0.5F, 0, 0).forTicks(20, 20);
-
-		ParallelTransformation pt = new ParallelTransformation(tr, tr2);
-
-		pt.reversed(true);
-
 		//Add the animation to the animation renderer
-		ar.addAnimation(new Animation<>(antenna, pt));
+		ar.addAnimation(new Animation<>(antenna, p));
 	}
 
 	@Override

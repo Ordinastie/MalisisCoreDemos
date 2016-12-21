@@ -45,9 +45,9 @@ public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.Or
 
 	public ArmoryOreIconProvider()
 	{
-		super(ArmoryOre.ORE_TYPE, ArmoryOre.OreType.class, MalisisDemos.modid + ":blocks/ArmoryOre_Ore_Glitter");
+		super(ArmoryOre.ORE_TYPE, ArmoryOre.OreType.class, MalisisDemos.modid + ":blocks/armoryore_ore_glitter");
 		for (OreType oreType : OreType.values())
-			setIcon(oreType, new Icon(MalisisDemos.modid + ":blocks/ArmoryOre_" + oreType.name() + "_Overlay"));
+			setIcon(oreType, new Icon(MalisisDemos.modid + ":blocks/armoryore_" + oreType.getName() + "_overlay"));
 	}
 
 	public void setOverlay(boolean isOverlay)

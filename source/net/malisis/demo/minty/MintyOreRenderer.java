@@ -49,6 +49,8 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 			oreType = ((ItemBlockArmoryOre) itemStack.getItem()).getOreType(itemStack);
 		if (renderType == RenderType.BLOCK)
 			oreType = blockState.getValue(ArmoryOre.ORE_TYPE);
+		else
+			return; //never true
 
 		//Note : rp is RenderParameters and hold all the parameters available to tweak the rendering
 		//reset the parameters so you don't use unwanted bleeding data

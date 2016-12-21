@@ -52,8 +52,9 @@ public class FontPointer extends MalisisItem
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
+		ItemStack itemStack = player.getHeldItem(hand);
 		//renderer not accessible server-side
 		if (!world.isRemote)
 			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
@@ -65,7 +66,7 @@ public class FontPointer extends MalisisItem
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
 	{
 		tooltip.add("Right click to start font shape animation.");
 	}

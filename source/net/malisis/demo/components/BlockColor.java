@@ -42,7 +42,7 @@ public class BlockColor extends MalisisBlock
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockColorDemo");
 
-		setTexture(MalisisDemos.modid + ":blocks/blockColor");
+		setTexture(MalisisDemos.modid + ":blocks/blockcolor");
 
 		addComponent(new ColorComponent(true));
 	}

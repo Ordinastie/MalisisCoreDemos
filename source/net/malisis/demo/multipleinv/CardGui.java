@@ -53,8 +53,8 @@ public class CardGui extends MalisisGui
 
 		UIContainer<?> invCont = new UIContainer<>(this, "Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
 		invCont.setPosition(0, 0, Anchor.CENTER);
-		MalisisInventory inv = inventoryContainer.getInventory(1);
-		for (int i = 0; i < inv.getSizeInventory(); i++)
+		MalisisInventory inv = inventoryContainer.getInventory(0);
+		for (int i = 0; i < inv.getSize(); i++)
 		{
 			UISlot uislot = new UISlot(this, inv.getSlot(i));
 			uislot.setPosition((i % 9) * 18, (i / 9) * 18 + 11);

@@ -46,8 +46,8 @@ public class BlockSlab extends MalisisBlock
 
 		if (MalisisCore.isClient())
 		{
-			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/slabBlock");
-			Icon sides = Icon.from(MalisisDemos.modid + ":blocks/slabBlock_side");
+			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/slabblock");
+			Icon sides = Icon.from(MalisisDemos.modid + ":blocks/slabblock_side");
 			addComponent(IIconProvider.create(sides).withSide(EnumFacing.UP, icon).build());
 		}
 	}

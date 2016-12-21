@@ -24,6 +24,8 @@
 
 package net.malisis.demo.sidedinvdemo;
 
+import java.util.Optional;
+
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.ISidedInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
@@ -137,14 +139,13 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 			//			if (worldObj.isRemote)
 			//				return;
 
-			MalisisSlot slot = triageInventory.getFirstOccupiedSlot();
-			//if inventory is empty, no process to do
-			if (slot == null)
+			Optional<MalisisSlot> slot = triageInventory.getFirstOccupiedSlot();
+			ItemStack itemStack = slot.map(MalisisSlot::getItemStack).orElse(ItemStack.EMPTY);
+			if (itemStack.isEmpty())
 				return;
 
-			ItemStack itemStack = slot.getItemStack();
 			//transfer into triage if gold or iron ingot
-			if (itemStack != null && (itemStack.getItem() == Items.GOLD_INGOT || itemStack.getItem() == Items.IRON_INGOT))
+			if (itemStack.getItem() == Items.GOLD_INGOT || itemStack.getItem() == Items.IRON_INGOT)
 				itemStack = ingotsInventory.transferInto(itemStack);
 			else
 			{
@@ -154,7 +155,7 @@ public class SidedTileEntity extends TileEntity implements ISidedInventoryProvid
 			}
 			//itemStack hold the result of the transfer : if the target inventory was full and could not
 			//accept all of the itemStack, itemStack hold what's left, so put it back in the slot
-			slot.setItemStack(itemStack);
+			slot.get().setItemStack(itemStack);
 		}
 
 	}

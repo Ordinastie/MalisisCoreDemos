@@ -39,7 +39,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -65,7 +64,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider
 
 		if (MalisisCore.isClient())
 		{
-			addComponent(IIconProvider.create(Icon.from(MalisisDemos.modid + ":blocks/sidedinv"))
+			addComponent(IIconProvider	.create(Icon.from(MalisisDemos.modid + ":blocks/sidedinv"))
 										.withSide(EnumFacing.WEST, Icon.from(MalisisDemos.modid + ":blocks/sidedingots"))
 										.withSide(EnumFacing.EAST, Icon.from(MalisisDemos.modid + ":blocks/sidedstones"))
 										.withSide(EnumFacing.UP, Icon.from(MalisisDemos.modid + ":blocks/sidedtriage"))
@@ -74,7 +73,7 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		//don't do anything on the client
 		if (world.isRemote)

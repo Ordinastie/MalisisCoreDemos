@@ -54,9 +54,9 @@ public class BlockPower extends MalisisBlock
 
 		if (MalisisCore.isClient())
 		{
-			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/blockPower");
-			Icon iconOn = Icon.from(MalisisDemos.modid + ":blocks/blockPower_on");
-			Icon iconOff = Icon.from(MalisisDemos.modid + ":blocks/blockPower_off");
+			Icon icon = Icon.from(MalisisDemos.modid + ":blocks/blockpower");
+			Icon iconOn = Icon.from(MalisisDemos.modid + ":blocks/blockpower_on");
+			Icon iconOff = Icon.from(MalisisDemos.modid + ":blocks/blockpower_off");
 
 			addComponent((IBlockIconProvider) (state, side) -> side == EnumFacing.SOUTH ? (PowerComponent.isPowered(state) ? iconOn : iconOff) : icon);
 		}

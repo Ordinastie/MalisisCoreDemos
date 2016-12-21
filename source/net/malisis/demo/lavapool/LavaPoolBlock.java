@@ -37,7 +37,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -87,10 +86,14 @@ public class LavaPoolBlock extends MalisisBlock implements ITileEntityProvider, 
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		if (!world.isRemote)
+			return true;
+
 		LavaPoolTileEntity te = TileEntityUtils.getTileEntity(LavaPoolTileEntity.class, world, pos);
-		te.startAnim = true;
+		if (te != null)
+			te.startAnim = true;
 		return true;
 	}
 

@@ -40,7 +40,7 @@ public class BlockWall extends MalisisBlock
 		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockWall");
-		setTexture(MalisisDemos.modid + ":blocks/blockWall");
+		setTexture(MalisisDemos.modid + ":blocks/blockwall");
 
 		addComponent(new WallComponent());
 	}

@@ -44,7 +44,7 @@ public class BankTileEntity extends TileEntity implements IDirectInventoryProvid
 	public BankTileEntity()
 	{
 		//create the inventory
-		inventory = new MalisisInventory(this, new CardSlot[] { new CardSlot(0), new CardSlot(1), new CardSlot(2) });
+		inventory = new MalisisInventory(this, CardSlot::new, 3);
 	}
 
 	@Override
@@ -80,11 +80,6 @@ public class BankTileEntity extends TileEntity implements IDirectInventoryProvid
 		//we want to keep track of it so it can be removed for the container for this slot's inventory
 		private MalisisInventory cardIventory;
 
-		public CardSlot(int index)
-		{
-			super(index);
-		}
-
 		@Override
 		public boolean isItemValid(ItemStack itemStack)
 		{
@@ -104,7 +99,7 @@ public class BankTileEntity extends TileEntity implements IDirectInventoryProvid
 			}
 
 			//stack is not null, new card is placed in the slot
-			if (getItemStack() != null)
+			if (!getItemStack().isEmpty())
 			{
 				if (getItemStack().getTagCompound() != null && getItemStack().getTagCompound().hasKey("inventoryId"))
 					return;

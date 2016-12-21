@@ -28,6 +28,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import net.malisis.core.item.MalisisItem;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Point;
@@ -58,12 +64,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import org.apache.commons.lang3.tuple.Triple;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * @author Ordinastie
@@ -151,7 +151,7 @@ public class RWLPointer extends MalisisItem
 		if (state == Blocks.AIR.getDefaultState())
 			return;
 
-		floodFill = FloodFill.builder(world)
+		floodFill = FloodFill	.builder(world)
 								.from(result.getBlockPos())
 								.processIf(this::shouldParse)
 								.onProcess(this::process)
@@ -174,10 +174,10 @@ public class RWLPointer extends MalisisItem
 		{
 			blockColors.put(Blocks.COAL_ORE, 0x090909);
 			markedBlocks.add(pos);
-			ModMessageManager.message("mdt",
-					"markBlocks",
-					ImmutableSet.copyOf(markedBlocks),
-					(Function<IBlockState, Integer>) this::colorGetter);
+			ModMessageManager.message(	"mdt",
+										"markBlocks",
+										ImmutableSet.copyOf(markedBlocks),
+										(Function<IBlockState, Integer>) this::colorGetter);
 		}
 	}
 
@@ -187,8 +187,9 @@ public class RWLPointer extends MalisisItem
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
+		ItemStack itemStack = player.getHeldItem(hand);
 		//renderer not accessible server-side
 		if (!world.isRemote)
 			return new ActionResult<>(EnumActionResult.FAIL, itemStack);

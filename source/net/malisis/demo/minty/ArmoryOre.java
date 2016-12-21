@@ -1,7 +1,5 @@
 package net.malisis.demo.minty;
 
-import java.util.List;
-
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.renderer.MalisisRendered;
@@ -17,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,7 +26,10 @@ public class ArmoryOre extends MalisisBlock
 	//oreTypes hold their respective infos
 	public static enum OreType implements IMSerializable
 	{
-		Lava(0xFFFFFF, 200), Azurite(0x123456, 225), Crimsonite(0xFF0000, 150), Titanium(0xFFFFFF, 0);
+		Lava(0xFFFFFF, 200),
+		Azurite(0x123456, 225),
+		Crimsonite(0xFF0000, 150),
+		Titanium(0xFFFFFF, 0);
 
 		int color;
 		int brightness;
@@ -90,20 +92,17 @@ public class ArmoryOre extends MalisisBlock
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
 	{
 		//the block has 2 layers : the overlay has transparent parts to it needs to be drawn on the CUTOUT layer
 		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		for (int i = 0; i < 4; i++)
-		{
 			list.add(new ItemStack(item, 1, i));
-		}
 	}
 }
