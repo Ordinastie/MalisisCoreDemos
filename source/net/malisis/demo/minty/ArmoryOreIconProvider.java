@@ -59,9 +59,9 @@ public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.Or
 	public Icon getIcon(OreType oreType)
 	{
 		//if base icon : use current default icon (glitter)
-		//special case for Lava where it uses regular lava
+		//special case for Obsidium where it uses regular lava
 		if (!isOverlay)
-			return oreType == OreType.Lava ? lavaIcon : getIcon();
+			return oreType == OreType.Obsidium ? lavaIcon : getIcon();
 
 		return super.getIcon(oreType);
 	}

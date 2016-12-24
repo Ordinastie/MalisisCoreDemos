@@ -43,16 +43,11 @@ public class MintyOreRenderer extends MalisisRenderer<TileEntity>
 		//ISBRH already has the tessellator translated, TESR has the openGl states set up etc..
 		//this.block holds the block instance, this.pos, the coordinates, this.titeEntity the TE
 
-		ArmoryOre block = (ArmoryOre) this.block;
-		OreType oreType = null;
-		if (renderType == RenderType.ITEM)
-			oreType = ((ItemBlockArmoryOre) itemStack.getItem()).getOreType(itemStack);
-		if (renderType == RenderType.BLOCK)
-			oreType = blockState.getValue(ArmoryOre.ORE_TYPE);
-		else
-			return; //never true
+		//when can use blockState field even when rendering the item because it is a MalisisItemBlock
+		//and it knows how to get the state from the ItemStack
+		OreType oreType = blockState.getValue(ArmoryOre.ORE_TYPE);
 
-		//Note : rp is RenderParameters and hold all the parameters available to tweak the rendering
+		//Note : rp is RenderParameters and holds all the parameters available to tweak the rendering
 		//reset the parameters so you don't use unwanted bleeding data
 		rp.reset();
 

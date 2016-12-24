@@ -75,7 +75,8 @@ public class RWLPointer extends MalisisItem
 	{
 		BLOCKHIGHLIGHT,
 		RAYTRACE,
-		FLOODFILL;
+		FLOODFILL,
+		SHAPETEST;
 
 		public Mode next()
 		{
@@ -222,6 +223,11 @@ public class RWLPointer extends MalisisItem
 				break;
 			case FLOODFILL:
 				floodFill();
+			case SHAPETEST:
+			{
+				Set<BlockPos> blocks = ShapeTest.makeEllipse(20, 15);
+				ModMessageManager.message("mdt", "markBlocks", blocks, 0xCC3333);
+			}
 			default:
 				break;
 		}

@@ -18,8 +18,24 @@ tile.lavapool.name=Lava Pool Demo
 tile.finite_lava.name=Finite Lava
 tile.collisionBlock.name=Collision Demo
 tile.rtBlock.name=RayTrace Demo
+tile.blockSlabDemo.name=Slab Demo
+tile.blockWall.name=Wall Demo
+tile.blockStairs.name=Stairs Demo
+tile.blockPower.name=Power Demo
+tile.blockPaneDemo=Pane Demo
+tile.blockShapeDemo.name=Shape Demo
+tile.chestDemo.name=Chest Demo (Model/Animation)
+
+
+tile.ArmoryOre.obsidium.name=Obsidium
+tile.ArmoryOre.azurite.name=Azurite
+tile.ArmoryOre.crimsonite.name=Crimsonite
+tile.ArmoryOre.titanium.name=Titanium
 
 item.demoCard.name=Card (Multiple Inventories Demo)
 item.font_pointer.name=Pointer (Font Demo)
 item.rwl_pointer.name=Pointer (RWL Demo)
 
+slider.red=Red :
+slider.green=Green :
+slider.blue=Blue :

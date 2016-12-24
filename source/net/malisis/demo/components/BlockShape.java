@@ -44,6 +44,7 @@ public class BlockShape extends MalisisBlock
 		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName(type + "ShapeDemo");
+		setUnlocalizedName("blockShapeDemo");
 		setTexture(Blocks.LAPIS_BLOCK);
 
 		switch (type)

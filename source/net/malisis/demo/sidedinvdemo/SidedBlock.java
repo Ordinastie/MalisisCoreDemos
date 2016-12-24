@@ -29,7 +29,6 @@ import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.block.component.DirectionalComponent;
 import net.malisis.core.inventory.ISidedInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
-import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.demo.MalisisDemos;
@@ -64,10 +63,10 @@ public class SidedBlock extends MalisisBlock implements ITileEntityProvider
 
 		if (MalisisCore.isClient())
 		{
-			addComponent(IIconProvider	.create(Icon.from(MalisisDemos.modid + ":blocks/sidedinv"))
-										.withSide(EnumFacing.WEST, Icon.from(MalisisDemos.modid + ":blocks/sidedingots"))
-										.withSide(EnumFacing.EAST, Icon.from(MalisisDemos.modid + ":blocks/sidedstones"))
-										.withSide(EnumFacing.UP, Icon.from(MalisisDemos.modid + ":blocks/sidedtriage"))
+			addComponent(IIconProvider	.create(MalisisDemos.modid + ":blocks/", "sidedinv")
+										.withSide(EnumFacing.WEST, "sidedingots")
+										.withSide(EnumFacing.EAST, "sidedstones")
+										.withSide(EnumFacing.UP, "sidedtriage")
 										.build());
 		}
 	}

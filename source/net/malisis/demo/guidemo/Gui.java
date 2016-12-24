@@ -12,7 +12,6 @@ import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
-import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
@@ -293,20 +292,27 @@ public class Gui extends MalisisGui
 	{
 		//Sliders with event caught to change the panel background color
 		Converter<Float, Integer> colorConv = Converter.from(f -> (int) (f * 255), i -> (float) i / 255);
-		sliderRed = new UISlider<>(this, 150, colorConv, "Red : %d").setPosition(0, 0).setValue(255).setScrollStep(1 / 255F).register(this);
-		sliderGreen = new UISlider<>(this, 150, colorConv, "Green : %d").setPosition(0, 21)
-																		.setValue(255)
-																		.setScrollStep(1 / 255F)
-																		.register(this);
-		sliderBlue = new UISlider<>(this, 150, colorConv, "Blue : %d")	.setPosition(0, 42)
-																		.setValue(255)
-																		.setScrollStep(1 / 255F)
-																		.register(this);
+		sliderRed = new UISlider<>(this, 150, colorConv, "{slider.red} %d")	.setPosition(0, 0)
+																			.setSize(150, 12)
+																			.setValue(255)
+																			.setScrollStep(1 / 255F)
+																			.register(this);
+		sliderGreen = new UISlider<>(this, 150, colorConv, "{slider.green} %d")	.setPosition(0, 21)
+																				.setSize(150, 12)
+																				.setValue(255)
+																				.setScrollStep(1 / 255F)
+																				.register(this);
+		sliderBlue = new UISlider<>(this, 150, colorConv, "{slider.blue} %d")	.setPosition(0, 42)
+																				.setSize(150, 12)
+																				.setValue(255)
+																				.setScrollStep(1 / 255F)
+																				.register(this);
 		sliderColorLabel = new UILabel(this, "Color : 0xFFFFFF").setPosition(160, 25);
 
 		//Slider with custom values with days of the week
 		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[(int) (f * 6)], d -> (float) d.ordinal() / 6);
-		UISlider<DayOfWeek> sliderDay = new UISlider<>(this, 70, dayConv, "%s")	.setPosition(0, 84, Anchor.CENTER)
+		UISlider<DayOfWeek> sliderDay = new UISlider<>(this, 70, dayConv, "%s")	.setPosition(0, 64, Anchor.CENTER)
+																				.setSize(240, 40)
 																				.setValue(LocalDate.now().getDayOfWeek())
 																				.setScrollStep(1 / 6F);
 
@@ -351,26 +357,20 @@ public class Gui extends MalisisGui
 		tabSlider.setBgColor(color);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private UIComponent<?> debug()
 	{
-		UIBackgroundContainer cont = new UIBackgroundContainer(this, "test", 300, 200);
-		cont.setAnchor(Anchor.MIDDLE | Anchor.CENTER);
-		cont.setBottomColor(0x666699);
-		cont.setPadding(4, 4);
-		cont.setBorder(0, 2, 255);
+		UIContainer<?> c = new UIContainer<>(this).setName("top");
+		UIContainer<?> container = new UIContainer<>(this).setSize(-50, -50).setPosition(25, 35).setName("scrolled");
+		new UIScrollBar(this, (UIContainer) container, UIScrollBar.Type.VERTICAL);
 
-		UIBackgroundContainer inner = new UIBackgroundContainer(this, "inner", 100, 100);
-		inner.setAnchor(Anchor.MIDDLE | Anchor.CENTER);
-		inner.setLeftColor(0xAA6633);
-		inner.setBorder(0x990000, 1, 255);
+		for (int i = 1; i <= 8; i++)
+		{
+			container.add(new UIButton(this, "Button " + i).setPosition(0, i * 25).setSize(20, 20));
+		}
 
-		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, Icon.from(Items.EMERALD));
-		img.setPosition(20, 20);
-		img.setSize(32, 32);
-		inner.add(img);
-
-		cont.add(inner);
-		return cont;
+		c.add(container);
+		return c;
 	}
 
 	@Override
