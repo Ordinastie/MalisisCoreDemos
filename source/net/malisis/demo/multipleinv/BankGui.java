@@ -65,7 +65,7 @@ public class BankGui extends MalisisGui
 										62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
 
 		int i = 0;
-		for (MalisisSlot slot : inventoryContainer.getInventory(1).getSlots())
+		for (MalisisSlot s : inventoryContainer.getInventory(0).getSlots())
 		{
 			UIPanel panel = new UIPanel(this, UIPlayerInventory.INVENTORY_WIDTH + 29, 62);
 			panel.setPosition(0, 10 + i++ * 65);
@@ -73,6 +73,7 @@ public class BankGui extends MalisisGui
 			UIContainer<?> uicont = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH, UIComponent.INHERITED);
 			uicont.setPosition(0, 0, Anchor.RIGHT);
 
+			CardSlot slot = (CardSlot) s;
 			UISlot uislot = new UISlot(this, slot);
 			slot.register(this);
 
@@ -81,7 +82,19 @@ public class BankGui extends MalisisGui
 
 			window.add(panel);
 
-			slotCont.put((CardSlot) slot, uicont);
+			slotCont.put(slot, uicont);
+
+			MalisisInventory inv = slot.getCardInventory();
+			if (inv != null)
+			{
+
+				for (int j = 0; j < inv.getSize(); j++)
+				{
+					uislot = new UISlot(this, inv.getSlot(j));
+					uislot.setPosition((j % 9) * 18, (j / 9) * 18);
+					uicont.add(uislot);
+				}
+			}
 		}
 
 		UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
