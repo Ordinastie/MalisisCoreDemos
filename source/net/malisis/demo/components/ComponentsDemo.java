@@ -45,6 +45,7 @@ public class ComponentsDemo implements IDemo
 	private BlockShape slopeShape;
 	private BlockShape cornerShape;
 	private BlockShape slopedCornerShape;
+	private BlockPods pods;
 
 	@Override
 	public void preInit()
@@ -80,6 +81,9 @@ public class ComponentsDemo implements IDemo
 
 		slopedCornerShape = new BlockShape("slopedCorner");
 		slopedCornerShape.register();
+
+		pods = new BlockPods();
+		pods.register();
 	}
 
 	@Override
