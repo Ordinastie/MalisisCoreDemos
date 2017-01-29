@@ -38,8 +38,7 @@ import net.malisis.core.block.component.PowerComponent.InteractionType;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.component.ModelComponent;
-import net.malisis.core.renderer.icon.Icon;
-import net.malisis.core.renderer.icon.provider.ModelIconProvider;
+import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -75,9 +74,8 @@ public class BlockPods extends MalisisBlock
 
 		if (MalisisCore.isClient())
 		{
-			ModelIconProvider mip = new ModelIconProvider(Icon.from(MalisisDemos.modid + ":blocks/pods"));
-			mip.bind("foot", Icon.from(MalisisDemos.modid + ":blocks/pod_base"));
-			addComponent(new ModelComponent(MalisisDemos.modid + ":models/pods.obj", mip, this::isPodVisible));
+			addComponent(IIconProvider.create(MalisisDemos.modid + ":blocks/", "pods").forShape("foot", "pod_base").build());
+			addComponent(new ModelComponent(MalisisDemos.modid + ":models/pods.obj", this::isPodVisible));
 		}
 	}
 
