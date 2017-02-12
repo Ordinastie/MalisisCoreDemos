@@ -51,7 +51,7 @@ public class TabInvMessage implements IMalisisMessageHandler<TabInvMessage.Packe
 	public void process(Packet message, MessageContext ctx)
 	{
 		//get open container and check it's one of ours
-		Container c = ctx.getServerHandler().playerEntity.openContainer;
+		Container c = IMalisisMessageHandler.getPlayer(ctx).openContainer;
 		if (!(c instanceof MalisisInventoryContainer))
 			return;
 

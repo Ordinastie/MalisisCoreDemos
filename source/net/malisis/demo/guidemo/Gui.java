@@ -41,12 +41,12 @@ import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.VanillaIcon;
-import net.malisis.demo.MalisisDemos;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -55,8 +55,8 @@ import net.minecraft.util.text.TextFormatting;
 public class Gui extends MalisisGui
 {
 	private static MalisisFont fontMC = MalisisFont.minecraftFont;
-	private static MalisisFont fontBS = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf"));
-	private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
+	//private static MalisisFont fontBS = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf"));
+	//private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
 	private UIPanel panel;
 	private UITab tabSlider;
 	private UIProgressBar bar;
@@ -142,11 +142,11 @@ public class Gui extends MalisisGui
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
-		rbMC.setFont(fontMC);
+		//rbMC.setFont(fontMC);
 		rbBS = new UIRadioButton(this, "newRb", "Brush Script").setPosition(rbMC.getWidth() + 10, 14);
-		rbBS.setFont(fontBS);
+		//rbBS.setFont(fontBS);
 		rbH = new UIRadioButton(this, "newRb", "Hobo").setPosition(rbMC.getWidth() + rbBS.getWidth() + 20, 14);
-		rbH.setFont(fontH);
+		//rbH.setFont(fontH);
 
 		//Textfield
 		UITextField tf = new UITextField(this, "This is a textfield. You can type in it.");
@@ -205,8 +205,11 @@ public class Gui extends MalisisGui
 
 		//Create 5 buttons with itemStack as images
 		int i = 0;
-		for (Item item : new Item[] { Items.COOKED_PORKCHOP, Items.COOKED_BEEF, Items.COOKED_MUTTON, Items.COOKED_CHICKEN,
-				Item.getItemFromBlock(Blocks.GLASS_PANE) })
+		for (Item item : new Item[] {	Items.COOKED_PORKCHOP,
+										Items.COOKED_BEEF,
+										Items.COOKED_MUTTON,
+										Items.COOKED_CHICKEN,
+										Item.getItemFromBlock(Blocks.GLASS_PANE) })
 		{
 			UIImage img = new UIImage(this, new ItemStack(item));
 			UIButton btnImage = new UIButton(this, img).setPosition(0, i++ * 19, Anchor.RIGHT);
@@ -357,19 +360,25 @@ public class Gui extends MalisisGui
 		tabSlider.setBgColor(color);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private UIComponent<?> debug()
 	{
+		NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack> create();
+		CreativeTabs.DECORATIONS.displayAllRelevantItems(itemStacks);
+
 		UIContainer<?> c = new UIContainer<>(this).setName("top");
-		UIContainer<?> container = new UIContainer<>(this).setSize(-50, -50).setPosition(25, 35).setName("scrolled");
-		new UIScrollBar(this, (UIContainer) container, UIScrollBar.Type.VERTICAL);
-
-		for (int i = 1; i <= 8; i++)
+		int x = 0;
+		int y = 0;
+		for (ItemStack stack : itemStacks)
 		{
-			container.add(new UIButton(this, "Button " + i).setPosition(0, i * 25).setSize(20, 20));
+			UIImage image = new UIImage(this, stack).setPosition(x, y);
+			c.add(image);
+			x += 18;
+			if (x > 180)
+			{
+				x = 0;
+				y += 18;
+			}
 		}
-
-		c.add(container);
 		return c;
 	}
 
