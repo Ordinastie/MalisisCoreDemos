@@ -30,7 +30,7 @@ import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
-import net.malisis.core.renderer.icon.VanillaIcon;
+import net.malisis.core.renderer.icon.Icon;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -72,7 +72,7 @@ public class CollisionBlockRenderer extends MalisisRenderer<TileEntity>
 		rp.alpha.set(150);
 		rp.interpolateUV.set(false);
 		//use the planks icon
-		rp.icon.set(new VanillaIcon(Blocks.PLANKS));
+		rp.icon.set(Icon.from(Blocks.PLANKS));
 
 		//draw each aabb making the stairs except the first one
 		for (int i = 1; i < aabbs.length; i++)

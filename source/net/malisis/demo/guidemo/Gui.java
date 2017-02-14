@@ -40,7 +40,6 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
-import net.malisis.core.renderer.icon.VanillaIcon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -221,7 +220,7 @@ public class Gui extends MalisisGui
 
 	private UIContainer<?> panel2()
 	{
-		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, new VanillaIcon(Items.DIAMOND_HORSE_ARMOR)).setPosition(0, 0);
+		UIImage img = new UIImage(this, MalisisGui.BLOCK_TEXTURE, Icon.from(Items.DIAMOND_HORSE_ARMOR)).setPosition(0, 0);
 		//Colored Label
 		UILabel label1 = new UILabel(this, TextFormatting.UNDERLINE.toString() + TextFormatting.YELLOW + "Colored label!").setPosition(	20,
 																																		0);

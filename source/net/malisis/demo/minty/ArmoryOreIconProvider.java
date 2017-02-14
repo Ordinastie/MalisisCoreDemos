@@ -25,7 +25,6 @@
 package net.malisis.demo.minty;
 
 import net.malisis.core.renderer.icon.Icon;
-import net.malisis.core.renderer.icon.VanillaIcon;
 import net.malisis.core.renderer.icon.provider.PropertyEnumIconProvider;
 import net.malisis.demo.MalisisDemos;
 import net.malisis.demo.minty.ArmoryOre.OreType;
@@ -40,14 +39,14 @@ import net.minecraft.init.Blocks;
  */
 public class ArmoryOreIconProvider extends PropertyEnumIconProvider<ArmoryOre.OreType>
 {
-	private VanillaIcon lavaIcon = new VanillaIcon(Blocks.LAVA);
+	private Icon lavaIcon = Icon.from(Blocks.LAVA);
 	private boolean isOverlay;
 
 	public ArmoryOreIconProvider()
 	{
 		super(ArmoryOre.ORE_TYPE, ArmoryOre.OreType.class, MalisisDemos.modid + ":blocks/armoryore_ore_glitter");
 		for (OreType oreType : OreType.values())
-			setIcon(oreType, new Icon(MalisisDemos.modid + ":blocks/armoryore_" + oreType.getName() + "_overlay"));
+			setIcon(oreType, Icon.from(MalisisDemos.modid + ":blocks/armoryore_" + oreType.getName() + "_overlay"));
 	}
 
 	public void setOverlay(boolean isOverlay)
