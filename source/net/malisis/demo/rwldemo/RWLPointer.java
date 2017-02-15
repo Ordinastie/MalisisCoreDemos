@@ -28,6 +28,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
+import net.malisis.core.MalisisCore;
 import net.malisis.core.item.MalisisItem;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.Point;
@@ -59,12 +66,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import org.apache.commons.lang3.tuple.Triple;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
 /**
  * @author Ordinastie
  *
@@ -75,7 +76,8 @@ public class RWLPointer extends MalisisItem
 	{
 		BLOCKHIGHLIGHT,
 		RAYTRACE,
-		FLOODFILL;
+		FLOODFILL,
+		SHAPETEST;
 
 		public Mode next()
 		{
@@ -96,7 +98,8 @@ public class RWLPointer extends MalisisItem
 		//use the wooden sword icon
 		setTexture(Items.WOODEN_SWORD);
 
-		MinecraftForge.EVENT_BUS.register(this);
+		if (MalisisCore.isClient())
+			MinecraftForge.EVENT_BUS.register(this);
 
 		blockColors.put(Blocks.COAL_ORE, 0x333333);
 		blockColors.put(Blocks.IRON_ORE, 0x999999);
@@ -151,7 +154,7 @@ public class RWLPointer extends MalisisItem
 		if (state == Blocks.AIR.getDefaultState())
 			return;
 
-		floodFill = FloodFill.builder(world)
+		floodFill = FloodFill	.builder(world)
 								.from(result.getBlockPos())
 								.processIf(this::shouldParse)
 								.onProcess(this::process)
@@ -174,10 +177,10 @@ public class RWLPointer extends MalisisItem
 		{
 			blockColors.put(Blocks.COAL_ORE, 0x090909);
 			markedBlocks.add(pos);
-			ModMessageManager.message("mdt",
-					"markBlocks",
-					ImmutableSet.copyOf(markedBlocks),
-					(Function<IBlockState, Integer>) this::colorGetter);
+			ModMessageManager.message(	"mdt",
+										"markBlocks",
+										ImmutableSet.copyOf(markedBlocks),
+										(Function<IBlockState, Integer>) this::colorGetter);
 		}
 	}
 
@@ -221,6 +224,11 @@ public class RWLPointer extends MalisisItem
 				break;
 			case FLOODFILL:
 				floodFill();
+			case SHAPETEST:
+			{
+				Set<BlockPos> blocks = ShapeTest.makeEllipse(30, 15);
+				ModMessageManager.message("mdt", "markBlocks", blocks, 0xCC3333);
+			}
 			default:
 				break;
 		}
