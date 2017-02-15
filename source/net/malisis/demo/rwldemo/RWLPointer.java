@@ -223,6 +223,7 @@ public class RWLPointer extends MalisisItem
 				break;
 			case FLOODFILL:
 				floodFill();
+				break;
 			case SHAPETEST:
 			{
 				Set<BlockPos> blocks = ShapeTest.makeEllipse(20, 15);
