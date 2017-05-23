@@ -109,7 +109,7 @@ public class BlockPods extends MalisisBlock
 	}
 
 	@SideOnly(Side.CLIENT)
-	private boolean isPodVisible(MalisisRenderer<TileEntity> renderer, String name)
+	private boolean isPodVisible(MalisisRenderer<? extends TileEntity> renderer, String name)
 	{
 		if (renderer.getRenderType() != RenderType.BLOCK)
 			return true;
