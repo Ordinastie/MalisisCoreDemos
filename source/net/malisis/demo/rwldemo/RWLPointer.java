@@ -122,7 +122,7 @@ public class RWLPointer extends MalisisItem
 		EntityPlayer player = Utils.getClientPlayer();
 		Vec3d look = player.getLook(0);
 		Vec3d pos = player.getPositionEyes(0);
-		Point start = new Point(pos.xCoord, pos.yCoord, pos.zCoord);
+		Point start = new Point(pos.x, pos.y, pos.z);
 
 		Ray ray = new Ray(start, new Vector(look));
 		RaytraceWorld rayTrace = new RaytraceWorld(Utils.getClientWorld(), ray);
@@ -136,7 +136,7 @@ public class RWLPointer extends MalisisItem
 		Point hit = null;
 		//set the hit point if necessary
 		if (result.typeOfHit == RayTraceResult.Type.BLOCK)
-			hit = new Point(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
+			hit = new Point(result.hitVec.x, result.hitVec.y, result.hitVec.z);
 
 		raytraceInfos = Triple.of(start, end, hit);
 	}
