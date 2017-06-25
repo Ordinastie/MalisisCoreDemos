@@ -26,8 +26,11 @@ package net.malisis.demo.fontdemo;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.malisis.core.item.MalisisItem;
 import net.malisis.demo.MalisisDemos;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -66,7 +69,7 @@ public class FontPointer extends MalisisItem
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
 	{
 		tooltip.add("Right click to start font shape animation.");
 	}
