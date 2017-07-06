@@ -24,7 +24,6 @@
 
 package net.malisis.demo.components;
 
-import net.malisis.core.block.component.SlabComponent;
 import net.malisis.demo.IDemo;
 
 /**
@@ -58,8 +57,7 @@ public class ComponentsDemo implements IDemo
 		blockColor.register();
 
 		blockSlab = new BlockSlab();
-		blockDoubleSlab = new BlockSlab();
-		new SlabComponent(blockSlab, blockDoubleSlab).register();
+		blockSlab.register();
 
 		blockWall = new BlockWall();
 		blockWall.register();

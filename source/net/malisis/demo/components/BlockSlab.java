@@ -26,6 +26,7 @@ package net.malisis.demo.components;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.MalisisBlock;
+import net.malisis.core.block.component.SlabComponent;
 import net.malisis.core.renderer.icon.Icon;
 import net.malisis.core.renderer.icon.provider.IIconProvider;
 import net.malisis.demo.MalisisDemos;
@@ -43,6 +44,8 @@ public class BlockSlab extends MalisisBlock
 		super(Material.GROUND);
 		setCreativeTab(MalisisDemos.tabDemos);
 		setName("blockSlabDemo");
+
+		addComponent(new SlabComponent());
 
 		if (MalisisCore.isClient())
 		{
