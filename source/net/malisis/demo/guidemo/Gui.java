@@ -40,12 +40,9 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -79,7 +76,9 @@ public class Gui extends MalisisGui
 		boolean debug = false;
 		if (debug)
 		{
-			addToScreen(debug());
+			UIComponent<?> comp = debug();
+			if (comp != null)
+				addToScreen(comp);
 			return;
 		}
 
@@ -135,16 +134,19 @@ public class Gui extends MalisisGui
 	private UIContainer<?> panel1()
 	{
 		//CheckBox
-		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(	this,
-																					TextFormatting.AQUA + "with delayed a tooltip!",
-																					5));
+		cb = new UICheckBox(this,
+							"CheckBox with label").setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
+		cb.register(this);
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
+		rbMC.setTooltip("Minecraft font");
 		//rbMC.setFont(fontMC);
 		rbBS = new UIRadioButton(this, "newRb", "Brush Script").setPosition(rbMC.getWidth() + 10, 14);
+		rbBS.setTooltip("Brush Script");
 		//rbBS.setFont(fontBS);
 		rbH = new UIRadioButton(this, "newRb", "Hobo").setPosition(rbMC.getWidth() + rbBS.getWidth() + 20, 14);
+		rbH.setTooltip("Brush Script");
 		//rbH.setFont(fontH);
 
 		//Textfield
@@ -204,11 +206,7 @@ public class Gui extends MalisisGui
 
 		//Create 5 buttons with itemStack as images
 		int i = 0;
-		for (Item item : new Item[] {	Items.COOKED_PORKCHOP,
-										Items.COOKED_BEEF,
-										Items.COOKED_MUTTON,
-										Items.COOKED_CHICKEN,
-										Item.getItemFromBlock(Blocks.GLASS_PANE) })
+		for (Item item : new Item[] { Items.BED, Items.OAK_DOOR, Items.IRON_DOOR, Items.ACACIA_DOOR, Items.REEDS })
 		{
 			UIImage img = new UIImage(this, new ItemStack(item));
 			UIButton btnImage = new UIButton(this, img).setPosition(0, i++ * 19, Anchor.RIGHT);
@@ -312,9 +310,9 @@ public class Gui extends MalisisGui
 		sliderColorLabel = new UILabel(this, "Color : 0xFFFFFF").setPosition(160, 25);
 
 		//Slider with custom values with days of the week
-		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[(int) (f * 6)], d -> (float) d.ordinal() / 6);
+		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[Math.round(f * 6)], d -> (float) d.ordinal() / 6);
 		UISlider<DayOfWeek> sliderDay = new UISlider<>(this, 70, dayConv, "%s")	.setPosition(0, 64, Anchor.CENTER)
-																				.setSize(240, 40)
+																				.setSize(250, 40)
 																				.setValue(LocalDate.now().getDayOfWeek())
 																				.setScrollStep(1 / 6F);
 
@@ -359,26 +357,27 @@ public class Gui extends MalisisGui
 		tabSlider.setBgColor(color);
 	}
 
+	@Subscribe
+	public void onCheckboxChanged(UICheckBox.CheckEvent event)
+	{
+		if (event.getComponent() == cb)
+		{
+			rbMC.setSelected();
+			rbBS.setDisabled(event.isChecked());
+			rbH.setDisabled(event.isChecked());
+		}
+	}
+
 	private UIComponent<?> debug()
 	{
-		NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack> create();
-		CreativeTabs.DECORATIONS.displayAllRelevantItems(itemStacks);
-
-		UIContainer<?> c = new UIContainer<>(this).setName("top");
-		int x = 0;
-		int y = 0;
-		for (ItemStack stack : itemStacks)
+		for (int i = 0; i < 6; i++)
 		{
-			UIImage image = new UIImage(this, stack).setPosition(x, y);
-			c.add(image);
-			x += 18;
-			if (x > 180)
-			{
-				x = 0;
-				y += 18;
-			}
+			UIWindow w = new UIWindow(this, 150, 40).setPosition(0, i * 45, Anchor.TOP | Anchor.CENTER);
+			if (i % 2 == 0)
+				w.setAlpha(150);
+			addToScreen(w);
 		}
-		return c;
+		return null;
 	}
 
 	@Override

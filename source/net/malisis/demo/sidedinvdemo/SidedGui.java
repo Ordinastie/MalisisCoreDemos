@@ -24,6 +24,8 @@
 
 package net.malisis.demo.sidedinvdemo;
 
+import org.lwjgl.opengl.GL11;
+
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.client.gui.MalisisGui;
@@ -32,8 +34,6 @@ import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
@@ -126,7 +126,7 @@ public class SidedGui extends MalisisGui
 		{
 			//draw a filled squared that'll represent the progress
 			shape.resetState();
-			shape.setSize((int) (width * progress), height - 2);
+			shape.setSize((int) (getWidth() * progress), getHeight() - 2);
 			shape.translate(0, 1);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			rp.colorMultiplier.set(0x008800);
