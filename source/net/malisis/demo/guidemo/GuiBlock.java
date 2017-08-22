@@ -9,11 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 {
@@ -29,6 +31,12 @@ public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		if (!world.isRemote)
+			for (Item item : ForgeRegistries.ITEMS)
+			{
+				System.out.println(ForgeRegistries.ITEMS.getKey(item) + " > " + item.getClass() + " == " + item.getRegistryName());
+			}
+
 		//no action done on the client
 		//because the TE has an inventory, it needs to be opened on the server, which then automatically opens the GUI given by the TE on the client
 		if (world.isRemote)

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import com.google.common.base.Converter;
+import com.google.common.collect.FluentIterable;
 import com.google.common.eventbus.Subscribe;
 
 import net.malisis.core.client.gui.Anchor;
@@ -40,12 +41,10 @@ import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -76,7 +75,7 @@ public class Gui extends MalisisGui
 		//allow contents to be drawn outside of the window's borders
 		window.setClipContent(false);
 
-		boolean debug = false;
+		boolean debug = true;
 		if (debug)
 		{
 			addToScreen(debug());
@@ -135,9 +134,8 @@ public class Gui extends MalisisGui
 	private UIContainer<?> panel1()
 	{
 		//CheckBox
-		cb = new UICheckBox(this, "CheckBox with label").setTooltip(new UITooltip(	this,
-																					TextFormatting.AQUA + "with delayed a tooltip!",
-																					5));
+		cb = new UICheckBox(this,
+							"CheckBox with label").setTooltip(new UITooltip(this, TextFormatting.AQUA + "with delayed a tooltip!", 5));
 
 		//RadioButton with custom fonts
 		rbMC = new UIRadioButton(this, "newRb", "Minecraft font").setPosition(0, 14).setSelected();
@@ -361,24 +359,14 @@ public class Gui extends MalisisGui
 
 	private UIComponent<?> debug()
 	{
-		NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack> create();
-		CreativeTabs.DECORATIONS.displayAllRelevantItems(itemStacks);
+		String str = "Lorem ipsum dolor sit amet, consectetur adipiscingelit. Nam sollicitudin varius quam, vel dignissim felis lobortis quis. Etiam iaculis fringilla accumsan.";// Donec finibus risus in nunc consectetur malesuada. Donec hendrerit elit eu nunc blandit laoreet. Pellentesque et nisl quam. Sed tincidunt neque sed hendrerit fringilla. Sed convallis risus tortor, ut consectetur nulla efficitur ac. Sed luctus sagittis nisi, porttitor ornare odio. Nullam dolor ex, porttitor quis elementum vitae, mollis vitae mi. Etiam condimentum mi at magna gravida, sit amet pulvinar quam porttitor. Donec vulputate elementum ex, ac suscipit justo dapibus ac. Cras fermentum mi arcu, ac eleifend sem efficitur eu. Quisque eu cursus erat, nec pharetra dolor. Vivamus sit amet venenatis est, nec dignissim tortor. Mauris vulputate nibh vitae ante aliquet tristique. Phasellus at rhoncus elit. Aenean molestie tristique ante in efficitur. Integer at leo metus. Curabitur quis ex quis ante dictum congue ac eu nunc. Nam at lacinia mauris. Curabitur fringilla libero laoreet, maximus enim eget, tempus est. Maecenas tristique feugiat ipsum, in finibus turpis venenatis tincidunt.  Nullam nec cursus mauris. Donec sed enim et nunc mattis bibendum eu sed purus. Nam est orci, laoreet ac quam ut, mollis efficitur turpis. Ut velit tellus, efficitur vel eros nec, luctus dictum erat. Cras dui ante, scelerisque vitae ante a, commodo lacinia elit. Sed sollicitudin sollicitudin eleifend. Aenean risus dolor, mollis vitae condimentum ac, maximus eget erat. Donec maximus et nunc sed sagittis. Maecenas feugiat aliquam sapien, a euismod nisi maximus at. Cras eget volutpat massa. Nam condimentum libero a quam commodo luctus quis quis mauris. Fusce pulvinar pellentesque turpis a ornare. Aliquam vehicula bibendum nisl, eu accumsan tortor eleifend eget. Nulla posuere ullamcorper porttitor. Sed aliquet dignissim erat, id placerat nulla scelerisque sit amet. Morbi id nisl porta, hendrerit elit at, placerat magna. Nulla ultrices, purus ullamcorper molestie aliquam, dui ex tincidunt enim, ut molestie lacus neque non nunc. Vivamus sed odio vitae nulla viverra efficitur. Aenean non lectus vitae felis vestibulum faucibus. Praesent justo nunc, feugiat ut nunc sed, pulvinar feugiat enim. Sed metus velit, elementum et elementum sit amet, finibus eu elit. Pellentesque consectetur lacinia malesuada. Sed aliquam erat dolor, quis sodales arcu varius quis. Sed at libero eu erat mattis pulvinar mattis ut odio. Vivamus facilisis lectus nec arcu hendrerit, a rhoncus elit pretium. Donec posuere, odio id blandit dictum, justo eros malesuada nunc, in elementum mi enim in ex. Duis sed placerat mi. Ut convallis erat justo, eu ultrices eros commodo sit amet. Cras efficitur augue in lectus imperdiet, ut imperdiet quam luctus. Sed pulvinar nisl tincidunt orci mattis eleifend. Nunc id erat sed erat placerat sodales. Donec fermentum, ante semper viverra convallis, erat nunc rutrum erat, at luctus lacus orci a libero. In nisl felis, rhoncus amet.";
+		UIWindow window = new UIWindow(this, 200, 100);
 
-		UIContainer<?> c = new UIContainer<>(this).setName("top");
-		int x = 0;
-		int y = 0;
-		for (ItemStack stack : itemStacks)
-		{
-			UIImage image = new UIImage(this, stack).setPosition(x, y);
-			c.add(image);
-			x += 18;
-			if (x > 180)
-			{
-				x = 0;
-				y += 18;
-			}
-		}
-		return c;
+		UISelect<String> select = new UISelect<>(this, 100, FluentIterable.from(str.split(" ")));
+		select.maxDisplayedOptions(10);
+		window.add(select);
+
+		return window;
 	}
 
 	@Override

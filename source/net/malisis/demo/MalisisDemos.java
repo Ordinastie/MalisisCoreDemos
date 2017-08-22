@@ -32,6 +32,7 @@ import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
 import net.malisis.demo.almura.Almura;
 import net.malisis.demo.blocklistener.BlockListenerDemo;
+import net.malisis.demo.clientnotif.ClientNotifDemo;
 import net.malisis.demo.collision.Collision;
 import net.malisis.demo.components.ComponentsDemo;
 import net.malisis.demo.connected.Connected;
@@ -105,6 +106,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new FontDemo());
 		demos.add(new LavaPoolDemo());
 		demos.add(new SyncDemo());
+		demos.add(new ClientNotifDemo());
 
 		demos.add(new Almura());
 	}
