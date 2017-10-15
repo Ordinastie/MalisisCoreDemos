@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Ordinastie
+ * Copyright (c) 2017 Ordinastie
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,70 +22,50 @@
  * THE SOFTWARE.
  */
 
-package net.malisis.demo.components;
+package net.malisis.demo.door;
 
+import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.Maps;
+
+import net.malisis.core.util.modmessage.ModMessageManager;
 import net.malisis.demo.IDemo;
+import net.malisis.demo.MalisisDemos;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.SoundType;
+import net.minecraft.item.ItemDoor;
 
 /**
- * This demo show how to make a block that can have different directions.
- *
  * @author Ordinastie
  *
  */
-public class ComponentsDemo implements IDemo
+public class DoorDemo implements IDemo
 {
-	private BlockDir blockDir;
-	private BlockColor blockColor;
-	private BlockSlab blockSlab;
-	private BlockWall blockWall;
-	private BlockStairs blockStairs;
-	private BlockPower blockPower;
-	private BlockPane blockPane;
-	private BlockShape slopeShape;
-	private BlockShape cornerShape;
-	private BlockShape slopedCornerShape;
-	private BlockPods pods;
+	public BlockDoor door;
+	public ItemDoor itemDoor;
 
 	@Override
 	public void preInit()
 	{
-		//create and register the blocks
-		blockDir = new BlockDir();
-		blockDir.register();
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("name", "doorCompatTest");
+		map.put("modid", MalisisDemos.modid);
+		map.put("textureName", "laboratory_door");
+		map.put("hardness", 1.0F);
+		map.put("soundType", SoundType.CLOTH);
+		map.put("openingTime", 10);
+		map.put("movement", "rotate_place");
+		map.put("sound", "iron_door");
+		map.put("tab", MalisisDemos.tabDemos);
 
-		blockColor = new BlockColor();
-		blockColor.register();
-
-		blockSlab = new BlockSlab();
-		blockSlab.register();
-
-		blockWall = new BlockWall();
-		blockWall.register();
-
-		blockStairs = new BlockStairs();
-		blockStairs.register();
-
-		blockPower = new BlockPower();
-		blockPower.register();
-
-		blockPane = new BlockPane();
-		blockPane.register();
-
-		slopeShape = new BlockShape("slope");
-		slopeShape.register();
-
-		cornerShape = new BlockShape("corner");
-		cornerShape.register();
-
-		slopedCornerShape = new BlockShape("slopedCorner");
-		slopedCornerShape.register();
-
-		pods = new BlockPods();
-		pods.register();
+		Pair<BlockDoor, ItemDoor> pair = ModMessageManager.message("malisisdoors", "createDoor", map);
+		door = pair.getLeft();
+		itemDoor = pair.getRight();
 	}
 
 	@Override
 	public void init()
 	{}
-
 }

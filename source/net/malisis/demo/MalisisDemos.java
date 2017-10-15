@@ -36,6 +36,7 @@ import net.malisis.demo.clientnotif.ClientNotifDemo;
 import net.malisis.demo.collision.Collision;
 import net.malisis.demo.components.ComponentsDemo;
 import net.malisis.demo.connected.Connected;
+import net.malisis.demo.door.DoorDemo;
 import net.malisis.demo.fontdemo.FontDemo;
 import net.malisis.demo.guidemo.GuiDemo;
 import net.malisis.demo.lavapool.LavaPoolDemo;
@@ -107,6 +108,7 @@ public class MalisisDemos implements IMalisisMod
 		demos.add(new LavaPoolDemo());
 		demos.add(new SyncDemo());
 		demos.add(new ClientNotifDemo());
+		demos.add(new DoorDemo());
 
 		demos.add(new Almura());
 	}

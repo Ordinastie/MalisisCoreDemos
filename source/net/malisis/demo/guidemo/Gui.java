@@ -39,7 +39,6 @@ import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
 import net.malisis.core.renderer.font.FontOptions;
-import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.Icon;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -52,7 +51,7 @@ import net.minecraft.util.text.TextFormatting;
  */
 public class Gui extends MalisisGui
 {
-	private static MalisisFont fontMC = MalisisFont.minecraftFont;
+	//private static MalisisFont fontMC = MalisisFont.minecraftFont;
 	//private static MalisisFont fontBS = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf"));
 	//private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
 	private UIPanel panel;
