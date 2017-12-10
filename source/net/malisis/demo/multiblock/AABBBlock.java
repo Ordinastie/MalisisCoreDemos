@@ -49,11 +49,13 @@ public class AABBBlock extends MalisisBlock
 		setCreativeTab(MalisisDemos.tabDemos);
 
 		//create the multiblock with the AABB
-		AABBMultiBlock multiBlock = new AABBMultiBlock(this, new AxisAlignedBB(-1, 0, 0, 3, 4, 1));
+		AABBMultiBlock multiBlock = new AABBMultiBlock(new AxisAlignedBB(-1, 0, 0, 3, 4, 1));
 		multiBlock.setBulkProcess(true, true);
 
 		//add the component
 		addComponent(new MultiBlockComponent(multiBlock));
+
+		multiBlock.setDefaultState(getDefaultState());
 
 		if (MalisisCore.isClient())
 		{

@@ -24,6 +24,9 @@
 
 package net.malisis.demo.lavapool;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.AnimationRenderer;
@@ -37,9 +40,6 @@ import net.malisis.core.util.multiblock.MultiBlockComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 
 /**
  * @author Ordinastie
@@ -68,7 +68,6 @@ public class LavaPoolRenderer extends MalisisRenderer<LavaPoolTileEntity>
 		tileEntity = super.tileEntity;
 		block = (LavaPoolBlock) super.block;
 		MultiBlock multiBlock = MultiBlockComponent.getMultiBlock(world, pos, blockState, itemStack);
-		multiBlock.setRotation(blockState);
 		MultiBlockAccess multiBlockAccess = new MultiBlockAccess(multiBlock);
 		if (tileEntity.startAnim)
 		{
@@ -83,10 +82,9 @@ public class LavaPoolRenderer extends MalisisRenderer<LavaPoolTileEntity>
 		ar.animate(rp, at);
 		rp.interpolateUV.set(false);
 
-		for (MBlockState state : multiBlock)
+		for (MBlockState state : multiBlock.worldStates(pos, blockState))
 		{
-			state = state.rotate(multiBlock.getRotation());
-			if (!state.offset(pos).matchesWorld(world))
+			if (!state.matchesWorld(world))
 			{
 				GL11.glPushMatrix();
 				GL11.glTranslated(0.5F, 0.5F, 0.5F);
