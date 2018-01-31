@@ -3,17 +3,23 @@ package net.malisis.demo.guidemo;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import com.google.common.base.Converter;
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 
+import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
+import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
+import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
+import net.malisis.core.client.gui.component.container.UIListContainer;
 import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
@@ -28,12 +34,14 @@ import net.malisis.core.client.gui.component.decoration.UILabel;
 import net.malisis.core.client.gui.component.decoration.UIProgressBar;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.component.interaction.UIButton;
+import net.malisis.core.client.gui.component.interaction.UIButton.ClickEvent;
 import net.malisis.core.client.gui.component.interaction.UICheckBox;
 import net.malisis.core.client.gui.component.interaction.UIRadioButton;
 import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
+import net.malisis.core.client.gui.element.SimpleGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -60,6 +68,9 @@ public class Gui extends MalisisGui
 	private UIButton btnL, btnR, btnHorizontal;
 	private UIRadioButton rbMC, rbBS, rbH;
 	private UICheckBox cb;
+	private UISelect<String> select;
+	private int selectSize = 100;
+	private int currentSize = 100;
 
 	public Gui(MalisisInventoryContainer inventoryContainer)
 	{
@@ -74,7 +85,7 @@ public class Gui extends MalisisGui
 		//allow contents to be drawn outside of the window's borders
 		window.setClipContent(false);
 
-		boolean debug = true;
+		boolean debug = false;
 		if (debug)
 		{
 			addToScreen(debug());
@@ -87,25 +98,30 @@ public class Gui extends MalisisGui
 		UIContainer<?> tabCont2 = panel2();
 		//get the slider demo tab
 		UIContainer<?> tabSliderPanel = sliderPanel();
+		//get the UIList panel
+		UIContainer<?> tabList = listPanel();
 
 		//create a panel to hold the containers
 		panel = new UIPanel(this, UIComponent.INHERITED, 140);
 		panel.add(tabCont1);
 		panel.add(tabCont2);
 		panel.add(tabSliderPanel);
+		panel.add(tabList);
 
 		//create the tabs for the containers
 		UITab tab1 = new UITab(this, "Tab 1");
 		UITab tab2 = new UITab(this, "Tab 2").setBgColor(0xCCCCFF);
 		tabSlider = new UITab(this, "Slider tab");
+		UITab tab3 = new UITab(this, "UIList");
 
 		//create the group containing the tabs and their corresponding containers
 		UITabGroup tabGroup = new UITabGroup(this, ComponentPosition.TOP);
 		tabGroup.addTab(tab1, tabCont1);
 		tabGroup.addTab(tab2, tabCont2);
 		tabGroup.addTab(tabSlider, tabSliderPanel);
+		tabGroup.addTab(tab3, tabList);
 
-		tabGroup.setActiveTab(tabSlider);
+		tabGroup.setActiveTab(tab2);
 		tabGroup.setSpacing(0);
 		tabGroup.attachTo(panel, true);
 
@@ -153,21 +169,24 @@ public class Gui extends MalisisGui
 		//tf.setOptions(0x660000, 0xFFCCCC, 0x770000, 0xFF0000, false);
 
 		//Select
-		UISelect<String> select = new UISelect<>(	this,
-													100,
-													Arrays.asList(	"Option 1",
-																	"Option 2",
-																	"Very ultra longer option 3",
-																	"Shorty",
-																	"Moar options",
-																	"Even more",
-																	"Even Steven",
-																	"And a potato too"));
+		select = new UISelect<>(this,
+								100,
+								Arrays.asList(	"Option 1",
+												"Option 2",
+												"Very ultra longer option 3",
+												"Shorty",
+												"Moar options",
+												"Even more",
+												"Even Steven",
+												"And a potato too"));
 		select.setPosition(0, 70);
-		select.setMaxExpandedWidth(120);
+		select.setOptionsWidth(UISelect.SELECT_WIDTH);
 		//select.maxDisplayedOptions(5);
 		select.select("Option 2");
 		//select.setColors(0x660000, 0xFFCCCC, 0xFF0000, 0x999999, 0x6600CC, 0x664444, false);
+
+		//uiselect size change button
+		UIButton selectSizeButton = new UIButton(this, "<-").setPosition(200, 70).setSize(20, 12).register(this);
 
 		//progress bar
 		bar = new UIProgressBar(this, 16, 16, BLOCK_TEXTURE, Icon.from(Items.IRON_PICKAXE), Icon.from(Items.DIAMOND_PICKAXE));
@@ -176,7 +195,7 @@ public class Gui extends MalisisGui
 
 		//3 Buttons
 		btnHorizontal = new UIButton(this, "Horizontal").setSize(90).setPosition(0, 85, Anchor.CENTER);
-		btnHorizontal.setDisabled(true);
+		btnHorizontal.setEnabled(true);
 		btnHorizontal.setTooltip("Button horizontal");
 		btnL = new UIButton(this, "O").setPosition(-49, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
 		btnR = new UIButton(this, "O").setPosition(50, 85, Anchor.CENTER).setAutoSize(false).setSize(10, 10);
@@ -193,6 +212,7 @@ public class Gui extends MalisisGui
 
 		tabCont1.add(tf);
 		tabCont1.add(select);
+		tabCont1.add(selectSizeButton);
 		tabCont1.add(bar);
 
 		tabCont1.add(btnHorizontal);
@@ -248,17 +268,20 @@ public class Gui extends MalisisGui
 		new UIResizeHandle(this, mltf);
 
 		//Multiline label
+		fro = FontOptions.builder().scale(2F / 3F).color(0x338899).build();
 		UILabel ipsum = new UILabel(this, true);
 		ipsum.setPosition(0, 0, Anchor.RIGHT);
 		ipsum.setSize(150, 0);
-		ipsum.setText("Contrairement à une opinion répandue, " + TextFormatting.BOLD
+		ipsum.setText(TextFormatting.UNDERLINE + "Contrairement à une opinion répandue, " + TextFormatting.BOLD
 				+ "le Lorem Ipsum n'est pas simplement du texte aléatoire" + TextFormatting.RESET
 				+ ". Il trouve ses racines dans une oeuvre de la littérature latine classique" + TextFormatting.AQUA
 				+ " datant de 45 av. J.-C., le rendant" + TextFormatting.RESET + " vieux de 2000 ans." + TextFormatting.BLUE
 				+ "Un professeur du " + TextFormatting.RESET + "Hampden-Sydney College" + TextFormatting.BLUE
-				+ ", en Virginie, s'est intéressé" + TextFormatting.RESET
-				+ " à un des mots latins les plus obscurs, consectetur, extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
+				+ ", en Virginie, s'est intéressé" + TextFormatting.RESET + " à un des mots latins les plus obscurs, "
+				+ TextFormatting.UNDERLINE + TextFormatting.DARK_RED + "consectetur" + TextFormatting.RESET
+				+ ", extrait d'un passage du Lorem Ipsum, et en étudiant tous les usages de ce mot dans la littérature classique, découvrit la source incontestable du Lorem Ipsum. Il provient en fait des sections 1.10.32 et 1.10.33 du \"De Finibus Bonorum et Malorum\" (Des Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, \"Lorem ipsum dolor sit amet...\", proviennent de la section 1.10.32");
 		ipsum.setFontOptions(fro);
+		//ipsum.setFont(new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf")));
 		new UISlimScrollbar(this, ipsum, UIScrollBar.Type.VERTICAL);
 
 		//Add all elements
@@ -309,9 +332,9 @@ public class Gui extends MalisisGui
 		sliderColorLabel = new UILabel(this, "Color : 0xFFFFFF").setPosition(160, 25);
 
 		//Slider with custom values with days of the week
-		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[(int) (f * 6)], d -> (float) d.ordinal() / 6);
+		Converter<Float, DayOfWeek> dayConv = Converter.from(f -> DayOfWeek.values()[Math.round(f * 6)], d -> (float) d.ordinal() / 6);
 		UISlider<DayOfWeek> sliderDay = new UISlider<>(this, 70, dayConv, "%s")	.setPosition(0, 64, Anchor.CENTER)
-																				.setSize(240, 40)
+																				.setSize(240, 30)
 																				.setValue(LocalDate.now().getDayOfWeek())
 																				.setScrollStep(1 / 6F);
 
@@ -323,6 +346,81 @@ public class Gui extends MalisisGui
 		sliderPanel.add(sliderDay);
 
 		return sliderPanel;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private UIContainer<?> listPanel()
+	{
+
+		List<Item> items = ImmutableList.of(Items.APPLE,
+											Items.BED,
+											Items.LEAD,
+											Items.SNOWBALL,
+											Items.ARROW,
+											Items.WHEAT,
+											Items.TNT_MINECART,
+											Items.WATER_BUCKET,
+											Items.COOKED_MUTTON);
+
+		UIListContainer<Item> itemList = new UIListContainer<>(this);
+		itemList.setComponentFactory((gui, item) -> {
+			return new UIBackgroundContainer(gui)
+			{
+				{
+					setSize(-20, 20);
+					setBorder(0x6666DD, 1, 255);
+
+					ItemStack is = new ItemStack(item);
+					UIImage img = new UIImage(gui, is);
+					img.setPosition(0, 0, Anchor.MIDDLE);
+					add(img);
+
+					UILabel label = new UILabel(gui, is.getUnlocalizedName() + ".name");
+					label.setPosition(20, 0, Anchor.MIDDLE);
+					add(label);
+
+					UIButton btn1 = new UIButton(gui, "1");
+					btn1.setPosition(-1, 1, Anchor.RIGHT | Anchor.TOP);
+					btn1.setAutoSize(false);
+					btn1.setSize(15, 10);
+					btn1.attachData(1);
+					btn1.register(this);
+					add(btn1);
+					int stackSize = is.getMaxStackSize();
+					if (stackSize != 1)
+					{
+						UIButton btn2 = new UIButton(gui, "" + stackSize);
+						btn2.setPosition(-1, -1, Anchor.RIGHT | Anchor.BOTTOM);
+						btn2.setAutoSize(false);
+						btn2.setSize(15, 10);
+						btn2.attachData(stackSize);
+						btn2.register(this);
+						add(btn2);
+					}
+
+				}
+
+				@Subscribe
+				public void onClick(ClickEvent event)
+				{
+					MalisisCore.message("Spawning " + event.getComponent().getData() + " of " + item.getUnlocalizedName());
+				}
+			};
+		});
+
+		itemList.setElementSpacing(2);
+		itemList.setElements(items);
+
+		return itemList;
+	}
+
+	@Subscribe
+	public void onClick(UIButton.ClickEvent event)
+	{
+		currentSize += 20;
+		if (currentSize > 190)
+			currentSize = selectSize;
+		select.setSize(currentSize, 12);
 	}
 
 	@Subscribe
@@ -356,16 +454,33 @@ public class Gui extends MalisisGui
 		tabSlider.setBgColor(color);
 	}
 
+	@SuppressWarnings("unchecked")
 	private UIComponent<?> debug()
 	{
-		String str = "Lorem ipsum dolor sit amet, consectetur adipiscingelit. Nam sollicitudin varius quam, vel dignissim felis lobortis quis. Etiam iaculis fringilla accumsan.";// Donec finibus risus in nunc consectetur malesuada. Donec hendrerit elit eu nunc blandit laoreet. Pellentesque et nisl quam. Sed tincidunt neque sed hendrerit fringilla. Sed convallis risus tortor, ut consectetur nulla efficitur ac. Sed luctus sagittis nisi, porttitor ornare odio. Nullam dolor ex, porttitor quis elementum vitae, mollis vitae mi. Etiam condimentum mi at magna gravida, sit amet pulvinar quam porttitor. Donec vulputate elementum ex, ac suscipit justo dapibus ac. Cras fermentum mi arcu, ac eleifend sem efficitur eu. Quisque eu cursus erat, nec pharetra dolor. Vivamus sit amet venenatis est, nec dignissim tortor. Mauris vulputate nibh vitae ante aliquet tristique. Phasellus at rhoncus elit. Aenean molestie tristique ante in efficitur. Integer at leo metus. Curabitur quis ex quis ante dictum congue ac eu nunc. Nam at lacinia mauris. Curabitur fringilla libero laoreet, maximus enim eget, tempus est. Maecenas tristique feugiat ipsum, in finibus turpis venenatis tincidunt.  Nullam nec cursus mauris. Donec sed enim et nunc mattis bibendum eu sed purus. Nam est orci, laoreet ac quam ut, mollis efficitur turpis. Ut velit tellus, efficitur vel eros nec, luctus dictum erat. Cras dui ante, scelerisque vitae ante a, commodo lacinia elit. Sed sollicitudin sollicitudin eleifend. Aenean risus dolor, mollis vitae condimentum ac, maximus eget erat. Donec maximus et nunc sed sagittis. Maecenas feugiat aliquam sapien, a euismod nisi maximus at. Cras eget volutpat massa. Nam condimentum libero a quam commodo luctus quis quis mauris. Fusce pulvinar pellentesque turpis a ornare. Aliquam vehicula bibendum nisl, eu accumsan tortor eleifend eget. Nulla posuere ullamcorper porttitor. Sed aliquet dignissim erat, id placerat nulla scelerisque sit amet. Morbi id nisl porta, hendrerit elit at, placerat magna. Nulla ultrices, purus ullamcorper molestie aliquam, dui ex tincidunt enim, ut molestie lacus neque non nunc. Vivamus sed odio vitae nulla viverra efficitur. Aenean non lectus vitae felis vestibulum faucibus. Praesent justo nunc, feugiat ut nunc sed, pulvinar feugiat enim. Sed metus velit, elementum et elementum sit amet, finibus eu elit. Pellentesque consectetur lacinia malesuada. Sed aliquam erat dolor, quis sodales arcu varius quis. Sed at libero eu erat mattis pulvinar mattis ut odio. Vivamus facilisis lectus nec arcu hendrerit, a rhoncus elit pretium. Donec posuere, odio id blandit dictum, justo eros malesuada nunc, in elementum mi enim in ex. Duis sed placerat mi. Ut convallis erat justo, eu ultrices eros commodo sit amet. Cras efficitur augue in lectus imperdiet, ut imperdiet quam luctus. Sed pulvinar nisl tincidunt orci mattis eleifend. Nunc id erat sed erat placerat sodales. Donec fermentum, ante semper viverra convallis, erat nunc rutrum erat, at luctus lacus orci a libero. In nisl felis, rhoncus amet.";
-		UIWindow window = new UIWindow(this, 200, 100);
+		Random r = new Random();
+		UIWindow layout = new UIWindow(this, 400, 100);
+		//		layout.setClipContent(false);
 
-		UISelect<String> select = new UISelect<>(this, 100, FluentIterable.from(str.split(" ")));
-		select.maxDisplayedOptions(10);
-		window.add(select);
+		//UIPanel c = new UIPanel(this);// raw typers because cant construct scrollbar otherwise
+		UIPanel c = new UIPanel(this);
+		c.setPosition(0, 5);
+		c.setSize(150, 50);
+		//c.setColor(r.nextInt(0x555555) + 0xAAAAAA);
+		for (int i = 0; i < 30; i++)
+			c.add(new UILabel(this, "Test " + i).setPosition(0, i * 10));
+		layout.add(c);
 
-		return window;
+		UIScrollBar scrollbar = new UIScrollBar(this, c, UIScrollBar.Type.VERTICAL);
+		scrollbar.setPosition(-10, 0, Anchor.RIGHT);
+		scrollbar.setVisible(true);
+
+		layout.add(new UILabel(this, "Padding").setPosition(0, 250));
+
+		UIScrollBar scrollbar3 = new UIScrollBar(this, layout, UIScrollBar.Type.VERTICAL);
+		scrollbar3.setPosition(0, 0, Anchor.RIGHT);
+		scrollbar3.setVisible(true);
+
+		return layout;
 	}
 
 	@Override
@@ -375,5 +490,23 @@ public class Gui extends MalisisGui
 			return;
 		float t = (System.currentTimeMillis() % 2000) / 2000f;
 		bar.setProgress(t);
+	}
+
+	public static class ContTest extends UIBackgroundContainer
+	{
+		public ContTest(MalisisGui gui)
+		{
+			super(gui);
+		}
+
+		@Override
+		public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick)
+		{
+			SimpleGuiShape shape = new SimpleGuiShape();
+			shape.setSize(50, 50);
+			shape.setPosition(-10, 0);
+			renderer.drawShape(shape, rp);
+			//renderer.next();// remove this and it won't be clipped
+		}
 	}
 }

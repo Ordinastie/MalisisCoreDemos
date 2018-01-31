@@ -31,6 +31,7 @@ public class GuiBlock extends MalisisBlock implements ITileEntityProvider
 	{
 		//no action done on the client
 		//because the TE has an inventory, it needs to be opened on the server, which then automatically opens the GUI given by the TE on the client
+
 		if (world.isRemote)
 			return true;
 

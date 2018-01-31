@@ -27,7 +27,7 @@ package net.malisis.demo.tabinv;
 import io.netty.buffer.ByteBuf;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.network.IMalisisMessageHandler;
-import net.malisis.core.network.MalisisMessage;
+import net.malisis.core.registry.AutoLoad;
 import net.malisis.demo.MalisisDemos;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Ordinastie
  *
  */
-@MalisisMessage
+@AutoLoad(true)
 public class TabInvMessage implements IMalisisMessageHandler<TabInvMessage.Packet, IMessage>
 {
 	public TabInvMessage()
