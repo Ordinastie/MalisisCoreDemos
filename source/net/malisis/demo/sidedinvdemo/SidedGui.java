@@ -24,16 +24,17 @@
 
 package net.malisis.demo.sidedinvdemo;
 
+import org.lwjgl.opengl.GL11;
+
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
+import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
-import net.malisis.core.client.gui.component.container.UIWindow;
+import net.malisis.core.client.gui.render.BackgroundTexture.WindowBackground;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
@@ -57,7 +58,8 @@ public class SidedGui extends MalisisGui
 	public void construct()
 	{
 		//create the window
-		UIWindow window = new UIWindow(this, 190, 230);
+		UIContainer<?> window = new UIContainer<>(this, 190, 230);
+		window.setBackground(new WindowBackground(this));
 
 		//create the inventory containers (UIContainer)
 		UIInventory contTriage = new UIInventory(this, tileEntity.triageInventory, 10).setPosition(0, 0, Anchor.CENTER);

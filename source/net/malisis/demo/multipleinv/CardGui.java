@@ -29,7 +29,7 @@ import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
-import net.malisis.core.client.gui.component.container.UIWindow;
+import net.malisis.core.client.gui.render.BackgroundTexture.WindowBackground;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 
@@ -49,7 +49,8 @@ public class CardGui extends MalisisGui
 	{
 
 		//add padding to width
-		UIWindow window = new UIWindow(this, UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT * 2);
+		UIContainer<?> window = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT * 2);
+		window.setBackground(new WindowBackground(this));
 
 		UIContainer<?> invCont = new UIContainer<>(this, "Card", UIPlayerInventory.INVENTORY_WIDTH, UIPlayerInventory.INVENTORY_HEIGHT);
 		invCont.setPosition(0, 0, Anchor.CENTER);

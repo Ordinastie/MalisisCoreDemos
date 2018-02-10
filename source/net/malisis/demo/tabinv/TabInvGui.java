@@ -24,18 +24,19 @@
 
 package net.malisis.demo.tabinv;
 
+import com.google.common.eventbus.Subscribe;
+
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UISlot;
+import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIInventory;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.interaction.UITab;
+import net.malisis.core.client.gui.render.BackgroundTexture.WindowBackground;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-
-import com.google.common.eventbus.Subscribe;
 
 /**
  * @author Ordinastie
@@ -61,14 +62,22 @@ public class TabInvGui extends MalisisGui
 	public void construct()
 	{
 		//create the first window, with a title, size and position
-		UIWindow inventoryWindow = new UIWindow(this, "TE Inventory", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);
+		UIContainer<?> inventoryWindow = new UIContainer<>(	this,
+															"TE Inventory",
+															UIPlayerInventory.INVENTORY_WIDTH + 10,
+															100).setPosition(0, -60);
+		inventoryWindow.setBackground(new WindowBackground(this));
 		//create the inventory container and with the first inventory
 		UIInventory inv = new UIInventory(this, inventoryContainer.getInventory(1), 4).setPosition(0, 0, Anchor.CENTER | Anchor.MIDDLE);
 		//add the inventory to the window
 		inventoryWindow.add(inv);
 
 		//create the second window (needs to be same size and position as first
-		UIWindow converterWindow = new UIWindow(this, "Converter", UIPlayerInventory.INVENTORY_WIDTH + 10, 100).setPosition(0, -60);;
+		UIContainer<?> converterWindow = new UIContainer<>(	this,
+															"Converter",
+															UIPlayerInventory.INVENTORY_WIDTH + 10,
+															100).setPosition(0, -60);
+		converterWindow.setBackground(new WindowBackground(this));
 		//this time, we add the slots manually to the window because we want them to have custom position
 		UISlot uislot = new UISlot(this, te.slotIron).setPosition(-30, 20, Anchor.CENTER);
 		uislot.setTooltip("Iron");
@@ -96,7 +105,10 @@ public class TabInvGui extends MalisisGui
 		tabGroup.attachTo(inventoryWindow, false);
 
 		//create a separate window to display the player's inventory
-		UIWindow playerWindow = new UIWindow(this, UIPlayerInventory.INVENTORY_WIDTH + 10, UIPlayerInventory.INVENTORY_HEIGHT + 10);
+		UIContainer<?> playerWindow = new UIContainer<>(this,
+														UIPlayerInventory.INVENTORY_WIDTH + 10,
+														UIPlayerInventory.INVENTORY_HEIGHT + 10);
+		playerWindow.setBackground(new WindowBackground(this));
 		//windows are centered by default, so 0, 60 mean x-centered, and y-centered + 60 px (to leave place for the tabs)
 		playerWindow.setPosition(0, 60);
 		//create the player inventory container

@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import com.google.common.base.Converter;
 import com.google.common.collect.ImmutableList;
@@ -13,17 +12,13 @@ import com.google.common.eventbus.Subscribe;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
-import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
-import net.malisis.core.client.gui.component.container.UIBackgroundContainer;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UIListContainer;
-import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.core.client.gui.component.control.UICloseHandle;
 import net.malisis.core.client.gui.component.control.UIMoveHandle;
 import net.malisis.core.client.gui.component.control.UIResizeHandle;
@@ -41,8 +36,10 @@ import net.malisis.core.client.gui.component.interaction.UISelect;
 import net.malisis.core.client.gui.component.interaction.UISlider;
 import net.malisis.core.client.gui.component.interaction.UITab;
 import net.malisis.core.client.gui.component.interaction.UITextField;
-import net.malisis.core.client.gui.element.SimpleGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
+import net.malisis.core.client.gui.render.BackgroundTexture.PanelBackground;
+import net.malisis.core.client.gui.render.BackgroundTexture.WindowBackground;
+import net.malisis.core.client.gui.render.ColoredBackground;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
 import net.malisis.core.inventory.MalisisSlot;
@@ -62,7 +59,7 @@ public class Gui extends MalisisGui
 	//private static MalisisFont fontMC = MalisisFont.minecraftFont;
 	//private static MalisisFont fontBS = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/BrushScriptStd.otf"));
 	//private static MalisisFont fontH = new MalisisFont(new ResourceLocation(MalisisDemos.modid + ":fonts/HoboStd.otf"));
-	private UIPanel panel;
+	private UIContainer<?> panel;
 	private UITab tabSlider;
 	private UIProgressBar bar;
 	private UIButton btnL, btnR, btnHorizontal;
@@ -81,16 +78,17 @@ public class Gui extends MalisisGui
 	@Override
 	public void construct()
 	{
-		UIWindow window = new UIWindow(this, 320, 240).setPosition(0, -20, Anchor.CENTER | Anchor.MIDDLE).setZIndex(0);
-		//allow contents to be drawn outside of the window's borders
-		window.setClipContent(false);
-
 		boolean debug = false;
 		if (debug)
 		{
 			addToScreen(debug());
 			return;
 		}
+
+		UIContainer<?> window = new UIContainer<>(this, 320, 240).setPosition(0, -20, Anchor.CENTER | Anchor.MIDDLE).setZIndex(0);
+		window.setBackground(new WindowBackground(this));
+		//allow contents to be drawn outside of the window's borders
+		window.setClipContent(false);
 
 		//get the first container
 		UIContainer<?> tabCont1 = panel1();
@@ -102,7 +100,8 @@ public class Gui extends MalisisGui
 		UIContainer<?> tabList = listPanel();
 
 		//create a panel to hold the containers
-		panel = new UIPanel(this, UIComponent.INHERITED, 140);
+		panel = new UIContainer<>(this, UIComponent.INHERITED, 140);
+		panel.setBackground(new PanelBackground(this));
 		panel.add(tabCont1);
 		panel.add(tabCont2);
 		panel.add(tabSliderPanel);
@@ -139,7 +138,7 @@ public class Gui extends MalisisGui
 		//add handles to the window
 		new UIMoveHandle(this, window);
 		new UIResizeHandle(this, window);
-		new UICloseHandle(this, window);
+		//new UICloseHandle(this, window);
 
 		//add the window to the screen
 		addToScreen(window);
@@ -161,8 +160,8 @@ public class Gui extends MalisisGui
 		//rbH.setFont(fontH);
 
 		//Textfield
-		UITextField tf = new UITextField(this, "This is a textfield. You can type in it.");
-		tf.setSize(200, 0);
+		UITextField tf = new UITextField(this, "" + 0 /*"This is a textfield. You can type in it."*/);
+		tf.setSize(UIComponent.INHERITED, 0);
 		tf.setPosition(0, 52);
 		tf.setAutoSelectOnFocus(true);
 		new UIResizeHandle(this, tf);
@@ -364,11 +363,11 @@ public class Gui extends MalisisGui
 
 		UIListContainer<Item> itemList = new UIListContainer<>(this);
 		itemList.setComponentFactory((gui, item) -> {
-			return new UIBackgroundContainer(gui)
+			return new UIContainer(gui)
 			{
 				{
 					setSize(-20, 20);
-					setBorder(0x6666DD, 1, 255);
+					setBackground(new ColoredBackground(0xFFFFFF, 1, 0x6666DD));
 
 					ItemStack is = new ItemStack(item);
 					UIImage img = new UIImage(gui, is);
@@ -454,33 +453,35 @@ public class Gui extends MalisisGui
 		tabSlider.setBgColor(color);
 	}
 
-	@SuppressWarnings("unchecked")
 	private UIComponent<?> debug()
 	{
-		Random r = new Random();
-		UIWindow layout = new UIWindow(this, 400, 100);
-		//		layout.setClipContent(false);
+		UIContainer<?> w = new UIContainer<>(this, 320, 240).setPosition(0, -20, Anchor.CENTER | Anchor.MIDDLE).setZIndex(0);
+		w.setBackground(new WindowBackground(this));
 
-		//UIPanel c = new UIPanel(this);// raw typers because cant construct scrollbar otherwise
-		UIPanel c = new UIPanel(this);
-		c.setPosition(0, 5);
-		c.setSize(150, 50);
-		//c.setColor(r.nextInt(0x555555) + 0xAAAAAA);
-		for (int i = 0; i < 30; i++)
-			c.add(new UILabel(this, "Test " + i).setPosition(0, i * 10));
-		layout.add(c);
+		//		UITextField tf = new UITextField(this, "12");//his is a textfield. You can type in it.");
+		//		tf.setSize(UIComponent.INHERITED, 0);
+		//		tf.setPosition(0, 40);
+		//		w.add(tf);
 
-		UIScrollBar scrollbar = new UIScrollBar(this, c, UIScrollBar.Type.VERTICAL);
-		scrollbar.setPosition(-10, 0, Anchor.RIGHT);
-		scrollbar.setVisible(true);
+		UITextField mltf = new UITextField(this, true);
+		mltf.setSize(210, 100);
+		mltf.setPosition(0, 25);
+		mltf.setText("XX.\n\nX");
+		//Cras quis semper mi. Pellentesque dapibus diam egestas orci vulputate, a tempor ex hendrerit. Nullam tristique lacinia quam, a dapibus leo gravida eu. Donec placerat, turpis ut egestas dignissim, sem nibh tincidunt neque, eu facilisis massa felis eu nisl. Aenean pellentesque sed nunc et ultrices. Aenean facilisis convallis mauris in mollis. In porta hendrerit tellus id vehicula. Sed non interdum eros, vel condimentum diam. Sed vestibulum tincidunt velit, ac laoreet metus blandit quis. Aliquam sit amet ullamcorper velit. In tristique viverra imperdiet. Mauris facilisis ac leo non molestie.\r\n"
+		//				+ "\r\n"
+		//				+ "Phasellus orci metus, bibendum in molestie eu, interdum lacinia nulla. Nulla facilisi. Duis sagittis suscipit est vitae eleifend. Morbi bibendum tortor nec tincidunt pharetra. Vivamus tortor tortor, egestas sed condimentum ac, tristique non risus. Curabitur magna metus, porta sit amet dictum in, vulputate a dolor. Phasellus viverra euismod tortor, porta ultrices metus imperdiet a. Nulla pellentesque ipsum quis eleifend blandit. Aenean neque nulla, rhoncus et vestibulum eu, feugiat quis erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse lacus justo, porttitor aliquam tellus eu, commodo tristique leo. Suspendisse scelerisque blandit nisl at malesuada. Proin ut tincidunt augue. Phasellus vel nisl sapien.\r\n"
+		//				+ "\r"
+		//				+ "Sed ut lacinia tellus. Nam arcu ligula, accumsan id lorem id, dapibus bibendum tortor. Cras eleifend varius est, eget eleifend est commodo at. Vivamus sapien purus, faucibus ac urna id, scelerisque sagittis elit. Curabitur commodo elit nec diam vulputate finibus vitae porttitor magna. Nullam nec feugiat dolor. Pellentesque malesuada dolor arcu, ut sagittis mi mattis eu. Vivamus et tortor non nulla venenatis hendrerit nec faucibus quam. Aliquam laoreet leo in risus tempus placerat. In lobortis nulla id enim semper posuere a et libero. Nullam sit amet sapien commodo, egestas nisi eu, viverra nulla. Cras ac vulputate tellus, nec auctor elit.\r\n"
+		//				+ "\n"
+		//				+ "In commodo finibus urna, eu consectetur quam commodo dapibus. Pellentesque metus ligula, ullamcorper non lorem a, dapibus elementum quam. Praesent iaculis pellentesque dui eget pellentesque. Nunc vel varius dui. Aliquam sit amet ex feugiat, aliquet ipsum nec, sollicitudin dolor. Ut ac rhoncus enim. Quisque maximus diam nec neque placerat, euismod blandit purus congue. Integer finibus tellus ligula, eget pretium magna luctus vel. Pellentesque gravida pretium nisl sit amet fermentum. Quisque odio nunc, tristique vitae pretium ut, imperdiet a nunc. Sed eu purus ultricies, tincidunt sapien et, condimentum nunc. Duis luctus augue ac congue luctus. Integer ut commodo turpis, vitae hendrerit quam. Vivamus vulputate efficitur est nec dignissim. Praesent convallis posuere lacus ut suscipit. Aliquam at odio viverra, cursus nulla eget, maximus purus.\r\n"
+		//				+ "\r\n"
+		//				+ "Donec convallis tortor in pretium hendrerit. Maecenas mollis ullamcorper sapien, rhoncus pretium nibh condimentum ut. Phasellus tincidunt aliquet ligula in blandit. Nunc ornare vel ligula eu vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse vitae ultricies nunc. Morbi lorem purus, tempor eget magna at, placerat posuere massa. Donec hendrerit risus a pharetra bibendum. ");
+		//mltf.setText("Some §5colored test");
+		//mltf.setFontOptions(fro);
+		//mltf.getScrollbar().setAutoHide(true);
+		//w.add(mltf);
 
-		layout.add(new UILabel(this, "Padding").setPosition(0, 250));
-
-		UIScrollBar scrollbar3 = new UIScrollBar(this, layout, UIScrollBar.Type.VERTICAL);
-		scrollbar3.setPosition(0, 0, Anchor.RIGHT);
-		scrollbar3.setVisible(true);
-
-		return layout;
+		return w;
 	}
 
 	@Override
@@ -490,23 +491,5 @@ public class Gui extends MalisisGui
 			return;
 		float t = (System.currentTimeMillis() % 2000) / 2000f;
 		bar.setProgress(t);
-	}
-
-	public static class ContTest extends UIBackgroundContainer
-	{
-		public ContTest(MalisisGui gui)
-		{
-			super(gui);
-		}
-
-		@Override
-		public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick)
-		{
-			SimpleGuiShape shape = new SimpleGuiShape();
-			shape.setSize(50, 50);
-			shape.setPosition(-10, 0);
-			renderer.drawShape(shape, rp);
-			//renderer.next();// remove this and it won't be clipped
-		}
 	}
 }

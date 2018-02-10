@@ -33,9 +33,9 @@ import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.UISlot;
 import net.malisis.core.client.gui.component.container.UIContainer;
-import net.malisis.core.client.gui.component.container.UIPanel;
 import net.malisis.core.client.gui.component.container.UIPlayerInventory;
-import net.malisis.core.client.gui.component.container.UIWindow;
+import net.malisis.core.client.gui.render.BackgroundTexture.PanelBackground;
+import net.malisis.core.client.gui.render.BackgroundTexture.WindowBackground;
 import net.malisis.core.inventory.InventoryEvent;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.inventory.MalisisInventoryContainer;
@@ -59,15 +59,17 @@ public class BankGui extends MalisisGui
 	public void construct()
 	{
 
-		UIWindow window = new UIWindow(	this,
-										"Bank",
-										UIPlayerInventory.INVENTORY_WIDTH + 39,
-										62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
+		UIContainer<?> window = new UIContainer<>(	this,
+													"Bank",
+													UIPlayerInventory.INVENTORY_WIDTH + 39,
+													62 * 3 + UIPlayerInventory.INVENTORY_HEIGHT + 30);
+		window.setBackground(new WindowBackground(this));
 
 		int i = 0;
 		for (MalisisSlot s : inventoryContainer.getInventory(0).getSlots())
 		{
-			UIPanel panel = new UIPanel(this, UIPlayerInventory.INVENTORY_WIDTH + 29, 62);
+			UIContainer<?> panel = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH + 29, 62);
+			panel.setBackground(new PanelBackground(this));
 			panel.setPosition(0, 10 + i++ * 65);
 
 			UIContainer<?> uicont = new UIContainer<>(this, UIPlayerInventory.INVENTORY_WIDTH, UIComponent.INHERITED);
